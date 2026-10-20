@@ -4,8 +4,8 @@
     {
       "name": "marp-preview",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["marp", "-s", ".", "--html", "--theme-set", "themes", "-p", "8089"],
-      "port": 8089
+      "runtimeArgs": ["marp", "-s", "."],
+      "port": 8080
     }
   ]
 }
