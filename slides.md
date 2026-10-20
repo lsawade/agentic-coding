@@ -61,20 +61,67 @@ Timing: 2 minutes.
 
 ---
 
+<!-- 03-model-vs-tool -->
+<!-- _header: "1 · The model landscape" -->
+
+# Model ≠ tool: you can swap either one
+
+![h:430 center](assets/diagrams/harness-vs-model.svg)
+
+<p class="small center">Most of today's tips are about the top two layers, so they carry over from Claude Code to Codex, Cursor and Gemini CLI.</p>
+
+<!--
+Notes:
+The harness is the program you type into: it reads files, runs commands, asks permission. The model is the engine it calls.
+They are separate choices: Cursor and Copilot offer a model picker; Claude Code lets you switch between Claude tiers.
+Last talk you saw one model inside one tool; that was one cell of this picture, not the whole thing.
+Point at the bracket: CLAUDE.md, plans and review are yours, and they move with you when the tool or model changes.
+About 1 minute. Model names on the slide are current as of 20 Oct 2026 (research/numbers.md, section 1).
+-->
+
+---
+
+<!-- 04-ladders -->
+<!-- _header: "1 · The model landscape" -->
+
+# Families ship as ladders, up to 100× tall
+
+![h:380 center](assets/diagrams/model-ladders.svg)
+
+<div class="cols" style="gap:24px;margin-top:6px">
+<div class="callout" style="font-size:21px;margin:0">Flagships now think adaptively; you set effort, not on/off.</div>
+<div class="callout" style="font-size:21px;margin:0">1M-token context is standard at the frontier.</div>
+</div>
+
+<p class="small" style="font-size:16px;margin-top:6px">Prices as of 20 Oct 2026, USD per 1M tokens (input / output); see research/numbers.md. Gemini 4 Argon doubles on 1 Dec 2026.</p>
+
+<!--
+Notes:
+Engagement first, before revealing the brackets: "Guess before reveal: how much more does the top tier cost than the bottom?" Most people guess 5-10x.
+Answer: 100x per token for Anthropic (Fable vs Haiku) and OpenAI (Astra vs Luna); about 4x (output) to 7x (input) for Google, whose flagship is already cheap.
+The middle rung is 20x the bottom (Sonnet, Sol), so the cheap tier is 20-100x cheaper per token than what you would otherwise reach for.
+Caveat: per-task cost gaps are smaller than per-token gaps because bigger models use different amounts of thinking; on Artificial Analysis Haiku 5.5 is ~28x cheaper per task than Opus 5.5, not 40x.
+Thinking: Fable and Opus thinking is adaptive and cannot be disabled; GPT-6 uses effort levels; Argon has thinking levels. All three flagships list ~1M-token context.
+Sources: https://platform.claude.com/docs/en/about-claude/pricing ; https://platform.claude.com/docs/en/models/overview ; https://developers.openai.com/api/docs/pricing ; https://developers.openai.com/api/docs/models ; https://ai.google.dev/gemini-api/docs/pricing ; https://artificialanalysis.ai/models/claude-opus-5-5
+About 2 minutes.
+-->
+
+---
+
 <!-- 05-open-weight -->
 <!-- _header: "1 · The model landscape" -->
 
-# Open-weight models are about a dozen points behind, and the gap is closing
+# Open weights trail the frontier by about a dozen points
 
 ![h:300 center](assets/diagrams/open-weight-gap.svg)
 
 <div class="cols-3">
-<div class="callout"><b>Why it matters:</b> restricted data can stay on the cluster</div>
+<div class="callout"><b>Why it matters:</b> restricted data stays on the cluster</div>
 <div class="callout"><b>Why it matters:</b> per-token cost disappears</div>
 <div class="callout"><b>The trade-off:</b> you run the infrastructure</div>
 </div>
 
-<p class="small">Artificial Analysis Intelligence Index, 20 Oct 2026; changes monthly, check the live board.</p>
+<p class="small" style="margin:0">Artificial Analysis Intelligence Index, 20 Oct 2026; changes monthly, check the live board.</p>
 
 <!--
 Notes:
@@ -147,6 +194,72 @@ Collect answers from the room before advancing. 2 minutes.
 <!--
 Notes:
 The point is that most volume is small-tier work. The frontier model is for the few decisions that matter.
+-->
+
+---
+
+<!-- 09-what-burns-tokens -->
+<!-- _header: "2 · Tokens, cost and delegation" -->
+
+# What burns tokens also confuses the agent
+
+![w:1000 center](assets/diagrams/context-bloat.svg)
+
+The habits that keep the agent sharp also keep the bill down: plan before coding, restart when it drifts.
+
+<div class="cards one"><div class="tip">Restarting sessions, it often gets confused with too much context</div></div>
+
+<!--
+Notes:
+Every turn re-sends the whole context, so everything in the window is paid for again on each step, and it is all competing for the model's attention.
+The usual culprits: re-reading the same files, verbose tool output (full test logs, big diffs), long sessions, and "fix it" loops where each failed attempt stays in context.
+The useful work is often the small orange box on the left. Past that point, a fresh session with a short written plan is cheaper and smarter than pushing on.
+That is why planning before coding is cheaper than fixing after: the plan is a few hundred tokens; four fix-it rounds are the bulk of the bar.
+Ask the room: who has had a session get worse the longer it went? That is this picture.
+About 1.5 minutes. Schematic, not measured data.
+-->
+
+---
+
+<!-- 10-delegation -->
+<!-- _header: "2 · Tokens, cost and delegation" -->
+
+# Big model decides; small models fetch
+
+<div class="cols" style="grid-template-columns:470px 1fr;gap:32px">
+<div>
+
+![h:400](assets/diagrams/delegation-tree.svg)
+
+</div>
+<div>
+<pre style="font-size:16px;margin-top:0"><code>---
+name: test-runner
+description: Runs the test suite, reports only failures
+model: haiku
+tools: Bash, Read, Grep
+---
+Run `pytest -q`. Do not fix anything.
+Report passed/failed counts and, per failure:
+test name, assertion message, likely file:line.
+No file contents, no full tracebacks.</code></pre>
+<div class="small" style="font-size:18px;font-weight:700;color:#1f1f1f;margin-top:8px">What the parent sees back:</div>
+<pre style="font-size:16px;white-space:pre-wrap;margin-top:4px"><code style="white-space:pre-wrap;word-break:break-word">47 passed, 2 failed.
+test_inversion.py::test_misfit_zero: expected 0.0, got 1.3e-4 (tolerance; misfit.py:88)
+test_io.py::test_read_sac: FileNotFoundError data/sample.sac (fixture missing)</code></pre>
+<div class="small" style="font-size:17px">This file lives in <code>.claude/agents/</code>; more in section 4.</div>
+</div>
+</div>
+
+<!--
+Notes:
+Subagents run in their own context window on a cheaper model, do the noisy work (search, grep, test runs, log summaries) and hand back a short conclusion.
+The parent's context stays small and on-task; the expensive model only reads three lines instead of a 2,000-line pytest log.
+Walk through the definition: model: haiku picks the cheap tier, tools limits what it may touch, and the prompt says what to return and what not to.
+Point at the result: you, and the parent, can act on it immediately; the tolerance failure is a judgement call for the frontier model or for you.
+Other harnesses name this differently (check your tool's docs); the principle carries over: return conclusions, not dumps.
+Haiku is 20-40x cheaper per token than Sonnet/Opus (see slide 4; https://platform.claude.com/docs/en/about-claude/pricing).
+About 2 minutes.
 -->
 
 ---
@@ -320,6 +433,8 @@ Timing: about 1.5 minutes.
 <!-- 16-oss-policies -->
 <!-- _header: "3 · Your name is on it" -->
 
+<style scoped>td,th{padding:5px 12px} .stat{padding:12px 10px 10px}</style>
+
 # Open source already expects a supervisor
 
 <div class="stats" style="margin:0.1em 0 0.2em">
@@ -339,7 +454,7 @@ Timing: about 1.5 minutes.
 
 </div>
 
-<div class="small" style="font-size:16px">Fresh: a patch dropping the kernel's Assisted-by requirement was applied to the docs tree on 14 Oct 2026 after the Maintainers Summit; not yet in mainline. Accountability stays; the disclosure tag may go.</div>
+<div class="small" style="font-size:16px">Fresh: a patch dropping the kernel's Assisted-by tag reached the docs tree on 14 Oct 2026, not yet mainline. Accountability stays.</div>
 
 <!--
 Notes:
@@ -412,7 +527,7 @@ Swap the room-watching role here.
 
 <style scoped>pre{font-size:15px;line-height:1.3} .cols>div:last-child{font-size:22px} .tip{font-size:19px;padding:8px 16px 10px}</style>
 
-# CLAUDE.md: the standing instructions every session starts with
+# CLAUDE.md: standing instructions for every session
 
 <div class="cols">
 <div>
@@ -428,7 +543,7 @@ portable to CPU and GPU via Kokkos.
 - `docs/` -- Sphinx + Doxygen (RST)
 
 ## Critical conventions
-- snake_case for functions and files
+- `snake_case` for functions and files
 - No `using namespace`; no anonymous namespaces
 - `#pragma once`, never `#ifndef`
 
@@ -455,7 +570,7 @@ Codex and Cursor read AGENTS.md the same way.
 
 <div class="cards one"><div class="tip">Clear Agents.md / Claude.md files</div></div>
 
-<span class="small">The whisper+claude demo had none; with one, the agent would have known the test command and the layout before its first edit.</span>
+<span class="small">The whisper+claude demo had none; with one, the agent would have known the test command before its first edit.</span>
 
 <!--
 Notes:

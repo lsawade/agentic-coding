@@ -2,3 +2,4 @@
 themeSet: themes
 html: true
 allowLocalFiles: true
+browser: chrome
