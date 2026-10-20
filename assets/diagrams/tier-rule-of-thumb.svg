@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 560" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+<title>Three model tiers and the jobs they suit</title>
+<g stroke-width="3" stroke="#d9d4cc" fill="#f6f3ee"><rect x="20" y="20" width="1560" height="160" rx="14"/><rect x="20" y="200" width="1560" height="160" rx="14"/><rect x="20" y="380" width="1560" height="160" rx="14"/></g>
+<rect x="20" y="20" width="300" height="160" rx="14" fill="#000"/>
+<rect x="20" y="200" width="300" height="160" rx="14" fill="#E87722"/>
+<rect x="20" y="380" width="300" height="160" rx="14" fill="#6b6b6b"/>
+<g font-size="46" font-weight="800" fill="#fff" text-anchor="middle"><text x="170" y="115">Frontier</text><text x="170" y="295">Mid</text><text x="170" y="475">Small</text></g>
+<g font-size="40" font-weight="700" fill="#1f1f1f"><text x="360" y="95">Planning, review, hard reasoning</text><text x="360" y="275">Daily work: writing and editing code</text><text x="360" y="455">Search, grep, test runs, summaries</text></g>
+<g font-size="34" fill="#6b6b6b"><text x="360" y="145">Fable · Astra · Argon</text><text x="360" y="325">Opus · Sonnet · Sol</text><text x="360" y="505">Haiku · Luna · Flash-Lite</text></g>
+</svg>

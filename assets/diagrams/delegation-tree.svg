@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 760" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+  <title>Delegation: a frontier model plans and reviews; cheap subagents do the fetching and send back conclusions, not raw file dumps</title>
+  <defs>
+    <marker id="ao" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#E87722"/>
+    </marker>
+  </defs>
+
+  <!-- parent -->
+  <rect x="20" y="20" width="860" height="160" rx="14" fill="#000"/>
+  <text x="450" y="88" font-size="38" font-weight="700" fill="#fff" text-anchor="middle">Frontier model</text>
+  <text x="450" y="140" font-size="32" fill="#FBE7D6" text-anchor="middle">plans, reviews, decides</text>
+
+  <!-- conclusions: thin orange arrows up -->
+  <g stroke="#E87722" stroke-width="4" fill="none" marker-end="url(#ao)">
+    <line x1="150" y1="530" x2="150" y2="192"/>
+    <line x1="450" y1="530" x2="450" y2="192"/>
+    <line x1="690" y1="530" x2="690" y2="192"/>
+  </g>
+  <text x="300" y="368" font-size="34" font-weight="700" fill="#E87722" text-anchor="middle">conclusions</text>
+
+  <!-- raw file dumps: fat gray arrow, crossed out -->
+  <path d="M790,530 V262 H758 L825,192 L892,262 H860 V530 z" fill="#d9d4cc" stroke="#6b6b6b" stroke-width="3"/>
+  <text transform="translate(836,412) rotate(-90)" font-size="30" font-weight="700" fill="#1f1f1f" text-anchor="middle">raw file dumps</text>
+  <g stroke="#E87722" stroke-width="10" stroke-linecap="round">
+    <line x1="772" y1="205" x2="878" y2="305"/>
+    <line x1="878" y1="205" x2="772" y2="305"/>
+  </g>
+
+  <!-- subagents -->
+  <g text-anchor="middle">
+    <rect x="20"  y="530" width="260" height="150" rx="14" fill="#f6f3ee" stroke="#6b6b6b" stroke-width="3"/>
+    <text x="150" y="597" font-size="34" font-weight="700" fill="#000">grep</text>
+    <text x="150" y="645" font-size="30" fill="#6b6b6b">(Haiku)</text>
+    <rect x="320" y="530" width="260" height="150" rx="14" fill="#f6f3ee" stroke="#6b6b6b" stroke-width="3"/>
+    <text x="450" y="597" font-size="34" font-weight="700" fill="#000">run tests</text>
+    <text x="450" y="645" font-size="30" fill="#6b6b6b">(Haiku)</text>
+    <rect x="620" y="530" width="260" height="150" rx="14" fill="#f6f3ee" stroke="#6b6b6b" stroke-width="3"/>
+    <text x="750" y="597" font-size="30" font-weight="700" fill="#000">summarize logs</text>
+    <text x="750" y="645" font-size="30" fill="#6b6b6b">(Haiku)</text>
+  </g>
+  <text x="20" y="735" font-size="30" fill="#6b6b6b">subagents on a cheap model</text>
+</svg>

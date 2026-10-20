@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 560" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+<title>Intelligence Index: top proprietary model 58, top open-weight models 44 to 46</title>
+<line x1="100" y1="300" x2="1500" y2="300" stroke="#6b6b6b" stroke-width="4"/>
+<g stroke="#6b6b6b" stroke-width="3" fill="#6b6b6b" font-size="30" text-anchor="middle">
+<line x1="100" y1="290" x2="100" y2="310"/><text x="100" y="352" stroke="none">0</text>
+<line x1="300" y1="290" x2="300" y2="310"/><text x="300" y="352" stroke="none">10</text>
+<line x1="500" y1="290" x2="500" y2="310"/><text x="500" y="352" stroke="none">20</text>
+<line x1="700" y1="290" x2="700" y2="310"/><text x="700" y="352" stroke="none">30</text>
+<line x1="900" y1="290" x2="900" y2="310"/><text x="900" y="352" stroke="none">40</text>
+<line x1="1100" y1="290" x2="1100" y2="310"/><text x="1100" y="352" stroke="none">50</text>
+<line x1="1300" y1="290" x2="1300" y2="310"/><text x="1300" y="352" stroke="none">60</text>
+<line x1="1500" y1="290" x2="1500" y2="310"/><text x="1500" y="352" stroke="none">70</text>
+</g>
+<text x="100" y="262" font-size="30" fill="#6b6b6b">Intelligence Index</text>
+<!-- gap bracket -->
+<path d="M1020 250 L1020 235 L1260 235 L1260 250" fill="none" stroke="#E87722" stroke-width="4"/>
+<text x="1140" y="205" text-anchor="middle" font-size="38" font-weight="700" fill="#E87722">gap: 12 points</text>
+<!-- proprietary -->
+<line x1="1260" y1="150" x2="1260" y2="284" stroke="#000" stroke-width="3"/>
+<text x="1260" y="120" text-anchor="middle" font-size="38" font-weight="700" fill="#000">Claude Opus 5.5 · 58</text>
+<circle cx="1260" cy="300" r="18" fill="#000"/>
+<!-- open -->
+<g stroke="#E87722" stroke-width="3">
+<line x1="1020" y1="316" x2="1020" y2="395"/><line x1="980" y1="316" x2="980" y2="395"/><line x1="1000" y1="316" x2="1000" y2="475"/></g>
+<circle cx="980" cy="300" r="18" fill="#E87722"/><circle cx="996" cy="300" r="18" fill="#E87722" stroke="#fff" stroke-width="3"/><circle cx="1010" cy="300" r="18" fill="#E87722" stroke="#fff" stroke-width="3"/><circle cx="1020" cy="300" r="18" fill="#E87722" stroke="#fff" stroke-width="3"/>
+<text x="1030" y="420" font-size="36" font-weight="700" fill="#1f1f1f">MiMo-V2.6-Pro · 46</text>
+<text x="970" y="420" text-anchor="end" font-size="36" font-weight="700" fill="#1f1f1f">Kimi K3 · 44</text>
+<text x="1000" y="505" text-anchor="middle" font-size="36" font-weight="700" fill="#1f1f1f">DeepSeek V4.1 Flash, GLM-5.3 · 45</text>
+</svg>

@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+<title>Layout of a .claude folder and what each file does</title>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#E87722"/></marker></defs>
+<rect x="20" y="20" width="690" height="86" rx="14" fill="#f6f3ee" stroke="#1f1f1f" stroke-width="3"/>
+<text x="46" y="76" font-size="34" font-weight="700" fill="#000">CLAUDE.md</text>
+<line x1="716" y1="63" x2="800" y2="63" stroke="#E87722" stroke-width="4" marker-end="url(#a)"/>
+<rect x="810" y="20" width="770" height="86" rx="14" fill="#FBE7D6" stroke="#E87722" stroke-width="3"/>
+<text x="834" y="75" font-size="32" fill="#1f1f1f">standing instructions, read every session</text>
+<rect x="20" y="127" width="690" height="86" rx="14" fill="#f6f3ee" stroke="#1f1f1f" stroke-width="3"/>
+<text x="46" y="183" font-size="34" font-weight="700" fill="#000">.claude/commands/grill-me.md</text>
+<line x1="716" y1="170" x2="800" y2="170" stroke="#E87722" stroke-width="4" marker-end="url(#a)"/>
+<rect x="810" y="127" width="770" height="86" rx="14" fill="#FBE7D6" stroke="#E87722" stroke-width="3"/>
+<text x="834" y="182" font-size="32" fill="#1f1f1f">/grill-me: finds the foggy parts of an idea</text>
+<rect x="20" y="234" width="690" height="86" rx="14" fill="#f6f3ee" stroke="#1f1f1f" stroke-width="3"/>
+<text x="46" y="290" font-size="34" font-weight="700" fill="#000">.claude/commands/goal.md</text>
+<line x1="716" y1="277" x2="800" y2="277" stroke="#E87722" stroke-width="4" marker-end="url(#a)"/>
+<rect x="810" y="234" width="770" height="86" rx="14" fill="#FBE7D6" stroke="#E87722" stroke-width="3"/>
+<text x="834" y="289" font-size="32" fill="#1f1f1f">/goal: one clearly defined high-level goal</text>
+<rect x="20" y="341" width="690" height="86" rx="14" fill="#f6f3ee" stroke="#1f1f1f" stroke-width="3"/>
+<text x="46" y="397" font-size="34" font-weight="700" fill="#000">.claude/commands/pr.md</text>
+<line x1="716" y1="384" x2="800" y2="384" stroke="#E87722" stroke-width="4" marker-end="url(#a)"/>
+<rect x="810" y="341" width="770" height="86" rx="14" fill="#FBE7D6" stroke="#E87722" stroke-width="3"/>
+<text x="834" y="396" font-size="32" fill="#1f1f1f">/pr: how to make a PR for this project</text>
+<rect x="20" y="448" width="690" height="86" rx="14" fill="#f6f3ee" stroke="#1f1f1f" stroke-width="3"/>
+<text x="46" y="504" font-size="34" font-weight="700" fill="#000">.claude/agents/test-runner.md</text>
+<line x1="716" y1="491" x2="800" y2="491" stroke="#E87722" stroke-width="4" marker-end="url(#a)"/>
+<rect x="810" y="448" width="770" height="86" rx="14" fill="#FBE7D6" stroke="#E87722" stroke-width="3"/>
+<text x="834" y="503" font-size="32" fill="#1f1f1f">subagent: own model and tool scope</text>
+<rect x="20" y="555" width="690" height="86" rx="14" fill="#f6f3ee" stroke="#1f1f1f" stroke-width="3"/>
+<text x="46" y="611" font-size="34" font-weight="700" fill="#000">.claude/skills/</text>
+<line x1="716" y1="598" x2="800" y2="598" stroke="#E87722" stroke-width="4" marker-end="url(#a)"/>
+<rect x="810" y="555" width="770" height="86" rx="14" fill="#FBE7D6" stroke="#E87722" stroke-width="3"/>
+<text x="834" y="610" font-size="32" fill="#1f1f1f">reusable instructions, loaded on demand</text>
+<rect x="20" y="662" width="690" height="86" rx="14" fill="#f6f3ee" stroke="#1f1f1f" stroke-width="3"/>
+<text x="46" y="718" font-size="34" font-weight="700" fill="#000">.claude/settings.json</text>
+<line x1="716" y1="705" x2="800" y2="705" stroke="#E87722" stroke-width="4" marker-end="url(#a)"/>
+<rect x="810" y="662" width="770" height="86" rx="14" fill="#FBE7D6" stroke="#E87722" stroke-width="3"/>
+<text x="834" y="717" font-size="32" fill="#1f1f1f">allowlist: what runs without asking</text>
+<rect x="20" y="769" width="690" height="86" rx="14" fill="#f6f3ee" stroke="#1f1f1f" stroke-width="3"/>
+<text x="46" y="825" font-size="34" font-weight="700" fill="#000">.claude/hooks/</text>
+<line x1="716" y1="812" x2="800" y2="812" stroke="#E87722" stroke-width="4" marker-end="url(#a)"/>
+<rect x="810" y="769" width="770" height="86" rx="14" fill="#FBE7D6" stroke="#E87722" stroke-width="3"/>
+<text x="834" y="824" font-size="32" fill="#1f1f1f">scripts around tool calls: lint, block secrets</text>
+</svg>

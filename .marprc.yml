@@ -1,0 +1,4 @@
+# Marp CLI config shared by `npm run …` and CI
+themeSet: themes
+html: true
+allowLocalFiles: true

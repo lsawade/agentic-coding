@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 420" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+<title>Plan pipeline: brainstorm, feasibility run, plan session, execute</title>
+<defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#E87722"/></marker></defs>
+<g stroke="#000" stroke-width="4" fill="#f6f3ee">
+<rect x="20" y="40" width="320" height="140" rx="14"/>
+<rect x="433" y="40" width="320" height="140" rx="14"/>
+<rect x="846" y="40" width="320" height="140" rx="14"/>
+<rect x="1259" y="40" width="320" height="140" rx="14" fill="#FBE7D6" stroke="#E87722"/>
+</g>
+<g stroke="#E87722" stroke-width="5" fill="none" marker-end="url(#a)">
+<path d="M346 110H426"/><path d="M759 110H839"/><path d="M1172 110H1252"/></g>
+<g fill="#1f1f1f" font-size="38" font-weight="700" text-anchor="middle">
+<text x="180" y="124">Brainstorm</text>
+<text x="593" y="104">Feasibility run</text><text x="593" y="146" font-weight="400" fill="#6b6b6b">(throwaway)</text>
+<text x="1006" y="124">Plan session</text>
+<text x="1419" y="124">Execute</text></g>
+<g fill="#FBE7D6" stroke="#E87722" stroke-width="3">
+<rect x="20" y="240" width="733" height="90" rx="14"/>
+<rect x="846" y="240" width="733" height="130" rx="14"/></g>
+<g fill="#1f1f1f" font-size="34" text-anchor="middle">
+<text x="386" y="297">/grill-me finds the foggy parts</text>
+<text x="1212" y="295">/goal: one clearly defined outcome,</text>
+<text x="1212" y="340">then check in when it is done</text></g>
+</svg>

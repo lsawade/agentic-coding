@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 560" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+  <title>Git as the safety net: frequent commits on main, two agent worktrees, one merged by PR, one running remotely</title>
+  <defs>
+    <marker id="arrO" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#E87722"/>
+    </marker>
+    <marker id="arrK" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1f1f1f"/>
+    </marker>
+  </defs>
+
+  <!-- main lane -->
+  <text x="60" y="132" font-size="36" font-weight="700" fill="#000">main</text>
+  <line x1="175" y1="120" x2="1150" y2="120" stroke="#1f1f1f" stroke-width="4" marker-end="url(#arrK)"/>
+
+  <!-- worktree A: branches off, merges back via PR -->
+  <path d="M290,120 C290,230 320,270 380,270 L1000,270 C1060,270 1090,215 1090,140" fill="none" stroke="#E87722" stroke-width="4" marker-end="url(#arrO)"/>
+  <text x="1106" y="222" font-size="32" font-weight="700" fill="#E87722">PR</text>
+
+  <!-- worktree B: branches off, runs in the background -->
+  <path d="M290,120 C290,380 310,430 380,430 L1060,430" fill="none" stroke="#E87722" stroke-width="4"/>
+  <line x1="1060" y1="430" x2="1140" y2="430" stroke="#E87722" stroke-width="4" stroke-dasharray="10 8" marker-end="url(#arrO)"/>
+
+  <!-- main commits -->
+  <g fill="#1f1f1f">
+    <circle cx="210" cy="120" r="11"/><circle cx="290" cy="120" r="11"/><circle cx="370" cy="120" r="11"/>
+    <circle cx="450" cy="120" r="11"/><circle cx="530" cy="120" r="11"/><circle cx="610" cy="120" r="11"/>
+    <circle cx="770" cy="120" r="11"/><circle cx="850" cy="120" r="11"/>
+    <circle cx="930" cy="120" r="11"/><circle cx="1010" cy="120" r="11"/><circle cx="1090" cy="120" r="13"/>
+  </g>
+  <!-- the commit you can always go back to -->
+  <circle cx="690" cy="120" r="14" fill="#fff" stroke="#E87722" stroke-width="4"/>
+  <line x1="690" y1="98" x2="690" y2="80" stroke="#E87722" stroke-width="3"/>
+  <text x="690" y="66" font-size="32" font-weight="700" fill="#E87722" text-anchor="middle">revert = one command</text>
+
+  <!-- worktree A commits + label -->
+  <g fill="#E87722">
+    <circle cx="440" cy="270" r="12"/><circle cx="560" cy="270" r="12"/><circle cx="680" cy="270" r="12"/>
+    <circle cx="800" cy="270" r="12"/><circle cx="920" cy="270" r="12"/>
+  </g>
+  <text x="400" y="322" font-size="30" fill="#1f1f1f"><tspan font-weight="700">worktree A:</tspan> agent session 1 — refactor io</text>
+
+  <!-- worktree B commits + label -->
+  <g fill="#E87722">
+    <circle cx="440" cy="430" r="12"/><circle cx="560" cy="430" r="12"/><circle cx="680" cy="430" r="12"/>
+    <circle cx="800" cy="430" r="12"/><circle cx="920" cy="430" r="12"/><circle cx="1040" cy="430" r="12"/>
+  </g>
+  <text x="400" y="482" font-size="30" fill="#1f1f1f"><tspan font-weight="700">worktree B:</tspan> agent session 2 — new plots</text>
+
+  <!-- remote / background session -->
+  <rect x="1150" y="320" width="420" height="210" rx="14" fill="#f6f3ee" stroke="#E87722" stroke-width="4"/>
+  <text x="1360" y="372" font-size="32" font-weight="700" fill="#000" text-anchor="middle">remote / background</text>
+  <text x="1360" y="410" font-size="32" font-weight="700" fill="#000" text-anchor="middle">session</text>
+  <text x="1360" y="460" font-size="30" fill="#6b6b6b" text-anchor="middle">no DB credentials,</text>
+  <text x="1360" y="498" font-size="30" fill="#6b6b6b" text-anchor="middle">sandboxed</text>
+</svg>

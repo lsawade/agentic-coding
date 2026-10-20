@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "marp-preview",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["marp", "-s", ".", "--html", "--theme-set", "themes", "-p", "8089"],
+      "port": 8089
+    }
+  ]
+}
