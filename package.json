@@ -5,7 +5,7 @@
   "description": "Marp deck: Agentic AI for Research (Princeton)",
   "scripts": {
     "dev": "marp -s . --html --theme-set themes",
-    "build": "marp slides.md -o dist/index.html",
+    "build": "marp slides.md -o dist/index.html && rm -rf dist/assets && cp -R assets dist/assets",
     "pdf": "marp slides.md --pdf --pdf-notes -o dist/slides.pdf",
     "pptx": "marp slides.md --pptx -o dist/slides.pptx",
     "png": "rm -rf review && mkdir -p review && marp slides.md --images png -o review/slide.png",

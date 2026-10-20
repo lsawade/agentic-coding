@@ -21,7 +21,5 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: slides
-          path: |
-            dist/index.html
-            dist/slides.pdf
+          path: dist/
           if-no-files-found: error

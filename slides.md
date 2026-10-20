@@ -15,12 +15,14 @@ title: "Agentic AI for Research"
 
 ## What the people who do this every day have learned, and what it means when your name is on the result
 
-**Presenter A · Presenter B** · McGraw Center for Teaching and Learning · Princeton University · October 2026
+**Congyue Cui · Lucas Sawade** · Princeton Research Computing · October 2026
+
+<div class="logos"><img class="rc" src="assets/logo/rc-logo-inverted.svg" alt="Princeton Research Computing"></div>
 
 <!--
 Notes:
 Presenter names are placeholders; replace them before the talk.
-Timing: 42 min, 34 slides. Presenter A takes sections 0-3, Presenter B takes 4-6. Handoff on slide 18.
+Timing: 42 min, 34 slides. Natural split: sections 0-3 (slides 1-18) and 4-6 (slides 19-34); who takes which half is decided on the day. Handoff on slide 18.
 -->
 
 ---
@@ -28,7 +30,7 @@ Timing: 42 min, 34 slides. Presenter A takes sections 0-3, Presenter B takes 4-6
 <!-- 02-bridge -->
 <!-- _header: "0 · Bridge" -->
 
-# Last time you watched it get built from nothing
+# You just watched it get built from nothing
 
 ![w:900 center](assets/diagrams/bridge-timeline.svg)
 
@@ -42,17 +44,20 @@ Timing: 42 min, 34 slides. Presenter A takes sections 0-3, Presenter B takes 4-6
 5. Working patterns from your colleagues
 6. Starter kit and discussion
 
-<div class="callout"><b>Interrupt me.</b> Two of us are up here; the one not speaking is watching for your hand.</div>
 </div>
 <div>
-<div class="placeholder" style="height:250px">Screenshot from the whisper+claude session goes here (optional). Drop the image at assets/bridge.png and replace this box with an image tag</div>
+
+<div class="callout"><b>Interrupt me.</b> Two of us are up here; the one not speaking is watching for your hand.</div>
+
+<div class="callout"><b>Keep the build in mind.</b> We will point back at it: the retries, the unread diff, the missing CLAUDE.md.</div>
+
 </div>
 </div>
 
 <!--
 Notes:
-Last session you saw an agent build whisper+claude from nothing; today is how to supervise one.
-Show of hands: "Who has run an agent on your own code since the last session?"
+An hour ago you saw an agent build something from nothing; the rest of this session is how to supervise one.
+Show of hands: "Who has run an agent on your own code before today?"
 Then: "Who has merged something it wrote without reading all of it?" (expect a laugh; this plants section 3.)
 Walk the six agenda items in one breath each; do not explain them yet.
 Say the interrupt rule out loud; the co-presenter watches for hands.
@@ -151,7 +156,7 @@ Notes:
 Rule of thumb: frontier plans and reviews, mid does the daily editing, small does the fetching.
 Names: Fable/Astra/Argon (frontier), Opus/Sonnet/Sol (mid), Haiku/Luna/Flash-Lite (small). Names change every few months; the tiers do not.
 Why not benchmarks: top models cluster within a few points; leaderboards at artificialanalysis.ai and openrouter.ai/rankings update daily.
-Read the two campus tips; ask: "Who has had one model review another's code?"
+Read the two tips; ask: "Who has had one model review another's code?"
 Prices per tier: see research/numbers.md section 1.
 Timing: 2 minutes.
 -->
@@ -351,7 +356,7 @@ Notes:
 Five patterns, one sentence each; do not read the table aloud.
 Engagement: "Which of these have you already been bitten by?" Take two answers.
 Tie to section 3: all five are invisible unless you open the code or the data.
-Read the two campus tips; the second one is cheap and works.
+Read the two tips; the second one is cheap and works.
 Point forward: slide 5.5 gives the countermeasure for each failure mode.
 Timing: 3 minutes.
 -->
@@ -491,7 +496,7 @@ Timing: about 3 minutes with the guess and the vote.
 </div>
 </div>
 
-<div class="punch" style="margin-top:0.3em">Verification is the job you can't delegate.</div>
+<div class="punch" style="margin-top:0.3em">Verification is the hardest job to delegate.</div>
 
 <!--
 Notes:
@@ -499,7 +504,7 @@ Same four questions as the open-source projects, applied to papers and datasets.
 Reproducibility: the script is the artifact you can review, rerun and publish; a chat answer is not.
 Disclosure: check your journal's and funder's AI policy before submission; they are converging on "use is fine, say so, you are responsible".
 Data: walk the diagram. Code, public data and anonymized summaries can cross the wall; PII, IRB data and credentials never do. For those, run an open-weight model on your own cluster.
-Second campus tip (read aloud): "git worktrees and a remote environment without DB access have long-running sessions operating in the background"
+Second tip (read aloud): "git worktrees and a remote environment without DB access have long-running sessions operating in the background"
 Prompt: "Which of your current datasets could you NOT send to a hosted API?"
 Land the last line slowly: it is the handoff to the second presenter.
 -->
@@ -510,13 +515,13 @@ Land the last line slowly: it is the handoff to the second presenter.
 <!-- _class: handoff -->
 <!-- _header: "" -->
 
-# "Verification is the job you can't delegate."
+# "Verification is the hardest job to delegate."
 
-<div class="who">Handoff · Presenter A → Presenter B</div>
+<div class="who">Handoff</div>
 
 <!--
 Notes:
-Presenter A ends on what the supervisor owes. Presenter B opens with how supervising is done.
+The first half ends on what the supervisor owes; the second half opens with how supervising is done.
 Swap the room-watching role here.
 -->
 
@@ -570,7 +575,7 @@ Codex and Cursor read AGENTS.md the same way.
 
 <div class="cards one"><div class="tip">Clear Agents.md / Claude.md files</div></div>
 
-<span class="small">The whisper+claude demo had none; with one, the agent would have known the test command before its first edit.</span>
+<span class="small">The build you just watched had no CLAUDE.md; with one, the agent would have known the test command before its first edit.</span>
 
 <!--
 Notes:
@@ -578,7 +583,7 @@ This is a condensed copy of the real SPECFEM++ CLAUDE.md, about 14 lines.
 Point at the build block: that is what lets the agent verify its own work.
 "What not to touch" is not in the SPECFEM++ file shown; say it is worth adding.
 Say once: Codex and Cursor use AGENTS.md the same way.
-Callback: the whisper+claude demo had no CLAUDE.md.
+Callback: the build an hour ago had no CLAUDE.md.
 Timing: 2 minutes.
 -->
 
@@ -655,7 +660,7 @@ Notes:
 Commit before each agent step; a bad change is then one `git checkout` away. Point at "revert = one command".
 Worktrees: two Claude Code sessions, two branches, one repo, no stepping on each other. A merges back by PR, which is your review gate.
 B runs remote in the background, sandboxed, with no DB credentials: the worst it can break is its own branch.
-Second campus tip, read aloud: "Using skills, treating a long task as a "research article" so it is easy to track and verify, using git as a way of tracking progress for bigger projects"
+Second tip, read aloud: "Using skills, treating a long task as a "research article" so it is easy to track and verify, using git as a way of tracking progress for bigger projects"
 Ask: who already commits before letting an agent loose? Who has lost work to one?
 -->
 
@@ -696,7 +701,7 @@ No live setup today.
 Notes:
 ~1.5 min. Section opener; let the figure carry it, do not read every phrase.
 Before: plan. During: small steps. After: review. Then back to planning. The agent drafts and runs; you decide at every turn.
-Credit the room: these tips came from 23 colleagues at the McGraw Center session.
+Credit the room: these tips came from 23 colleagues on campus.
 Ask: are any of the authors here? Would you say one sentence about the story behind your card?
 Then: the next three slides take one lap, one stage each.
 -->
@@ -785,24 +790,43 @@ Right chart: complexity climbs with each change, so rewrite once the idea works.
 
 <!-- 28-mindset -->
 <!-- _header: "5 · Working patterns from your colleagues" -->
+<style scoped>.tip{font-size:25px;padding:16px 20px 18px} .cols-3 strong{font-size:30px}</style>
 
 # Mindset: ambitious on the problem, strict on the output
 
 <div class="cols-3">
-<div class="callout"><strong>Be ambitious.</strong> Try the approach you would not have had time for.</div>
-<div class="callout"><strong>Build artifacts to understand.</strong> A small interactive page or plot beats re-reading a derivation.</div>
-<div class="callout"><strong>Write your own prose.</strong> If you cannot be bothered to write it, nobody should be bothered to read it.</div>
+<div>
+
+**Be ambitious.**
+
+<div class="cards one"><div class="tip">be extremely ambitious, especially regarding attempting new research or mathematical approaches</div></div>
+
+</div>
+<div>
+
+**Build to understand.**
+
+<div class="cards one"><div class="tip">Generating Claude ai artifacts to understand complicated ideas</div></div>
+
+</div>
+<div>
+
+**Write your own prose.**
+
+<div class="cards one"><div class="tip">Don't use it to write prose. If you can't be bothered to write it then no-one should be bothered to read it</div></div>
+
+</div>
 </div>
 
-<div class="cards">
-<div class="tip">be extremely ambitious, especially regarding attempting new research or mathematical approaches</div>
-<div class="tip">Generating Claude ai artifacts to understand complicated ideas</div>
-<div class="tip">Don't use it to write prose. If you can't be bothered to write it then no-one should be bothered to read it</div>
-</div>
+<div class="punch" style="margin-top:1.2em">The tool lowers the cost of trying. It does not lower the bar for what you hand in.</div>
 
 <!--
 Notes:
-Read the three callouts, then the three campus tips. Ask the room which of the three they already do.
+Three tips from the room, each a stance rather than a technique.
+Ambitious: try the approach you would not have had time for; the cost of a failed attempt is now an afternoon.
+Artifacts: a small interactive page or plot beats re-reading a derivation.
+Prose: if you cannot be bothered to write it, nobody should be bothered to read it. Ask the room whether they agree; some will not.
+Timing: 1 minute.
 -->
 
 ---
@@ -939,7 +963,7 @@ The non-speaking presenter writes questions here during the talk.
 
 </div>
 
-<div class="callout">The working patterns in section 5 are quoted as written from 23 colleagues who answered "What tricks have you found helpful when it comes to agentic AI?" at the McGraw Center session. Thank you.</div>
+<div class="callout">The tips in section 5 are quoted as written from 23 colleagues on campus who answered "What tricks have you found helpful when it comes to agentic AI?" Thanks to the Research Computing group for input on these slides and for many discussions on AI coding.</div>
 
 <!--
 Notes:

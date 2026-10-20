@@ -2,8 +2,8 @@
 <title>Session 1: you watched it build. Session 2: how to supervise it.</title>
 <defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f1f1f"/></marker></defs>
 <rect x="20" y="30" width="660" height="160" rx="14" fill="#f6f3ee" stroke="#d9d4cc" stroke-width="3"/>
-<text x="350" y="125" text-anchor="middle" font-size="40" font-weight="700" fill="#1f1f1f">Session 1 · you watched it build</text>
+<text x="350" y="125" text-anchor="middle" font-size="40" font-weight="700" fill="#1f1f1f">An hour ago · you watched it build</text>
 <line x1="700" y1="110" x2="880" y2="110" stroke="#1f1f1f" stroke-width="4" marker-end="url(#a)"/>
 <rect x="900" y="30" width="680" height="160" rx="14" fill="#E87722"/>
-<text x="1240" y="125" text-anchor="middle" font-size="40" font-weight="700" fill="#fff">Session 2 · how to supervise it</text>
+<text x="1240" y="125" text-anchor="middle" font-size="40" font-weight="700" fill="#fff">Now · how to supervise it</text>
 </svg>
