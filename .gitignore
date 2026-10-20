@@ -3,3 +3,5 @@ dist/
 review/
 build/
 .DS_Store
+*.pdf
+*.pptx
