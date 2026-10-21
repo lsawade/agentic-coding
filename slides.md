@@ -121,7 +121,7 @@ About 2 minutes.
 
 <div class="cols-3">
 <div class="callout"><b>Control:</b> choose where inference runs</div>
-<div class="callout"><b>Cost:</b> self-host on your own compute</div>
+<div class="callout"><b>Cost:</b> replace API fees with compute and operations</div>
 <div class="callout"><b>The trade-off:</b> infrastructure and oversight</div>
 </div>
 
@@ -150,9 +150,9 @@ Timing: 2 minutes.
 
 # Pick the tier by the job, not the benchmark
 
-![h:330 center](assets/diagrams/tier-rule-of-thumb.svg)
+![h:300 center](assets/diagrams/tier-rule-of-thumb.svg)
 
-Benchmarks are saturated; use live leaderboards: artificialanalysis.ai, openrouter.ai/rankings.
+<p style="font-size:22px"><b>Capability:</b> task-relevant benchmarks and your own test cases.<br><b>Popularity:</b> OpenRouter usage rankings measure token volume, not quality.</p>
 
 <div class="cards two"><div class="tip">use multiple models for same problem</div><div class="tip">Adversarial development/brainstorming using Claude vs. Codex</div></div>
 
@@ -160,7 +160,9 @@ Benchmarks are saturated; use live leaderboards: artificialanalysis.ai, openrout
 Notes:
 Rule of thumb: frontier plans and reviews, mid does the daily editing, small does the fetching.
 Names: Fable/Astra/Argon (frontier), Opus/Sonnet/Sol (mid), Haiku/Luna/Flash-Lite (small). Names change every few months; the tiers do not.
-Why not benchmarks: top models cluster within a few points; leaderboards at artificialanalysis.ai and openrouter.ai/rankings update daily.
+Use benchmarks that match your task, then try representative examples from your own research. A score on one evaluation does not establish capability on every task, and benchmarks are not universally saturated.
+Artificial Analysis reports evaluated performance. OpenRouter's main usage rankings measure tokens processed through its platform; its benchmark views report evaluated performance separately. Popularity can help identify tools to try, but does not demonstrate correctness or suitability.
+Sources: https://artificialanalysis.ai/leaderboards/models ; https://openrouter.ai/rankings ; https://openrouter.ai/benchmarks
 Read the two tips; ask: "Who has had one model review another's code?"
 Prices per tier: see research/numbers.md section 1.
 Timing: 2 minutes.
@@ -211,20 +213,22 @@ The point is that most volume is small-tier work. The frontier model is for the 
 <!-- 09-what-burns-tokens -->
 <!-- _header: "2 · Tokens, cost and delegation" -->
 
-# What burns tokens also confuses the agent
+# Context use and token cost
 
 ![w:1000 center](assets/diagrams/context-bloat.svg)
 
-The habits that keep the agent sharp also keep the bill down: plan before coding, restart when it drifts.
+Compact or restart when the session loses focus. Save a verified handoff.
 
-<div class="cards one"><div class="tip">Restarting sessions, it often gets confused with too much context</div></div>
+<div class="callout" style="font-size:21px">Cached input can cost less. Restarting may lose useful context and cache reuse.</div>
 
 <!--
 Notes:
-Every turn re-sends the whole context, so everything in the window is paid for again on each step, and it is all competing for the model's attention.
-The usual culprits: re-reading the same files, verbose tool output (full test logs, big diffs), long sessions, and "fix it" loops where each failed attempt stays in context.
-The useful work is often the small orange box on the left. Past that point, a fresh session with a short written plan is cheaper and smarter than pushing on.
-That is why planning before coding is cheaper than fixing after: the plan is a few hundred tokens; four fix-it rounds are the bulk of the bar.
+Claude Code reuses prior context across turns and automatically caches matching prompt prefixes. Cache hits receive cached-input pricing rather than the full input rate; cache writes and new content have their own costs. Other harnesses may manage context differently.
+Repeated file reads, verbose tool output and failed attempts can accumulate in context. Prompt caching reduces processing cost for matching prefixes; it does not remove that content from the model's context window.
+A fresh session can help when stale assumptions or irrelevant history dominate, but it may discard useful context and cache reuse. It is not necessarily cheaper or more accurate. Before compacting or restarting, save the verified goal, decisions, commands and remaining work, then check that the next session reads the handoff.
+Planning can avoid unnecessary retries, but this figure is a schematic of context growth, not a measured cost curve or an optimal restart point.
+Colleague's original tip: "Restarting sessions, it often gets confused with too much context". Present it as a useful experience, not a universal cost rule.
+Source: https://code.claude.com/docs/en/prompt-caching
 Ask the room: who has had a session get worse the longer it went? That is this picture.
 About 1.5 minutes. Schematic, not measured data.
 -->
@@ -804,12 +808,11 @@ Prompt: "Do only step 1 of the plan, then stop and show me the diff."
 <ul class="check">
 <li>Read every line you would sign for</li>
 <li>Ask it to list the problems in its own code</li>
-<li>After prototyping, rewrite clean</li>
+<li>Refactor under regression tests. Rewrite when the design warrants it</li>
 </ul>
 
-<div class="cards two">
+<div class="cards one">
 <div class="tip">Always review the code. It often makes mistakes or assumes things different than your implicit assumptions</div>
-<div class="tip">it often creates an over engineered mess after a while of changes. Once the prototyping is done it is good to do a clean rewrite</div>
 </div>
 
 <!--
@@ -818,7 +821,8 @@ Lap three, then close the loop back to the plan. About 2 minutes.
 You are the supervisor: the second model reviews, you decide.
 The second-model review is on the figure; moved to notes: "Adversarial development/brainstorming using Claude vs. Codex"; "Ask AI to list the problems in the code it generated"; "use for reviewing changes and updating docs/tests for consistency".
 Prompt: "List every assumption and weak spot in the code you just wrote."
-Right chart: complexity climbs with each change, so rewrite once the idea works.
+Right chart is illustrative, not measured data or a guarantee that complexity always rises. Once the prototype works, add regression tests around known behavior and refactor in small steps. Consider a rewrite when the design blocks progress, with checks that preserve the intended scientific results.
+Colleague's original preference: "it often creates an over engineered mess after a while of changes. Once the prototyping is done it is good to do a clean rewrite". A rewrite can be appropriate, but is not the default response to a working prototype.
 -->
 
 ---
@@ -873,7 +877,7 @@ Timing: 1 minute.
 
 | When it… | You… |
 |---|---|
-| Over-engineers after many changes | rewrite clean once the prototype works |
+| Over-engineers after many changes | refactor under regression tests. Consider a rewrite when the design warrants it |
 | Drifts from your assumptions silently | ask it to list its assumptions before it runs; state units, ranges, NaN policy in the prompt |
 | Hallucinates a dependency or API | run it; pin versions; let a subagent check the docs |
 | Says "tests pass" without running them | make it show the command and the output; run the suite yourself before the PR |
@@ -881,13 +885,12 @@ Timing: 1 minute.
 
 <p class="small">Pairs with slide 13; same failures, now the response.</p>
 
-<div class="cards">
-<div class="tip">it often creates an over engineered mess after a while of changes. Once the prototyping is done it is good to do a clean rewrite</div>
-</div>
+<div class="callout">Use known results to check that structural changes preserve the intended behavior.</div>
 
 <!--
 Notes:
 Go row by row. The counter-move is the action you take, not a way to avoid the failure.
+Regression tests should capture trusted behavior or known scientific results, not merely reproduce the current implementation. Refactor in small steps; choose a rewrite when the design warrants the additional effort and regression risk.
 -->
 
 ---
@@ -956,7 +959,7 @@ Notes:
 
 1. What is one task in your research you would hand to an agent tomorrow, and how would you check the result?
 2. Which of your data may not leave the cluster, and what would you run locally instead?
-3. Iterate on the prototype, or rewrite clean: when does each win?
+3. Refactor the prototype, or rewrite it: what would justify each choice?
 
 <p class="small">Parking-lot questions come back here.</p>
 
