@@ -9,7 +9,7 @@
   <!-- Layer 1: you + workflow -->
   <rect x="40" y="30" width="1230" height="150" rx="14" fill="#FBE7D6" stroke="#E87722" stroke-width="4"/>
   <text x="655" y="95" font-size="40" font-weight="700" fill="#000" text-anchor="middle">You + your workflow</text>
-  <text x="655" y="145" font-size="32" fill="#1f1f1f" text-anchor="middle">CLAUDE.md · plans · review</text>
+  <text x="655" y="145" font-size="32" fill="#1f1f1f" text-anchor="middle">AGENTS.md · plans · review</text>
 
   <!-- Layer 2: harness -->
   <rect x="40" y="220" width="1230" height="210" rx="14" fill="#f6f3ee" stroke="#d9d4cc" stroke-width="3"/>
@@ -20,7 +20,8 @@
     <rect x="307"  y="296" width="220" height="104" rx="14" fill="#fff" stroke="#000" stroke-width="3"/>
     <text x="417"  y="360">Codex CLI</text>
     <rect x="544"  y="296" width="220" height="104" rx="14" fill="#fff" stroke="#000" stroke-width="3"/>
-    <text x="654"  y="360">Gemini CLI</text>
+    <text x="654"  y="340">Antigravity</text>
+    <text x="654"  y="380">CLI</text>
     <rect x="781"  y="296" width="220" height="104" rx="14" fill="#fff" stroke="#000" stroke-width="3"/>
     <text x="891"  y="360">Cursor</text>
     <rect x="1018" y="296" width="220" height="104" rx="14" fill="#fff" stroke="#000" stroke-width="3"/>
