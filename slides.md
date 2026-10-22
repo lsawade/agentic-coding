@@ -648,7 +648,7 @@ ctest --test-dir build/<name>
 </div>
 </div>
 
-<div class="cards one"><div class="tip">Clear AGENTS.md / CLAUDE.md files</div></div>
+<div class="cards one"><div class="tip">Write clear AGENTS.md / CLAUDE.md files</div></div>
 
 <span class="small">The build you just watched had no AGENTS.md; with one, the agent would have known the test command before its first edit.</span>
 
@@ -674,7 +674,7 @@ Timing: 2 minutes.
 
 <p class="small muted center" style="font-size:17px;margin:2px 0 6px">Claude Code is the example; other agents have their own folders for the same jobs. Codex: <code>AGENTS.md</code>, skills in <code>.agents/skills/</code>, settings in <code>~/.codex/config.toml</code>.</p>
 
-<div class="cards one"><div class="tip">Write a pr.md that explains how to make a PR for your project</div></div>
+<div class="cards one"><div class="tip">Write a pr.md that explains how to open a PR in your project</div></div>
 
 <!--
 Notes:
@@ -699,8 +699,8 @@ Prompt to try later: /grill-me on your own half-formed idea.
 ![h:290 center](assets/diagrams/markdown-memory.svg)
 
 <div class="cards two">
-<div class="tip">Write brainstorming and planning notes to Markdown so you have a record and can use them as context in a future session</div>
-<div class="tip">Use skills, treat a long task as a "research article" so it is easy to track and verify, and use git to track progress on bigger projects</div>
+<div class="tip">Save brainstorming and planning notes as Markdown, for the record and for future sessions</div>
+<div class="tip">Use skills, write up long tasks like a research article, and track progress with git</div>
 </div>
 
 You get a record; the next session gets context.
@@ -731,7 +731,7 @@ Timing: 2 minutes.
 
 <p class="small" style="margin:0">Git does not recover untracked data or undo external actions. Worktrees are not security boundaries.</p>
 
-<div class="cards one"><div class="tip">Use git worktrees and a remote environment without DB access to run long sessions in the background</div></div>
+<div class="cards one"><div class="tip">Run long background sessions in git worktrees on a remote machine without database access</div></div>
 
 <!--
 Notes:
@@ -753,7 +753,7 @@ Ask: who already commits before letting an agent loose? Who has lost work to one
 
 ![h:360 center](assets/diagrams/mcp-hub.svg)
 
-<div class="cards one"><div class="tip">Have an MCP server running to use IDE features</div></div>
+<div class="cards one"><div class="tip">Run an MCP server so the agent can use IDE features</div></div>
 
 <span class="small">Examples only; no setup walkthrough today. Each server is a few lines in settings.</span>
 
@@ -775,7 +775,7 @@ No live setup today.
 
 ![h:450 center](assets/diagrams/supervision-loop.svg)
 
-<p class="small center" style="margin:0;">The next three slides are one lap around this loop. The tips are your colleagues', quoted as written.</p>
+<p class="small center" style="margin:0;">The next three slides are one lap around this loop.</p>
 
 <!--
 Notes:
@@ -796,9 +796,9 @@ Then: the next three slides take one lap, one stage each.
 ![w:1100 center](assets/diagrams/plan-pipeline.svg)
 
 <div class="cards">
-<div class="tip">Brainstorm and do a feasibility run before the planning session</div>
-<div class="tip">Use /grill-me to figure out the foggy areas of an idea</div>
-<div class="tip">Give it a clearly defined, high-level /goal and check in on the agent after it finishes</div>
+<div class="tip">Brainstorm and do a feasibility run before planning</div>
+<div class="tip">Use /grill-me to find the foggy parts of an idea</div>
+<div class="tip">Set one clear, high-level /goal, then check in when it finishes</div>
 </div>
 
 **Planning is cheaper than fixing:** a bad plan costs a page of markdown, a bad build costs a day of review.
@@ -822,9 +822,9 @@ Land the last line: the researcher owns the plan, so spend the effort here.
 ![h:255 center](assets/diagrams/small-steps.svg)
 
 <div class="cards">
-<div class="tip">Work in small chunks so you can understand and review</div>
+<div class="tip">Work in small chunks you can understand and review</div>
 <div class="tip">Have it do a little work at a time</div>
-<div class="tip">Don't get stuck with too much AI-written code that then needs to be reviewed</div>
+<div class="tip">Don't let unreviewed AI-written code pile up</div>
 </div>
 
 <!--
@@ -851,7 +851,7 @@ Prompt: "Do only step 1 of the plan, then stop and show me the diff."
 </ul>
 
 <div class="cards one">
-<div class="tip">Always review the code. It often makes mistakes or makes assumptions that differ from your implicit ones</div>
+<div class="tip">Always review the code. It often makes mistakes, or assumptions that differ from yours</div>
 </div>
 
 <!--
@@ -877,7 +877,7 @@ Colleague's original preference: "it often creates an over engineered mess after
 
 **Be ambitious.**
 
-<div class="cards one"><div class="tip">Be extremely ambitious, especially when attempting new research or mathematical approaches</div></div>
+<div class="cards one"><div class="tip">Be extremely ambitious, especially with new research or mathematical approaches</div></div>
 
 </div>
 <div>
@@ -1047,7 +1047,7 @@ The non-speaking presenter writes questions here during the talk.
 
 </div>
 
-<div class="callout">The tips throughout this talk are quoted as written from 23 colleagues on campus who answered "What tricks have you found helpful when it comes to agentic AI?" Thanks to the Research Computing group for input on these slides and for many discussions on AI coding.</div>
+<div class="callout">The tips throughout this talk, lightly edited, come from 23 colleagues on campus who answered "What tricks have you found helpful when it comes to agentic AI?" Thanks to the Research Computing group for input on these slides and for many discussions on AI coding.</div>
 
 <!--
 Notes:
