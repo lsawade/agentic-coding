@@ -382,6 +382,88 @@ Timing: 2 minutes.
 
 ---
 
+<!-- 14-spot-the-bug -->
+<!-- _header: "3 · Reviewing agent output" -->
+<!-- _class: code-lg -->
+<style scoped>pre{font-size:20px;line-height:1.2}</style>
+
+# Spot the bug <span class="timer">60 s</span>
+
+<pre><code class="language-python">trials = [
+    # start_ms, end_ms, distance_cm, quality
+    (1000,  4000, 1200, "ok"),
+    (5000, 10000, 3000, "ok"),
+    (11000, 14000, 9000, "bad"),
+]
+
+speeds = []
+for start_ms, end_ms, distance_cm, quality in trials:
+    if quality != "ok":
+        continue
+    elapsed_s = end_ms - start_ms / 1000
+    distance_m = distance_cm / 100
+    speed = distance_m / elapsed_s
+    speeds.append(speed)
+
+mean_speed = sum(speeds) / len(speeds)
+print(f"Mean trial speed: {mean_speed:.3f} m/s")
+</code></pre>
+
+<p style="font-size:22px;line-height:1.25">Goal: report the mean trial speed in m/s, using only trials marked "ok".</p>
+
+<!--
+Notes:
+Start the 60-second timer. Say: "An agent wrote this to summarize instrument trials. Every unit is labeled, every conversion is there, bad trials are filtered. It runs without errors. Is the result right?"
+The goal is the arithmetic mean of the individual speeds for trials marked ok, with each accepted trial weighted equally. It is not the overall distance divided by overall time. Each supplied trial has positive duration, and there are accepted trials, so division by zero is not an issue in this example.
+Units are labeled in the tuple header and variable names, and both conversions appear in the code, so a quick unit scan passes. The bug is operator precedence: division binds tighter than subtraction, so only start_ms is converted. This is the only intended analysis error.
+Let people read; at 60 s take two or three answers from the room, then advance.
+The point: labels and conversions that look right are not the same as a correct number. Work one trial by hand.
+Timing: about 2 minutes including answers.
+-->
+
+---
+
+<!-- 15-bug-reveal -->
+<!-- _header: "3 · Reviewing agent output" -->
+<!-- _class: code-lg -->
+<style scoped>pre{font-size:20px;line-height:1.2}</style>
+
+# The bug: only <code>start_ms</code> is converted
+
+<pre><code class="language-python">trials = [
+    # start_ms, end_ms, distance_cm, quality
+    (1000,  4000, 1200, "ok"),
+    (5000, 10000, 3000, "ok"),
+    (11000, 14000, 9000, "bad"),
+]
+
+speeds = []
+for start_ms, end_ms, distance_cm, quality in trials:
+    if quality != "ok":
+        continue
+    <mark class="bug">elapsed_s = end_ms - start_ms / 1000</mark>
+    distance_m = distance_cm / 100
+    speed = distance_m / elapsed_s
+    speeds.append(speed)
+
+mean_speed = sum(speeds) / len(speeds)
+print(f"Mean trial speed: {mean_speed:.3f} m/s")
+</code></pre>
+
+**Fix:** <code>elapsed_s = (end_ms - start_ms) / 1000</code>. Correct mean: **5.000 m/s**.
+
+<!--
+Notes:
+Division binds tighter than subtraction, so the highlighted line computes end_ms - (start_ms / 1000). For the first trial that is 4000 - 1 = 3999 "seconds" instead of 3 s. The variable name says seconds, so the eye accepts it.
+Fix: parenthesize the subtraction. The accepted trials are 12 m / 3 s = 4 m/s and 30 m / 5 s = 6 m/s. Their arithmetic mean is 5 m/s. The third trial is correctly excluded by its quality flag. The buggy code prints 0.003 m/s; the corrected code prints 5.000 m/s.
+How to catch it: work one accepted trial by hand, or sanity-check magnitude: 0.003 m/s means 12 m would take over an hour, but the timestamps span 3 s. For a real instrument pipeline, test against a known measurement.
+Ask: "Would you have caught this in a 400-line PR?" Good names make wrong code more convincing, not less.
+Transition: the next slide names this failure mode and five others.
+Timing: about 1.5 minutes.
+-->
+
+---
+
 <!-- 13-failure-modes -->
 <!-- _header: "3 · Reviewing agent output" -->
 
@@ -409,92 +491,10 @@ Notes:
 Six patterns, one sentence each; do not read the table aloud.
 Engagement: "Which of these have you already been bitten by?" Take two answers.
 Most of these only show up if you open the code or the data; a crash is the easy case.
-The first row is what the next slide's exercise is.
+Row 1 is the bug they just found (or didn't): it ran, returned a number, and the number was wrong.
 Read the tip; it is cheap and works.
 Point forward: slide 30 gives the countermeasure for each failure mode.
 Timing: 3 minutes.
--->
-
----
-
-<!-- 14-spot-the-bug -->
-<!-- _header: "3 · Reviewing agent output" -->
-<!-- _class: code-lg -->
-<style scoped>pre{font-size:20px;line-height:1.2}</style>
-
-# Spot the bug <span class="timer">60 s</span>
-
-Goal: report the mean trial speed in m/s, using only trials marked "ok".
-
-```python
-trials = [
-    # start_ms, end_ms, distance_cm, quality
-    (1000,  4000, 1200, "ok"),
-    (5000, 10000, 3000, "ok"),
-    (11000, 14000, 9000, "bad"),
-]
-
-speeds = []
-for start, end, distance, quality in trials:
-    if quality != "ok":
-        continue
-    elapsed = end - start
-    distance_m = distance / 100
-    speed = distance_m / elapsed
-    speeds.append(speed)
-
-mean_speed = sum(speeds) / len(speeds)
-print(f"Mean trial speed: {mean_speed:.3f} m/s")
-```
-
-<!--
-Notes:
-Start the 60-second timer. Say: "An agent wrote this to summarize instrument trials. It filters bad trials and prints a mean. It runs without errors. Is the result right?"
-The goal is the arithmetic mean of the individual speeds for trials marked ok, with each accepted trial weighted equally. It is not the overall distance divided by overall time. Each supplied trial has positive duration, and there are accepted trials, so division by zero is not an issue in this example.
-Input units are specified in the tuple header: times in milliseconds and distances in centimetres. The code correctly filters quality and converts distance to metres, but never converts elapsed time to seconds. This is the only intended analysis error.
-Let people read; at 60 s take two or three answers from the room, then advance.
-The point: follow units through the whole calculation. Correct filtering and one correct conversion can make an incomplete conversion easy to overlook.
-Timing: about 2 minutes including answers.
--->
-
----
-
-<!-- 15-bug-reveal -->
-<!-- _header: "3 · Reviewing agent output" -->
-<!-- _class: code-lg -->
-<style scoped>pre{font-size:20px;line-height:1.2}</style>
-
-# The bug: time never converted to seconds
-
-<pre><code class="language-python">trials = [
-    # start_ms, end_ms, distance_cm, quality
-    (1000,  4000, 1200, "ok"),
-    (5000, 10000, 3000, "ok"),
-    (11000, 14000, 9000, "bad"),
-]
-
-speeds = []
-for start, end, distance, quality in trials:
-    if quality != "ok":
-        continue
-    <mark class="bug">elapsed = end - start</mark>
-    distance_m = distance / 100
-    speed = distance_m / elapsed
-    speeds.append(speed)
-
-mean_speed = sum(speeds) / len(speeds)
-print(f"Mean trial speed: {mean_speed:.3f} m/s")
-</code></pre>
-
-**Fix:** <code>elapsed = (end - start) / 1000</code>. Correct mean: **5.000 m/s**.
-
-<!--
-Notes:
-The highlighted line leaves elapsed time in milliseconds. The next line correctly converts centimetres to metres, so the later division gives metres per millisecond while the output label says metres per second. The reported mean is 1,000 times too small.
-Fix: convert elapsed time to seconds on the highlighted line. The accepted trials are 12 m / 3 s = 4 m/s and 30 m / 5 s = 6 m/s. Their arithmetic mean is 5 m/s. The third trial is correctly excluded by its quality flag. The buggy code prints 0.005 m/s; the corrected code prints 5.000 m/s.
-How to catch it: work one accepted trial by hand and check the units at each step. For a real instrument pipeline, state input and output units in the task and test against a known measurement.
-Ask: "Would you have caught this in a 400-line PR?" In a longer pipeline, the input units may live in a file header or instrument manual, far from the calculation.
-Timing: about 1.5 minutes.
 -->
 
 ---
