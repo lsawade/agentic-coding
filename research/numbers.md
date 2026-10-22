@@ -53,6 +53,9 @@ Sources: https://ai.google.dev/gemini-api/docs/pricing ; https://ai.google.dev/g
 | Next open | DeepSeek V4.1 Flash 1017 45; GLM-5.3 45; Step 5 Preview 44; Kimi K3 44; Muse Spark Open (Meta) 39; Qwen3.8 27B 34 |
 | Gap | 58 - 46 = **12 points** (outline says ~11; roughly consistent, the site shows 12) |
 
+US open weights (fetched 21 Oct 2026, v4.3.2): Muse Spark Open (Meta, xhigh) 39; Beam 1.0 (Reflection) 30; Nemotron 3.5 Super VL (NVIDIA) 26, released 15 Oct 2026, 120B total / 12B active, OpenMDW-1.1 licence; Inkling Small 26, Inkling xhigh 25 (Thinking Machines; launch headline of 41 was on an earlier index version); Nemotron 3 Ultra 23; Nemotron 3.5 Bolt 74B-A9B 21; Gemma 4 31B (Google) 15, released 2 Apr 2026, Apache 2.0, 30.7B; Gemma 4 26B A4B 17 (asterisked on the leaderboard, meaning not explained; not used); gpt-oss-120b (high) 12.
+Sources (accessed 21 Oct 2026): https://artificialanalysis.ai/leaderboards/models ; https://artificialanalysis.ai/models/open-source ; https://artificialanalysis.ai/models/nemotron-3-5-super-vl ; https://artificialanalysis.ai/models/gemma-4-31b ; https://artificialanalysis.ai/models/inkling ; https://techcrunch.com/2026/10/19/nvidia-launches-new-open-models-to-run-agents-in-the-enterprise-and-on-pcs/
+
 Caveat: the leaderboard fetch did not label licences; open-weights list came from the /models/open-source page. The leaderboard is dynamic, re-check on the day.
 
 Latest open-weight releases (dates from secondary/aggregator sources; treat as UNVERIFIED against lab pages):

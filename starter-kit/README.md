@@ -17,7 +17,7 @@ The kit has two layers:
 
 - Plan first: brainstorm, run a feasibility check, then a plan session; use /grill-me on the foggy parts
 - Small steps you can review; restart the session when it gets confused
-- Review as a supervisor: read every line you would sign for, ask the agent to list its own problems, use a second model as adversary, rewrite clean after prototyping
+- Review as a supervisor: read every line you would sign for, ask the agent to list its own problems, use a second model as adversary, and refactor under regression tests; consider a rewrite when the design warrants it
 
 ## Responsibility
 

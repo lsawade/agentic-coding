@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 560" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
-<title>Intelligence Index: top proprietary model 58, top open-weight models 44 to 46</title>
+<title>Intelligence Index: top proprietary model 58, top open-weight models 44 to 46, other open-weight models 15 to 39</title>
 <line x1="100" y1="300" x2="1500" y2="300" stroke="#6b6b6b" stroke-width="4"/>
 <g stroke="#6b6b6b" stroke-width="3" fill="#6b6b6b" font-size="30" text-anchor="middle">
 <line x1="100" y1="290" x2="100" y2="310"/><text x="100" y="352" stroke="none">0</text>
@@ -26,4 +26,13 @@
 <text x="1030" y="420" font-size="36" font-weight="700" fill="#1f1f1f">MiMo-V2.6-Pro · 46</text>
 <text x="970" y="420" text-anchor="end" font-size="36" font-weight="700" fill="#1f1f1f">Kimi K3 · 44</text>
 <text x="1000" y="505" text-anchor="middle" font-size="36" font-weight="700" fill="#1f1f1f">DeepSeek V4.1 Flash, GLM-5.3 · 45</text>
+<!-- other open weights -->
+<g stroke="#E87722" stroke-width="3">
+<line x1="880" y1="284" x2="880" y2="245"/><line x1="620" y1="284" x2="620" y2="188"/><line x1="400" y1="316" x2="400" y2="395"/></g>
+<circle cx="880" cy="300" r="18" fill="#E87722"/>
+<circle cx="620" cy="300" r="18" fill="#E87722"/>
+<circle cx="400" cy="300" r="18" fill="#E87722"/>
+<text x="1000" y="235" text-anchor="end" font-size="32" font-weight="700" fill="#1f1f1f">Muse Spark Open · 39</text>
+<text x="620" y="178" text-anchor="middle" font-size="32" font-weight="700" fill="#1f1f1f">Nemotron 3.5 Super VL · 26</text>
+<text x="400" y="420" text-anchor="middle" font-size="32" font-weight="700" fill="#1f1f1f">Gemma 4 31B · 15</text>
 </svg>

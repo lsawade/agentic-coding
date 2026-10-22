@@ -71,7 +71,7 @@ Timing: 2 minutes.
 
 ![h:430 center](assets/diagrams/harness-vs-model.svg)
 
-<p class="small center">Most of today's tips are about the top two layers, so they carry over from Claude Code to Codex, Cursor and Antigravity CLI.</p>
+<p class="small center">Today's tips are about how you work, so they carry over to most tools and models.</p>
 
 <!--
 Notes:
@@ -121,7 +121,7 @@ About 2 minutes.
 
 <div class="cols-3">
 <div class="callout"><b>Control:</b> choose where inference runs</div>
-<div class="callout"><b>Cost:</b> self-host on your own compute</div>
+<div class="callout"><b>Cost:</b> replace API fees with compute and operations</div>
 <div class="callout"><b>The trade-off:</b> infrastructure and oversight</div>
 </div>
 
@@ -133,7 +133,8 @@ About 2 minutes.
 Notes:
 Engagement: guess before reveal. "How far behind are open-weight models?" Take two or three guesses, then show the 12 points.
 Top proprietary is Claude Opus 5.5 at 58; top open-weight is Xiaomi MiMo-V2.6-Pro at 46. DeepSeek V4.1 Flash and GLM-5.3 are at 45, Kimi K3 at 44 (Step 5 Preview also 44).
-Name the families: DeepSeek, Qwen, Kimi, GLM, Mistral, Meta (Muse Spark Open scores 39, Qwen3.8 27B 34).
+Name the families: DeepSeek, Qwen, Kimi, GLM (Zhipu AI / Z.ai), Mistral, Muse (Meta), Nemotron (NVIDIA), Gemma (Google).
+Further left: Meta Muse Spark Open 39 (released 15 Oct 2026), NVIDIA Nemotron 3.5 Super VL 26 (released 15 Oct 2026), Google Gemma 4 31B 15 (Apr 2026, Apache 2.0, runs on a single GPU). Others: Reflection Beam 1.0 30, Thinking Machines Inkling 25, Nemotron 3 Ultra 23, OpenAI gpt-oss-120b 12.
 The two dots at 45 are drawn side by side; the leaderboard is dynamic, so re-check on the day.
 Open weights let you choose a deployment, including inference on your own cluster. That can give you more control over data access and where processing happens. Open-weight models can also run on hosted services; available weights do not mean that inference is local.
 Self-hosting replaces API token charges with compute and operations costs. Model licenses and hardware requirements still apply.
@@ -150,9 +151,9 @@ Timing: 2 minutes.
 
 # Pick the tier by the job, not the benchmark
 
-![h:330 center](assets/diagrams/tier-rule-of-thumb.svg)
+![h:300 center](assets/diagrams/tier-rule-of-thumb.svg)
 
-Benchmarks are saturated; use live leaderboards: artificialanalysis.ai, openrouter.ai/rankings.
+<p style="font-size:22px"><b>Capability:</b> task-relevant benchmarks and your own test cases.<br><b>Popularity:</b> OpenRouter usage rankings measure token volume, not quality.</p>
 
 <div class="cards two"><div class="tip">use multiple models for same problem</div><div class="tip">Adversarial development/brainstorming using Claude vs. Codex</div></div>
 
@@ -160,7 +161,9 @@ Benchmarks are saturated; use live leaderboards: artificialanalysis.ai, openrout
 Notes:
 Rule of thumb: frontier plans and reviews, mid does the daily editing, small does the fetching.
 Names: Fable/Astra/Argon (frontier), Opus/Sonnet/Sol (mid), Haiku/Luna/Flash-Lite (small). Names change every few months; the tiers do not.
-Why not benchmarks: top models cluster within a few points; leaderboards at artificialanalysis.ai and openrouter.ai/rankings update daily.
+Use benchmarks that match your task, then try representative examples from your own research. A score on one evaluation does not establish capability on every task, and benchmarks are not universally saturated.
+Artificial Analysis reports evaluated performance. OpenRouter's main usage rankings measure tokens processed through its platform; its benchmark views report evaluated performance separately. Popularity can help identify tools to try, but does not demonstrate correctness or suitability.
+Sources: https://artificialanalysis.ai/leaderboards/models ; https://openrouter.ai/rankings ; https://openrouter.ai/benchmarks
 Read the two tips; ask: "Who has had one model review another's code?"
 Prices per tier: see research/numbers.md section 1.
 Timing: 2 minutes.
@@ -179,7 +182,7 @@ Timing: 2 minutes.
 <div class="task">Summarize 20 log files from last night's runs into one paragraph each.</div>
 </div>
 
-<p class="small">Frontier: plans, reviews, hard reasoning · Mid: daily work · Small: search, test runs, summaries</p>
+<p class="small">Options: Frontier · Mid · Small</p>
 
 <!--
 Notes:
@@ -211,20 +214,22 @@ The point is that most volume is small-tier work. The frontier model is for the 
 <!-- 09-what-burns-tokens -->
 <!-- _header: "2 · Tokens, cost and delegation" -->
 
-# What burns tokens also confuses the agent
+# Context use and token cost
 
 ![w:1000 center](assets/diagrams/context-bloat.svg)
 
-The habits that keep the agent sharp also keep the bill down: plan before coding, restart when it drifts.
+Compact or restart when the session loses focus. Save a verified handoff.
 
-<div class="cards one"><div class="tip">Restarting sessions, it often gets confused with too much context</div></div>
+<div class="callout" style="font-size:21px">Cached input can cost less. Restarting may lose useful context and cache reuse.</div>
 
 <!--
 Notes:
-Every turn re-sends the whole context, so everything in the window is paid for again on each step, and it is all competing for the model's attention.
-The usual culprits: re-reading the same files, verbose tool output (full test logs, big diffs), long sessions, and "fix it" loops where each failed attempt stays in context.
-The useful work is often the small orange box on the left. Past that point, a fresh session with a short written plan is cheaper and smarter than pushing on.
-That is why planning before coding is cheaper than fixing after: the plan is a few hundred tokens; four fix-it rounds are the bulk of the bar.
+Claude Code reuses prior context across turns and automatically caches matching prompt prefixes. Cache hits receive cached-input pricing rather than the full input rate; cache writes and new content have their own costs. Other harnesses may manage context differently.
+Repeated file reads, verbose tool output and failed attempts can accumulate in context. Prompt caching reduces processing cost for matching prefixes; it does not remove that content from the model's context window.
+A fresh session can help when stale assumptions or irrelevant history dominate, but it may discard useful context and cache reuse. It is not necessarily cheaper or more accurate. Before compacting or restarting, save the verified goal, decisions, commands and remaining work, then check that the next session reads the handoff.
+Planning can avoid unnecessary retries, but this figure is a schematic of context growth, not a measured cost curve or an optimal restart point.
+Colleague's original tip: "Restarting sessions, it often gets confused with too much context". Present it as a useful experience, not a universal cost rule.
+Source: https://code.claude.com/docs/en/prompt-caching
 Ask the room: who has had a session get worse the longer it went? That is this picture.
 About 1.5 minutes. Schematic, not measured data.
 -->
@@ -352,17 +357,17 @@ Timing: 2 minutes.
 
 </div>
 
-<div class="cards two" style="font-size:19px"><div class="tip" style="font-size:19px">Always review the code. It often makes mistakes or assumes things different than your implicit assumptions</div><div class="tip" style="font-size:19px">Ask AI to list the problems in the code it generated</div></div>
+<div class="cards one" style="font-size:19px"><div class="tip" style="font-size:19px">Ask AI to list the problems in the code it generated</div></div>
 
-<p class="small" style="margin:0">A supervisor who knows the typical failure modes reviews better. Slide 5.5 says what to do about each.</p>
+<p class="small" style="margin:0">A supervisor who knows the typical failure modes reviews better. Slide 29 says what to do about each.</p>
 
 <!--
 Notes:
 Five patterns, one sentence each; do not read the table aloud.
 Engagement: "Which of these have you already been bitten by?" Take two answers.
 Tie to section 3: all five are invisible unless you open the code or the data.
-Read the two tips; the second one is cheap and works.
-Point forward: slide 5.5 gives the countermeasure for each failure mode.
+Read the tip; it is cheap and works.
+Point forward: slide 29 gives the countermeasure for each failure mode.
 Timing: 3 minutes.
 -->
 
@@ -625,11 +630,7 @@ Timing: 2 minutes.
 
 <p class="small muted center" style="font-size:17px;margin:2px 0 6px">Claude Code is the example; other agents have their own folders for the same jobs. Codex: <code>AGENTS.md</code>, skills in <code>.agents/skills/</code>, settings in <code>~/.codex/config.toml</code>.</p>
 
-<div class="cards">
-<div class="tip">/grill-me to figure out the foggy areas of an idea</div>
-<div class="tip">Providing it a clearly defined, high-level /goal and checking in on the agent after the agent completed</div>
-<div class="tip">Write a pr.md that explains how to make PR for your project</div>
-</div>
+<div class="cards one"><div class="tip">Write a pr.md that explains how to make PR for your project</div></div>
 
 <!--
 Notes:
@@ -776,11 +777,10 @@ Land the last line: the researcher owns the plan, so spend the effort here.
 
 ![h:255 center](assets/diagrams/small-steps.svg)
 
-<div class="cards two">
+<div class="cards">
 <div class="tip">work in small chunks so you can understand and review</div>
 <div class="tip">Having it do minimal work at a time</div>
 <div class="tip">Don't get stuck with too much AI written code that then needs to be reviewed</div>
-<div class="tip">Have the AI write code to do the task, not directly do the task</div>
 </div>
 
 <!--
@@ -788,7 +788,6 @@ Notes:
 Lap two. About 2 minutes.
 Top lane: 400 lines arrive at once and review becomes rubber-stamping. Bottom lane: each 50-line step gets checked before the next.
 Moved to notes (it is on the figure): "Restarting sessions, it often gets confused with too much context".
-Last card: ask for a script that does the task, so you can read and rerun it, instead of the agent doing it invisibly.
 Prompt: "Do only step 1 of the plan, then stop and show me the diff."
 -->
 
@@ -804,12 +803,11 @@ Prompt: "Do only step 1 of the plan, then stop and show me the diff."
 <ul class="check">
 <li>Read every line you would sign for</li>
 <li>Ask it to list the problems in its own code</li>
-<li>After prototyping, rewrite clean</li>
+<li>Refactor under regression tests. Rewrite when the design warrants it</li>
 </ul>
 
-<div class="cards two">
+<div class="cards one">
 <div class="tip">Always review the code. It often makes mistakes or assumes things different than your implicit assumptions</div>
-<div class="tip">it often creates an over engineered mess after a while of changes. Once the prototyping is done it is good to do a clean rewrite</div>
 </div>
 
 <!--
@@ -818,7 +816,8 @@ Lap three, then close the loop back to the plan. About 2 minutes.
 You are the supervisor: the second model reviews, you decide.
 The second-model review is on the figure; moved to notes: "Adversarial development/brainstorming using Claude vs. Codex"; "Ask AI to list the problems in the code it generated"; "use for reviewing changes and updating docs/tests for consistency".
 Prompt: "List every assumption and weak spot in the code you just wrote."
-Right chart: complexity climbs with each change, so rewrite once the idea works.
+Right chart is illustrative, not measured data or a guarantee that complexity always rises. Once the prototype works, add regression tests around known behavior and refactor in small steps. Consider a rewrite when the design blocks progress, with checks that preserve the intended scientific results.
+Colleague's original preference: "it often creates an over engineered mess after a while of changes. Once the prototyping is done it is good to do a clean rewrite". A rewrite can be appropriate, but is not the default response to a working prototype.
 -->
 
 ---
@@ -873,7 +872,7 @@ Timing: 1 minute.
 
 | When it… | You… |
 |---|---|
-| Over-engineers after many changes | rewrite clean once the prototype works |
+| Over-engineers after many changes | refactor under regression tests. Consider a rewrite when the design warrants it |
 | Drifts from your assumptions silently | ask it to list its assumptions before it runs; state units, ranges, NaN policy in the prompt |
 | Hallucinates a dependency or API | run it; pin versions; let a subagent check the docs |
 | Says "tests pass" without running them | make it show the command and the output; run the suite yourself before the PR |
@@ -881,13 +880,12 @@ Timing: 1 minute.
 
 <p class="small">Pairs with slide 13; same failures, now the response.</p>
 
-<div class="cards">
-<div class="tip">it often creates an over engineered mess after a while of changes. Once the prototyping is done it is good to do a clean rewrite</div>
-</div>
+<div class="callout">Use known results to check that structural changes preserve the intended behavior.</div>
 
 <!--
 Notes:
 Go row by row. The counter-move is the action you take, not a way to avoid the failure.
+Regression tests should capture trusted behavior or known scientific results, not merely reproduce the current implementation. Refactor in small steps; choose a rewrite when the design warrants the additional effort and regression risk.
 -->
 
 ---
@@ -956,7 +954,7 @@ Notes:
 
 1. What is one task in your research you would hand to an agent tomorrow, and how would you check the result?
 2. Which of your data may not leave the cluster, and what would you run locally instead?
-3. Iterate on the prototype, or rewrite clean: when does each win?
+3. Refactor the prototype, or rewrite it: what would justify each choice?
 
 <p class="small">Parking-lot questions come back here.</p>
 
@@ -999,7 +997,7 @@ The non-speaking presenter writes questions here during the talk.
 
 </div>
 
-<div class="callout">The tips in section 5 are quoted as written from 23 colleagues on campus who answered "What tricks have you found helpful when it comes to agentic AI?" Thanks to the Research Computing group for input on these slides and for many discussions on AI coding.</div>
+<div class="callout">The tips throughout this talk are quoted as written from 23 colleagues on campus who answered "What tricks have you found helpful when it comes to agentic AI?" Thanks to the Research Computing group for input on these slides and for many discussions on AI coding.</div>
 
 <!--
 Notes:
