@@ -120,12 +120,14 @@ About 2 minutes.
 ![h:300 center](assets/diagrams/open-weight-gap.svg)
 
 <div class="cols-3">
-<div class="callout"><b>Why it matters:</b> restricted data stays on the cluster</div>
-<div class="callout"><b>Why it matters:</b> per-token cost disappears</div>
-<div class="callout"><b>The trade-off:</b> you run the infrastructure</div>
+<div class="callout"><b>Control:</b> choose where inference runs</div>
+<div class="callout"><b>Cost:</b> self-host on your own compute</div>
+<div class="callout"><b>The trade-off:</b> infrastructure and oversight</div>
 </div>
 
-<p class="small" style="margin:0">Artificial Analysis Intelligence Index, 20 Oct 2026; changes monthly, check the live board.</p>
+<p style="font-size:21px;margin:0.15em 0"><b>Open weights enable self-hosting.</b> Data use still depends on the guidelines for each dataset and deployment.</p>
+
+<p class="small" style="font-size:17px;margin:0">Artificial Analysis Intelligence Index, 20 Oct 2026; changes monthly, check the live board.</p>
 
 <!--
 Notes:
@@ -133,7 +135,11 @@ Engagement: guess before reveal. "How far behind are open-weight models?" Take t
 Top proprietary is Claude Opus 5.5 at 58; top open-weight is Xiaomi MiMo-V2.6-Pro at 46. DeepSeek V4.1 Flash and GLM-5.3 are at 45, Kimi K3 at 44 (Step 5 Preview also 44).
 Name the families: DeepSeek, Qwen, Kimi, GLM, Mistral, Meta (Muse Spark Open scores 39, Qwen3.8 27B 34).
 The two dots at 45 are drawn side by side; the leaderboard is dynamic, so re-check on the day.
+Open weights let you choose a deployment, including inference on your own cluster. That can give you more control over data access and where processing happens. Open-weight models can also run on hosted services; available weights do not mean that inference is local.
+Self-hosting replaces API token charges with compute and operations costs. Model licenses and hardware requirements still apply.
+Data approval is separate from model availability: follow institutional, IRB, contractual and other applicable guidelines for the specific dataset and deployment. Local hosting does not automatically satisfy them. At Princeton, check OIT's current data classification and approved-tool guidance; do not assume Restricted information is permitted in a local model.
 Source: https://artificialanalysis.ai/models/open-source and https://artificialanalysis.ai/leaderboards/models
+Data guidance: https://oit.princeton.edu/services/ai-guidance-tools ; https://oit.princeton.edu/about/policies/generative-ai-tools-use-policy
 Timing: 2 minutes.
 -->
 
@@ -482,15 +488,24 @@ Timing: about 3 minutes with the guess and the vote.
 <div style="font-size:21px">
 <dl class="kv" style="margin:0;gap:10px 18px">
 <dt>Reproducibility</dt><dd>A script you can rerun and review beats an answer you can't.</dd>
-<dt>Disclosure</dt><dd>Journals and funders are writing the same rules as the kernel. Check before you submit.</dd>
-<dt>Data</dt><dd>Unpublished results, PII, IRB-covered and export-controlled data never go into a hosted model. Use local or open-weight models.</dd>
+<dt>Disclosure</dt><dd>Check the applicable policies. In most cases, be transparent about how you used AI.</dd>
+<dt>Data</dt><dd>Follow the guidelines for each dataset and deployment. Local hosting does not automatically meet them.</dd>
 <dt>Permissions</dt><dd>Sandbox the agent. No live database credentials.</dd>
 </dl>
 <div class="cards one"><div class="tip">Have the AI write code to do the task, not directly do the task</div></div>
 </div>
 <div>
 
-![h:380](assets/diagrams/data-boundary.svg)
+<div style="font-size:23px;padding-top:4px">
+<strong>Check each case before use</strong>
+<ul style="margin-top:16px">
+<li>Data classification and institutional policy</li>
+<li>IRB protocol and participant consent</li>
+<li>Data-use agreements and export controls</li>
+<li>Approval for the tool and deployment</li>
+</ul>
+<p class="small" style="font-size:19px;margin-top:18px">Check Princeton OIT guidance and the requirements for your project.</p>
+</div>
 
 </div>
 </div>
@@ -501,10 +516,12 @@ Timing: about 3 minutes with the guess and the vote.
 Notes:
 Same four questions as the open-source projects, applied to papers and datasets.
 Reproducibility: the script is the artifact you can review, rerun and publish; a chat answer is not.
-Disclosure: check your journal's and funder's AI policy before submission; they are converging on "use is fine, say so, you are responsible".
-Data: walk the diagram. Code, public data and anonymized summaries can cross the wall; PII, IRB data and credentials never do. For those, run an open-weight model on your own cluster.
+Disclosure: check the policies of your journal, funder, institution and project. In most cases, be transparent about how you used AI; follow any specific disclosure requirements for the work you submit.
+Data: use the checklist for each case. A label such as "unpublished", "PII" or "IRB-covered" does not by itself determine which AI use is permitted. Check the applicable data classification, institutional policy, consent and IRB terms, agreements and export controls, then confirm approval for the specific tool and deployment. Do not assume code or anonymized summaries are automatically cleared for sharing.
+Open weights can give you control over where inference runs, but local hosting alone does not establish compliance. Princeton's current OIT guidance permits Internal and Confidential information only in University-licensed tools and says Restricted University Information must not be used with any AI tool. Follow project-specific requirements as well; ask the responsible office when approval is unclear.
+Sources: https://oit.princeton.edu/services/ai-guidance-tools ; https://oit.princeton.edu/about/policies/generative-ai-tools-use-policy
 Second tip (read aloud): "git worktrees and a remote environment without DB access have long-running sessions operating in the background"
-Prompt: "Which of your current datasets could you NOT send to a hosted API?"
+Prompt: "For one of your datasets, which guidelines apply, and which tool and deployment are approved?"
 Land the last line slowly: it is the handoff to the second presenter.
 -->
 
