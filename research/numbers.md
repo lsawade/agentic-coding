@@ -95,6 +95,7 @@ Source: https://arxiv.org/abs/2605.16706
 | Rules still on docs.kernel.org (live page, tag still listed) | "AI agents MUST NOT add Signed-off-by tags"; only humans certify the DCO; human reviews all AI code, ensures licence compliance and "takes full responsibility"; `Assisted-by: LLM [TOOL1] [TOOL2]` tag (the part being removed) |
 
 Sources: https://phoronix.com/news/Linux-Dropping-Assisted-By-Req (opened via www.phoronix.com) ; https://www.heise.de/en/news/Linux-may-drop-AI-code-labels-Torvalds-uses-LLMs-too-11490773.html ; https://www.fosslinux.com/162933/ai-assisted-kernel-linux-7-3.htm ; https://linux.slashdot.org/story/26/10/17/0723207/linux-maintainers-can-now-submit-ai-generated-code-without-declaring-it ; https://docs.kernel.org/process/coding-assistants.html
+Verbatim, checked 2026-10-22 on https://docs.kernel.org/process/coding-assistants.html (used on slide 13): "AI agents MUST NOT add Signed-off-by tags." "The human submitter is responsible for: Reviewing all AI-generated code; Ensuring compliance with licensing requirements; Adding their own Signed-off-by tag to certify the DCO; Taking full responsibility for the contribution."
 
 ## 5. LLVM and GCC
 

@@ -123,7 +123,7 @@ About 2 minutes.
 <div class="cols-3">
 <div class="callout"><b>Control:</b> choose where inference runs</div>
 <div class="callout"><b>Cost:</b> replace API fees with compute and operations</div>
-<div class="callout"><b>The trade-off:</b> infrastructure and oversight</div>
+<div class="callout"><b>The trade-off:</b> you run, secure and update it</div>
 </div>
 
 <p style="font-size:21px;margin:0.15em 0"><b>Self-hosting keeps data on hardware you control,</b> but does not by itself meet data-use requirements. An agent with tool or internet access can still send your data out.</p>
@@ -235,7 +235,7 @@ Collect answers from the room before advancing. 2 minutes.
 <!-- 08-quiz-reveal -->
 <!-- _header: "2 · Tokens, cost and delegation" -->
 
-# The ladder, applied
+# Three tasks. Which tier would you use?
 
 <div class="quiz">
 <div class="task">Find every call to a deprecated function in a 40,000-line codebase.<span class="badge small">Small</span><span class="why">grep-shaped: many files, no judgement, a cheap model in a subagent</span></div>
@@ -327,37 +327,18 @@ About 2 minutes.
 
 # Recap: habits that cut cost
 
-<style scoped>.callout{margin:0.25em 0;padding:8px 16px} td,th{padding:5px 12px}</style>
-<div class="cols" style="gap:14px;font-size:21px">
+<div class="cols" style="gap:14px">
 <div class="callout"><b>Clear between tasks.</b> Auto-compact handles long sessions; <code>/clear</code> starts fresh for new work.</div>
 <div class="callout"><b>Scope AGENTS.md</b> to what every session needs; everything else goes in a file the agent reads on demand.</div>
 <div class="callout"><b>Background long jobs</b> and check in; do not sit in a chat window watching tests.</div>
-<div class="callout"><b>Use the ladder:</b> frontier to plan, mid to build, small to fetch.</div>
+<div class="callout"><b>Pick the tier by the job:</b> frontier to plan, mid to build, small to fetch.</div>
 </div>
-
-**Rough cost per tier, 20 Oct 2026**
-
-<div style="font-size:18px">
-
-| Tier | $ per 1M output tokens | AA cost per Index task |
-|---|---|---|
-| Fable 5.1 | $50 | $7.63 |
-| Opus 5.5 | $20 | $5.98 |
-| Sonnet 5.5 | $10 | $5.46 |
-| Haiku 5.5 | $0.50 | $0.21 |
-
-</div>
-
-<p class="small" style="font-size:17px;margin:0">Cost per task is Artificial Analysis benchmark tasks, not coding sessions. Haiku output price is for prompts up to 100k tokens.</p>
 
 <!--
 Notes:
 Section recap: clearing and the ladder repeat earlier slides; scoping AGENTS.md and backgrounding long jobs are new. None needs setup. Spend one line on each.
-Table point: list prices differ 100x between Fable and Haiku, but per benchmark task the top three are close, because the cheaper models think longer. Haiku really is about 26x cheaper than Sonnet (28x vs Opus).
-Caveat out loud: benchmark tasks are not agentic coding sessions; no official per-session cost page exists.
 Engagement: "Who clears between tasks, and who keeps one session open all day?"
-Sources: https://platform.claude.com/docs/en/about-claude/pricing ; https://artificialanalysis.ai/models/claude-opus-5-5 (and sonnet-5-5, haiku-5-5, fable-5-1)
-Timing: 2 minutes.
+Timing: 1 minute.
 -->
 
 ---
@@ -367,9 +348,15 @@ Timing: 2 minutes.
 
 # You are the supervisor, not the user
 
-The relationship is closer to PI-and-student than tool-and-user: you delegate, you review, you sign off. One difference: a student shares responsibility for their work. An agent can't, so all of it is yours.
+<style scoped>section > p:first-of-type{font-size:24px} blockquote{font-size:20px}</style>
 
-![h:370 center](assets/diagrams/supervisor-mirror.svg)
+Closer to PI-and-student than tool-and-user: you delegate, review and sign off.
+
+> “The human submitter is responsible for: Reviewing all AI-generated code … Taking full responsibility for the contribution.”
+>
+> <span class="small muted">— Linux kernel, AI coding assistants policy</span>
+
+![h:350 center](assets/diagrams/supervisor-mirror.svg)
 
 <!--
 Notes:
@@ -377,7 +364,7 @@ This is the thesis slide. Pause on it.
 Left side is the lab you already know: the PI hands off a question, the student drafts and runs, the PI signs the paper.
 Right side is the same contract: you delegate, the agent drafts, runs and proposes, your name goes on the PR or paper.
 Ask: "If the student's analysis is wrong, whose name is on the retraction?" Answer: both of yours. With an agent, only yours.
-The kernel policy says it flatly: agents may not sign off; only humans certify (docs.kernel.org/process/coding-assistants.html).
+Quote source: docs.kernel.org/process/coding-assistants.html, checked 22 Oct 2026 ("The human submitter is responsible for: Reviewing all AI-generated code ... Taking full responsibility for the contribution"). The same page says agents may not add Signed-off-by; only humans certify. Re-check on the day: the Assisted-by part of that page is being removed.
 Timing: 2 minutes.
 -->
 
