@@ -13,8 +13,6 @@ title: "Agentic AI for Research"
 
 # Agentic AI for Research
 
-## What the people who do this every day have learned, and what it means when your name is on the result
-
 **Congyue Cui · Lucas Sawade** · Princeton Research Computing · October 2026
 
 <div class="logos"><img class="rc" src="assets/logo/rc-logo-inverted.svg" alt="Princeton Research Computing"></div>
@@ -49,7 +47,7 @@ Timing: 42 min, 34 slides. Natural split: sections 0-3 (slides 1-18) and 4-6 (sl
 
 <div class="callout"><b>Interrupt me.</b> Two of us are up here; the one not speaking is watching for your hand.</div>
 
-<div class="callout"><b>Keep the build in mind.</b> We will point back at it: the retries, the unread diff, the missing CLAUDE.md.</div>
+<div class="callout"><b>Keep the build in mind.</b> We will point back at it: the retries, the unread diff, the missing AGENTS.md.</div>
 
 </div>
 </div>
@@ -73,14 +71,15 @@ Timing: 2 minutes.
 
 ![h:430 center](assets/diagrams/harness-vs-model.svg)
 
-<p class="small center">Most of today's tips are about the top two layers, so they carry over from Claude Code to Codex, Cursor and Gemini CLI.</p>
+<p class="small center">Most of today's tips are about the top two layers, so they carry over from Claude Code to Codex, Cursor and Antigravity CLI.</p>
 
 <!--
 Notes:
 The harness is the program you type into: it reads files, runs commands, asks permission. The model is the engine it calls.
 They are separate choices: Cursor and Copilot offer a model picker; Claude Code lets you switch between Claude tiers.
+Google's Gemini CLI is now Antigravity CLI: consumer sign-in ended 18 Jun 2026; Gemini CLI still runs on paid API keys and enterprise licenses.
 Last talk you saw one model inside one tool; that was one cell of this picture, not the whole thing.
-Point at the bracket: CLAUDE.md, plans and review are yours, and they move with you when the tool or model changes.
+Point at the bracket: AGENTS.md, plans and review are yours, and they move with you when the tool or model changes.
 About 1 minute. Model names on the slide are current as of 20 Oct 2026 (research/numbers.md, section 1).
 -->
 
@@ -277,7 +276,7 @@ About 2 minutes.
 <style scoped>.callout{margin:0.25em 0;padding:8px 16px} td,th{padding:5px 12px}</style>
 <div class="cols" style="gap:14px;font-size:21px">
 <div class="callout"><b>Compact or clear.</b> <code>/compact</code> summarizes, <code>/clear</code> starts fresh; do it between tasks, not mid-task.</div>
-<div class="callout"><b>Scope CLAUDE.md</b> to what every session needs; everything else goes in a file the agent reads on demand.</div>
+<div class="callout"><b>Scope AGENTS.md</b> to what every session needs; everything else goes in a file the agent reads on demand.</div>
 <div class="callout"><b>Background long jobs</b> and check in; do not sit in a chat window watching tests.</div>
 <div class="callout"><b>Use the ladder:</b> frontier to plan, mid to build, small to fetch.</div>
 </div>
@@ -532,7 +531,7 @@ Swap the room-watching role here.
 
 <style scoped>pre{font-size:15px;line-height:1.3} .cols>div:last-child{font-size:22px} .tip{font-size:19px;padding:8px 16px 10px}</style>
 
-# CLAUDE.md: standing instructions for every session
+# AGENTS.md: standing instructions for every session
 
 <div class="cols">
 <div>
@@ -568,22 +567,23 @@ ctest --test-dir build/<name>
 
 **What not to touch:** generated files, vendored code, legacy readers.
 
-Codex and Cursor read AGENTS.md the same way.
+**One file, every tool:** Codex, Cursor, Antigravity read it; Claude Code only if there is no CLAUDE.md.
 
 </div>
 </div>
 
 <div class="cards one"><div class="tip">Clear Agents.md / Claude.md files</div></div>
 
-<span class="small">The build you just watched had no CLAUDE.md; with one, the agent would have known the test command before its first edit.</span>
+<span class="small">The build you just watched had no AGENTS.md; with one, the agent would have known the test command before its first edit.</span>
 
 <!--
 Notes:
-This is a condensed copy of the real SPECFEM++ CLAUDE.md, about 14 lines.
+This is a condensed copy of the real SPECFEM++ instruction file (a CLAUDE.md in that repo), about 14 lines.
 Point at the build block: that is what lets the agent verify its own work.
 "What not to touch" is not in the SPECFEM++ file shown; say it is worth adding.
-Say once: Codex and Cursor use AGENTS.md the same way.
-Callback: the build an hour ago had no CLAUDE.md.
+Lead with AGENTS.md: it is the cross-tool convention, so one file works whichever agent a student picks.
+Claude Code support is recent (v2.1.277, Sep 2026) and is a fallback: any CLAUDE.md or CLAUDE.local.md in the directory or above wins and AGENTS.md is ignored. Have both? Put `@AGENTS.md` in CLAUDE.md, or change the Project instructions setting in /config.
+Callback: the build an hour ago had no AGENTS.md.
 Timing: 2 minutes.
 -->
 
@@ -592,9 +592,11 @@ Timing: 2 minutes.
 <!-- 20-dot-claude-tour -->
 <!-- _header: "4 · Setting up the workspace" -->
 
-# A tour of .claude/: small files that shape every session
+# Example: Claude Code's .claude/ folder
 
-![h:350 center](assets/diagrams/dot-claude-tree.svg)
+![h:320 center](assets/diagrams/dot-claude-tree.svg)
+
+<p class="small muted center" style="font-size:17px;margin:2px 0 6px">Claude Code is the example; other agents have their own folders for the same jobs. Codex: <code>AGENTS.md</code>, skills in <code>.agents/skills/</code>, settings in <code>~/.codex/config.toml</code>.</p>
 
 <div class="cards">
 <div class="tip">/grill-me to figure out the foggy areas of an idea</div>
@@ -605,6 +607,9 @@ Timing: 2 minutes.
 <!--
 Notes:
 Walk the tree top to bottom, one phrase per item.
+Say up front: this is Claude Code's layout, used as the example. The ideas (standing instructions, reusable prompts, subagents, allowlist, hooks) exist in most agents under different names and folders.
+Codex: AGENTS.md for instructions, .agents/skills/ for skills (scanned from the working directory up to the repo root), ~/.codex/config.toml for approvals and sandbox. Source: https://learn.chatgpt.com/docs/build-skills (accessed 2026-10-21).
+The starter kit keeps the portable part in AGENTS.md and prompts/; .claude/ is only an adapter.
 Commands are prompts you type as slash commands; settings.json is the allowlist.
 Hooks are the guardrails: lint on save, block secrets.
 A 60-second screen share of a real folder may replace this slide.
@@ -865,7 +870,7 @@ Go row by row. The counter-move is the action you take, not a way to avoid the f
 <div class="cols-3">
 <div><strong>Setup</strong>
 <ul class="check">
-<li>CLAUDE.md with layout, test command, conventions</li>
+<li>AGENTS.md with layout, test command, conventions</li>
 <li>Git: commit often, worktrees for parallel sessions</li>
 <li>Permissions: sandbox, no live credentials</li>
 </ul></div>
@@ -883,11 +888,12 @@ Go row by row. The counter-move is the action you take, not a way to avoid the f
 </ul></div>
 </div>
 
-<div class="callout">Clone the starter kit: <code>starter-kit/</code> in this talk's repo (CLAUDE.md skeleton, a /grill-me command, a test-runner agent, a permissions file).</div>
+<div class="callout">Clone the starter kit: <code>starter-kit/</code> in this talk's repo (an AGENTS.md skeleton and three prompts any agent can use, plus a Claude Code adapter).</div>
 
 <!--
 Notes:
 Say the repo URL out loud. It is printed in the README.
+The kit has two layers: AGENTS.md and prompts/ work in any tool; .claude/ is a thin Claude Code adapter (slash commands, subagent, permissions) that points at them.
 -->
 
 ---

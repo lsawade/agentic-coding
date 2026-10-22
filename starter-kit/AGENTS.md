@@ -13,3 +13,8 @@
 - Plotting style: <TODO: style file, colors, figure size>
 ## Do not touch
 - <TODO: e.g. data/raw/, results/published/>
+## Reusable prompts
+When the user asks for one of these, read the file and follow it:
+- "grill me" on an idea or plan: `prompts/grill-me.md`
+- prepare a pull request: `prompts/pr.md`
+- run the tests: `prompts/test-runner.md`

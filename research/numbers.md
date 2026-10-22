@@ -114,3 +114,8 @@ Sources: https://llvm.org/docs/AIToolPolicy.html ; https://itsfoss.com/news/llvm
 
 Note: this is a benchmark-suite task, not an agentic-coding session; no official Anthropic/OpenAI per-session cost page found. Sonnet is ~92% of Opus's cost and Haiku ~28x cheaper, so list-price ratios overstate real-cost gaps among the top three (thinking-token usage differs).
 Sources: https://artificialanalysis.ai/models/claude-opus-5-5 ; .../claude-sonnet-5-5 ; .../claude-haiku-5-5 ; .../claude-fable-5-1
+
+## 7. Agent instruction files and harness status (accessed 2026-10-21)
+
+- Claude Code reads `AGENTS.md` directly from v2.1.277 (Sep 2026), and by default only when there is no `CLAUDE.md`, `.claude/CLAUDE.md` or `CLAUDE.local.md` in the working directory or above; if one exists, only the CLAUDE.md files load. `@AGENTS.md` import or the /config "Project instructions" setting loads both. Not read: `AGENTS.local.md`, `AGENTS.override.md`, `.agents/`. Release month (Sep 2026) from secondary coverage only. Sources: https://code.claude.com/docs/en/memory ; https://devops.com/claude-code-adds-agents-md-fallback-cutting-instruction-file-sprawl
+- Gemini CLI -> Antigravity CLI (`agy`): announced 19 May 2026. On 18 Jun 2026 Gemini CLI stopped serving Google AI Pro/Ultra and free Gemini Code Assist for individuals. Still works with Code Assist Standard/Enterprise licenses and paid Gemini / Gemini Enterprise Agent Platform API keys. Google's post does not use the word "deprecated". Antigravity CLI reads `AGENTS.md` (legacy `GEMINI.md` still supported). Sources: https://developers.googleblog.com/en/an-important-update-transitioning-gemini-cli-to-antigravity-cli/ ; https://docs.flutter.dev/ai/antigravity-cli.md
