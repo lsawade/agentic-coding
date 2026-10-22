@@ -1,6 +1,6 @@
 # Agentic AI for Research — slides
 
-Marp deck for the Princeton Research Computing session on agentic AI (two presenters, ~42 minutes, 34 slides).
+Marp deck for the Princeton Research Computing session on agentic AI (two presenters, ~42 minutes, 35 slides).
 The talk outline lives in the shared Claude Doc; this repo is the deck itself.
 
 ## Preview and build
@@ -27,14 +27,14 @@ Every push to `main` runs the GitHub Action in `.github/workflows/build.yml`, wh
 | `themes/princeton.css` | the theme (orange `#E87722`, black, white; seal embedded; classes documented in `CLAUDE.md`) |
 | `assets/diagrams/*.svg` | one hand-written SVG per schematic |
 | `assets/logo/` | the Princeton seal |
-| `starter-kit/` | the template folder the audience clones (slide 30 links to it) |
+| `starter-kit/` | the template folder the audience clones (slide 31 links to it) |
 | `research/numbers.md` | every number in the deck with its source URL and access date |
 
 ## Presenters
 
-Congyue Cui and Lucas Sawade. The natural split is slides 1–18 (bridge, model landscape, tokens and delegation,
-your name is on it) and slides 19–34 (workspace setup, working patterns, starter kit, discussion); who takes
-which half is decided on the day. The handoff is slide 18, on the line "Verification is the hardest job to delegate."
+Congyue Cui and Lucas Sawade. The natural split is slides 1–19 (bridge, model landscape, tokens and delegation,
+reviewing agent output) and slides 20–35 (workspace setup, working patterns, starter kit, discussion); who takes
+which half is decided on the day. The handoff is slide 19, on the line "Verification is the hardest job to delegate."
 Presenter notes are on every slide: open `dist/index.html` and press `P`.
 
 ## Editing conventions
@@ -46,4 +46,4 @@ Presenter notes are on every slide: open `dist/index.html` and press `P`.
 
 ## Still to do by hand
 
-- Decide live whether slide 20 (tour of `.claude/`) becomes a 60-second screen share.
+- Decide live whether slide 21 (tour of `.claude/`) becomes a 60-second screen share.

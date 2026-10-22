@@ -20,7 +20,7 @@ title: "Agentic AI for Research"
 <!--
 Notes:
 Presenter names are placeholders; replace them before the talk.
-Timing: 42 min, 34 slides. Natural split: sections 0-3 (slides 1-18) and 4-6 (slides 19-34); who takes which half is decided on the day. Handoff on slide 18.
+Timing: 42 min, 35 slides. Natural split: sections 0-3 (slides 1-19) and 4-6 (slides 20-35); who takes which half is decided on the day. Handoff on slide 19.
 -->
 
 ---
@@ -37,7 +37,7 @@ Timing: 42 min, 34 slides. Natural split: sections 0-3 (slides 1-18) and 4-6 (sl
 
 1. The model landscape
 2. Tokens, cost and delegation
-3. Your name is on it
+3. Reviewing agent output
 4. Setting up the workspace
 5. Working patterns from your colleagues
 6. Starter kit and discussion
@@ -362,11 +362,11 @@ Timing: 2 minutes.
 ---
 
 <!-- 12-supervisor -->
-<!-- _header: "3 · Your name is on it" -->
+<!-- _header: "3 · Reviewing agent output" -->
 
 # You are the supervisor, not the user
 
-The relationship is closer to PI-and-student than tool-and-user: you delegate, you review, you sign off. Nothing about this is new; authorship has always worked this way. The tool just makes it easier to forget.
+The relationship is closer to PI-and-student than tool-and-user: you delegate, you review, you sign off. One difference: a student shares responsibility for their work. An agent can't, so all of it is yours.
 
 ![h:370 center](assets/diagrams/supervisor-mirror.svg)
 
@@ -375,7 +375,7 @@ Notes:
 This is the thesis slide. Pause on it.
 Left side is the lab you already know: the PI hands off a question, the student drafts and runs, the PI signs the paper.
 Right side is the same contract: you delegate, the agent drafts, runs and proposes, your name goes on the PR or paper.
-Ask: "If the student's analysis is wrong, whose name is on the retraction?"
+Ask: "If the student's analysis is wrong, whose name is on the retraction?" Answer: both of yours. With an agent, only yours.
 The kernel policy says it flatly: agents may not sign off; only humans certify (docs.kernel.org/process/coding-assistants.html).
 Timing: 2 minutes.
 -->
@@ -383,40 +383,42 @@ Timing: 2 minutes.
 ---
 
 <!-- 13-failure-modes -->
-<!-- _header: "3 · Your name is on it" -->
+<!-- _header: "3 · Reviewing agent output" -->
 
 # It fails in specific ways, so review for them
 
-<div style="font-size:19px">
+<div style="font-size:21px">
 
 | Failure mode | What it looks like |
 |---|---|
-| Plausible-but-wrong code | Runs, returns a number, number is wrong |
-| Hallucinated dependencies and APIs | Imports a package or method that does not exist, or exists with different arguments |
-| Silently changed assumptions | It picked a default (units, date range, NaN handling) you never stated |
-| "Tests pass" that never ran | The report says green; the command was never executed or tested the wrong thing |
-| Confident claims about results | An interpretation stated as fact with no check against data |
+| Plausible-but-wrong code | Runs, returns a number; the number is wrong |
+| Silent assumptions | Picks units, date range or NaN handling you never stated |
+| Misused APIs | Real function, wrong arguments or semantics; now and then one that doesn't exist |
+| Tests that pass for the wrong reason | Never ran, skipped, or edited until green |
+| Confident claims | An interpretation stated as fact, never checked against data |
+| Over-engineering | Abstractions pile up over many changes |
 
 </div>
 
 <div class="cards one" style="font-size:19px"><div class="tip" style="font-size:19px">Ask AI to list the problems in the code it generated</div></div>
 
-<p class="small" style="margin:0">A supervisor who knows the typical failure modes reviews better. Slide 29 says what to do about each.</p>
+<p class="small" style="margin:0">A supervisor who knows the typical failure modes reviews better. Slide 30 says what to do about each.</p>
 
 <!--
 Notes:
-Five patterns, one sentence each; do not read the table aloud.
+Six patterns, one sentence each; do not read the table aloud.
 Engagement: "Which of these have you already been bitten by?" Take two answers.
-Tie to section 3: all five are invisible unless you open the code or the data.
+Most of these only show up if you open the code or the data; a crash is the easy case.
+The first row is what the next slide's exercise is.
 Read the tip; it is cheap and works.
-Point forward: slide 29 gives the countermeasure for each failure mode.
+Point forward: slide 30 gives the countermeasure for each failure mode.
 Timing: 3 minutes.
 -->
 
 ---
 
 <!-- 14-spot-the-bug -->
-<!-- _header: "3 · Your name is on it" -->
+<!-- _header: "3 · Reviewing agent output" -->
 <!-- _class: code-lg -->
 <style scoped>pre{font-size:20px;line-height:1.2}</style>
 
@@ -458,7 +460,7 @@ Timing: about 2 minutes including answers.
 ---
 
 <!-- 15-bug-reveal -->
-<!-- _header: "3 · Your name is on it" -->
+<!-- _header: "3 · Reviewing agent output" -->
 <!-- _class: code-lg -->
 <style scoped>pre{font-size:20px;line-height:1.2}</style>
 
@@ -498,7 +500,7 @@ Timing: about 1.5 minutes.
 ---
 
 <!-- 16-oss-policies -->
-<!-- _header: "3 · Your name is on it" -->
+<!-- _header: "3 · Reviewing agent output" -->
 
 <style scoped>td,th{padding:5px 12px} .stat{padding:12px 10px 10px}</style>
 
@@ -537,7 +539,7 @@ Timing: about 3 minutes with the guess and the vote.
 ---
 
 <!-- 17-research-output -->
-<!-- _header: "3 · Your name is on it" -->
+<!-- _header: "3 · Reviewing agent output" -->
 
 # Research output meets the same standard
 
@@ -912,15 +914,21 @@ Timing: 1 minute.
 
 # Each failure mode has a counter-move
 
-| When it… | You… |
-|---|---|
-| Over-engineers after many changes | refactor under regression tests. Consider a rewrite when the design warrants it |
-| Drifts from your assumptions silently | ask it to list its assumptions before it runs; state units, ranges, NaN policy in the prompt |
-| Hallucinates a dependency or API | run it; pin versions; let a subagent check the docs |
-| Says "tests pass" without running them | make it show the command and the output; run the suite yourself before the PR |
-| Answers an unverifiable question confidently | ask for the check it would run, then run it |
+<style scoped>td,th{padding:5px 12px} p.small,.callout{margin:0.3em 0}</style>
+<div style="font-size:21px">
 
-<p class="small">Pairs with slide 13; same failures, now the response.</p>
+| Failure mode | Counter-move |
+|---|---|
+| Plausible-but-wrong code | test it on a case with a known answer; follow units through |
+| Silent assumptions | ask it to list its assumptions before it runs; state units, ranges, NaN policy in the prompt |
+| Misused APIs | run it; pin versions; let a subagent check the docs |
+| Tests that pass for the wrong reason | make it show the command and the output; check the diff for skipped or edited tests; run the suite yourself before the PR |
+| Confident claims | ask for the check it would run, then run it |
+| Over-engineering | refactor under regression tests. Consider a rewrite when the design warrants it |
+
+</div>
+
+<p class="small">Pairs with slide 14; same failures, now the response.</p>
 
 <div class="callout">Use known results to check that structural changes preserve the intended behavior.</div>
 
