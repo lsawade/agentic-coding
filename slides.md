@@ -91,8 +91,8 @@ About 1 minute. Model names on the slide are current as of 20 Oct 2026 (research
 ![h:380 center](assets/diagrams/model-ladders.svg)
 
 <div class="cols" style="gap:24px;margin-top:6px">
-<div class="callout" style="font-size:21px;margin:0">Flagships now think adaptively; you set effort, not on/off.</div>
-<div class="callout" style="font-size:21px;margin:0">1M-token context is standard at the frontier.</div>
+<div class="callout" style="font-size:21px;margin:0">Models can “think” (reason) before answering; thinking is billed as output tokens.</div>
+<div class="callout" style="font-size:21px;margin:0">Most current models take ~1M tokens of context.</div>
 </div>
 
 <p class="small" style="font-size:16px;margin-top:6px">Prices as of 20 Oct 2026, USD per 1M tokens (input / output); see research/numbers.md. Gemini 4 Argon doubles on 1 Dec 2026.</p>
@@ -103,7 +103,10 @@ Engagement first, before revealing the brackets: "Guess before reveal: how much 
 Answer: 100x per token for Anthropic (Fable vs Haiku) and OpenAI (Astra vs Luna); about 4x (output) to 7x (input) for Google, whose flagship is already cheap.
 The middle rung is 20x the bottom (Sonnet, Sol), so the cheap tier is 20-100x cheaper per token than what you would otherwise reach for.
 Caveat: per-task cost gaps are smaller than per-token gaps because bigger models use different amounts of thinking; on Artificial Analysis Haiku 5.5 is ~28x cheaper per task than Opus 5.5, not 40x.
-Thinking: Fable and Opus thinking is adaptive and cannot be disabled; GPT-6 uses effort levels; Argon has thinking levels. All three flagships list ~1M-token context.
+Say after the callout: some models decide how much to think on their own and you set the effort (Fable, Opus, Sonnet, GPT-6 Astra, Gemini 4 Argon); some let you switch it off (Haiku 5.5 at effort <= high, GPT-6 Luna).
+Thinking is output: every thinking token is billed at the output price (5x the input price for Fable, Opus, Astra and Argon) and takes up context space, even when you only see a summary.
+Explain the terms: "thinking" is reasoning text the model writes before it answers (usually hidden or shown as a summary) or before its next tool call. "Adaptive" means the model decides how much to think per step: little for an easy edit, a lot for a hard bug. The effort level (e.g. low / medium / high / max) is the dial you set; it shifts how much the model is willing to think, so higher effort is usually more thorough but slower and costlier, because thinking tokens are billed as output. Practical rule: leave the default; raise effort for hard design or debugging, lower it for routine edits.
+Thinking: Fable and Opus thinking is adaptive and cannot be disabled; GPT-6 uses effort levels; Argon has thinking levels. Context: all three labs list ~1M tokens, cheaper tiers included (Haiku 5.5 is excluded from flat-rate 1M pricing). What that costs per request comes on slide 10.
 Sources: https://platform.claude.com/docs/en/about-claude/pricing ; https://platform.claude.com/docs/en/models/overview ; https://developers.openai.com/api/docs/pricing ; https://developers.openai.com/api/docs/models ; https://ai.google.dev/gemini-api/docs/pricing ; https://artificialanalysis.ai/models/claude-opus-5-5
 About 2 minutes.
 -->
@@ -113,7 +116,7 @@ About 2 minutes.
 <!-- 05-open-weight -->
 <!-- _header: "1 · The model landscape" -->
 
-# Open weights trail the frontier by about a dozen points
+# Open weights: a step behind, but under your control
 
 ![h:300 center](assets/diagrams/open-weight-gap.svg)
 
@@ -262,7 +265,7 @@ Auto-compaction keeps long sessions running. When you switch to unrelated work, 
 
 <!--
 Notes:
-What changed: current harnesses manage the context window themselves. Claude Code auto-compacts (summarizes older history) as it nears the limit and clears old tool results; OpenAI's API and Codex have their own automatic compaction. Frontier models list ~1M-token windows (slide 4). You rarely need to compact by hand.
+What changed: current harnesses manage the context window themselves. Claude Code auto-compacts (summarizes older history) as it nears the limit and clears old tool results; OpenAI's API and Codex have their own automatic compaction. Most current models list ~1M-token windows (slide 4). You rarely need to compact by hand.
 What you still do: clear between unrelated tasks. Claude Code's cost docs list this first; /clear costs nothing, while /compact reads the whole conversation it summarizes, so compacting a large context is itself a large request. Use /rename before /clear if you may want to /resume later.
 Caveat, from experience: compaction is a lossy summary, and it can carry an old instruction forward without its context. In one session the summary kept an earlier force-push command, and after compaction the agent ran a force push that was not intended. Lessons: after an auto-compact, check what the agent thinks it is doing before letting it continue; put rules like "never force push" in CLAUDE.md or compact instructions so they survive; and block destructive commands (force push, rm -rf, dropping tables) with permission deny rules rather than trusting the summary.
 Cost: every request sends the conversation so far, and one turn can be many requests because each batch of tool results goes back in a new request. After compaction or tool-result clearing, "so far" means the compacted version. With the OpenAI Responses API the server can hold the history (previous_response_id), but the prior tokens are still billed as input. With prompt caching that history is billed at the cheaper cached rate, but a one-line question in an all-day session still pays for the whole history, and the first message after the cache expires reprocesses it at full price.
