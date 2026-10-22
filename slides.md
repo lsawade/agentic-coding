@@ -928,7 +928,55 @@ Regression tests should capture trusted behavior or known scientific results, no
 
 ---
 
-<!-- 30-checklist -->
+<!-- 30-starter-kit -->
+<!-- _header: "6 · Starter kit and discussion" -->
+
+<style scoped>pre{font-size:17px;line-height:1.3;margin:0} .cols{gap:36px} .cols>div:last-child p{font-size:22px;margin:0 0 14px}</style>
+
+# The starter kit: copy it into your repo
+
+<div class="cols">
+<div>
+
+```text
+starter-kit/
+├── AGENTS.md          project instructions skeleton
+├── README.md          the checklist on the next slide
+├── prompts/
+│   ├── grill-me.md    interrogate a plan
+│   ├── pr.md          prepare a PR for review
+│   └── test-runner.md run tests, report failures
+└── .claude/           Claude Code adapter
+    ├── commands/      /grill-me, /pr
+    ├── agents/        test-runner subagent
+    └── settings.json  read-only allowlist
+```
+
+</div>
+<div>
+
+**Any agent:** AGENTS.md and prompts/ are plain Markdown. Edit these first.
+
+**Claude Code:** .claude/ only points at prompts/. Delete it if you use another tool.
+
+**Then:** fill in AGENTS.md for your project and commit.
+
+</div>
+</div>
+
+<div class="callout">Get it at <strong>github.com/lsawade/agentic-coding</strong></div>
+
+<!--
+Notes:
+Say the repo URL out loud: github.com/lsawade/agentic-coding. The last slide has a QR code for it.
+The kit has two layers: AGENTS.md and prompts/ work in any tool; .claude/ is a thin Claude Code adapter (slash commands, subagent, permissions) that points at them.
+If asked how to fetch only the kit: git clone --depth 1 --filter=blob:none --no-checkout https://github.com/lsawade/agentic-coding && cd agentic-coding && git sparse-checkout set --no-cone /starter-kit/ && git checkout. Then copy its contents into the root of your own repository.
+Timing: 1 minute.
+-->
+
+---
+
+<!-- 31-checklist -->
 <!-- _header: "6 · Starter kit and discussion" -->
 
 # One page to take home
@@ -954,12 +1002,11 @@ Regression tests should capture trusted behavior or known scientific results, no
 </ul></div>
 </div>
 
-<div class="callout">Clone the starter kit: <code>starter-kit/</code> in <strong>github.com/lsawade/agentic-coding</strong> (an AGENTS.md skeleton and three prompts any agent can use, plus a Claude Code adapter).</div>
+<p class="small">This checklist ships as <code>starter-kit/README.md</code>.</p>
 
 <!--
 Notes:
-Say the repo URL out loud: github.com/lsawade/agentic-coding. The last slide has a QR code for it.
-The kit has two layers: AGENTS.md and prompts/ work in any tool; .claude/ is a thin Claude Code adapter (slash commands, subagent, permissions) that points at them.
+The same checklist is the starter kit's README, so it travels with the kit.
 -->
 
 ---
