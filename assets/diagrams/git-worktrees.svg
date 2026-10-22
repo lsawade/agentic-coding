@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 560" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
-  <title>Git as the safety net: frequent commits on main, two agent worktrees, one merged by PR, one running remotely</title>
+  <title>Git checkpoints and parallel worktrees, with separate sandbox controls for a remote session</title>
   <defs>
     <marker id="arrO" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
       <path d="M0,0 L10,5 L0,10 z" fill="#E87722"/>
@@ -28,10 +28,10 @@
     <circle cx="770" cy="120" r="11"/><circle cx="850" cy="120" r="11"/>
     <circle cx="930" cy="120" r="11"/><circle cx="1010" cy="120" r="11"/><circle cx="1090" cy="120" r="13"/>
   </g>
-  <!-- the commit you can always go back to -->
+  <!-- a recorded checkpoint for comparison and recovery of tracked code -->
   <circle cx="690" cy="120" r="14" fill="#fff" stroke="#E87722" stroke-width="4"/>
   <line x1="690" y1="98" x2="690" y2="80" stroke="#E87722" stroke-width="3"/>
-  <text x="690" y="66" font-size="32" font-weight="700" fill="#E87722" text-anchor="middle">revert = one command</text>
+  <text x="690" y="66" font-size="32" font-weight="700" fill="#E87722" text-anchor="middle">recorded checkpoint</text>
 
   <!-- worktree A commits + label -->
   <g fill="#E87722">

@@ -371,33 +371,40 @@ Timing: 3 minutes.
 <!-- 14-spot-the-bug -->
 <!-- _header: "3 · Your name is on it" -->
 <!-- _class: code-lg -->
+<style scoped>pre{font-size:20px;line-height:1.2}</style>
 
 # Spot the bug <span class="timer">60 s</span>
 
+Goal: report the mean trial speed in m/s, using only trials marked "ok".
+
 ```python
-import pandas as pd
-COLS = ["station", "time", "temp_c", "rh_pct", "wind_ms", "qc"]
-df = pd.read_csv("met_stations.csv", usecols=COLS, parse_dates=["time"])
+trials = [
+    # start_ms, end_ms, distance_cm, quality
+    (1000,  4000, 1200, "ok"),
+    (5000, 10000, 3000, "ok"),
+    (11000, 14000, 9000, "bad"),
+]
 
-df = df[df["qc"] == "ok"]
-df = df.dropna()                      # remove missing readings
-df["year"] = df["time"].dt.year
+speeds = []
+for start, end, distance, quality in trials:
+    if quality != "ok":
+        continue
+    elapsed = end - start
+    distance_m = distance / 100
+    speed = distance_m / elapsed
+    speeds.append(speed)
 
-annual = (df.groupby(["station", "year"])["temp_c"]
-            .agg(["mean", "count"])
-            .reset_index())
-trend = annual.groupby("station")["mean"].apply(lambda s: s.diff().mean())
-print(trend.sort_values(ascending=False).head(10))
+mean_speed = sum(speeds) / len(speeds)
+print(f"Mean trial speed: {mean_speed:.3f} m/s")
 ```
-
-One of these lines silently changes the result. Which?
 
 <!--
 Notes:
-Start the 60-second timer. Say: "An agent wrote this. It runs, no warnings, the numbers look reasonable."
-Context to give if asked: hourly weather-station data, we want the warming trend per station.
+Start the 60-second timer. Say: "An agent wrote this to summarize instrument trials. It filters bad trials and prints a mean. It runs without errors. Is the result right?"
+The goal is the arithmetic mean of the individual speeds for trials marked ok, with each accepted trial weighted equally. It is not the overall distance divided by overall time. Each supplied trial has positive duration, and there are accepted trials, so division by zero is not an issue in this example.
+Input units are specified in the tuple header: times in milliseconds and distances in centimetres. The code correctly filters quality and converts distance to metres, but never converts elapsed time to seconds. This is the only intended analysis error.
 Let people read; at 60 s take two or three answers from the room, then advance.
-The point: review is a skill with known failure modes, and clean-looking code is the hardest to review.
+The point: follow units through the whole calculation. Correct filtering and one correct conversion can make an incomplete conversion easy to overlook.
 Timing: about 2 minutes including answers.
 -->
 
@@ -406,35 +413,38 @@ Timing: about 2 minutes including answers.
 <!-- 15-bug-reveal -->
 <!-- _header: "3 · Your name is on it" -->
 <!-- _class: code-lg -->
+<style scoped>pre{font-size:20px;line-height:1.2}</style>
 
-# The bug: <code>dropna()</code> throws away good temperatures
+# The bug: time never converted to seconds
 
-<pre><code class="language-python">import pandas as pd
-COLS = ["station", "time", "temp_c", "rh_pct", "wind_ms", "qc"]
-df = pd.read_csv("met_stations.csv", usecols=COLS, parse_dates=["time"])
+<pre><code class="language-python">trials = [
+    # start_ms, end_ms, distance_cm, quality
+    (1000,  4000, 1200, "ok"),
+    (5000, 10000, 3000, "ok"),
+    (11000, 14000, 9000, "bad"),
+]
 
-df = df[df["qc"] == "ok"]
-<mark class="bug">df = df.dropna()                      # remove missing readings</mark>
-df["year"] = df["time"].dt.year
+speeds = []
+for start, end, distance, quality in trials:
+    if quality != "ok":
+        continue
+    <mark class="bug">elapsed = end - start</mark>
+    distance_m = distance / 100
+    speed = distance_m / elapsed
+    speeds.append(speed)
 
-annual = (df.groupby(["station", "year"])["temp_c"]
-            .agg(["mean", "count"])
-            .reset_index())
-trend = annual.groupby("station")["mean"].apply(lambda s: s.diff().mean())
-print(trend.sort_values(ascending=False).head(10))
+mean_speed = sum(speeds) / len(speeds)
+print(f"Mean trial speed: {mean_speed:.3f} m/s")
 </code></pre>
 
-<div class="punch" style="margin-top:0.25em">Would you have caught this in a 400-line PR?</div>
-<div class="small">A NaN in humidity or wind deletes a valid temperature. Catch it: test a known case, ask for assumptions.</div>
+**Fix:** <code>elapsed = (end - start) / 1000</code>. Correct mean: **5.000 m/s**.
 
 <!--
 Notes:
-dropna() with no subset drops every row with a NaN in ANY column, including rh_pct and wind_ms, which the analysis never uses.
-Humidity sensors fail more in freezing, saturated conditions, so the dropped hours are not random: annual means shift warm, and the trend shifts with sensor outages.
-Nothing errors; the "count" column is the only clue, and nobody looks at it.
-Fix: df.dropna(subset=["temp_c"]), or do not load columns you do not use.
-How to catch it: a test on a station-year with a known mean, or ask the agent "list every assumption this script makes about missing data".
-Ask the room: who found it, and how long did it take? Now imagine 400 lines.
+The highlighted line leaves elapsed time in milliseconds. The next line correctly converts centimetres to metres, so the later division gives metres per millisecond while the output label says metres per second. The reported mean is 1,000 times too small.
+Fix: convert elapsed time to seconds on the highlighted line. The accepted trials are 12 m / 3 s = 4 m/s and 30 m / 5 s = 6 m/s. Their arithmetic mean is 5 m/s. The third trial is correctly excluded by its quality flag. The buggy code prints 0.005 m/s; the corrected code prints 5.000 m/s.
+How to catch it: work one accepted trial by hand and check the units at each step. For a real instrument pipeline, state input and output units in the task and test against a known measurement.
+Ask: "Would you have caught this in a 400-line PR?" In a longer pipeline, the input units may live in a file header or instrument manual, far from the calculation.
 Timing: about 1.5 minutes.
 -->
 
@@ -664,25 +674,28 @@ Timing: 2 minutes.
 <!-- 22-git-safety-net -->
 <!-- _header: "4 · Setting up the workspace" -->
 
-# Git is the safety net
+# Git helps you review and recover code
 
 <ul style="font-size:22px; margin:0 0 6px 0;">
-<li><strong>Commit early and often:</strong> any agent change is one <code>git checkout</code> from undone.</li>
-<li><strong>Worktrees:</strong> several agent sessions in parallel, each on its own branch of the same repo.</li>
-<li><strong>Long runs go remote:</strong> background session, sandboxed, no database access.</li>
+<li><strong>Commit checkpoints:</strong> compare tracked changes and revert unwanted commits.</li>
+<li><strong>Worktrees:</strong> separate working directories and branches for parallel sessions.</li>
+<li><strong>Long runs:</strong> use a sandbox and limit filesystem, network and credential access.</li>
 </ul>
 
 ![h:280 center](assets/diagrams/git-worktrees.svg)
+
+<p class="small" style="margin:0">Git does not recover untracked data or undo external actions. Worktrees are not security boundaries.</p>
 
 <div class="cards one"><div class="tip">git worktrees and a remote environment without DB access have long-running sessions operating in the background</div></div>
 
 <!--
 Notes:
-~2 min. The point: you can only let an agent act if every action is cheap to undo.
-Commit before each agent step; a bad change is then one `git checkout` away. Point at "revert = one command".
-Worktrees: two Claude Code sessions, two branches, one repo, no stepping on each other. A merges back by PR, which is your review gate.
-B runs remote in the background, sandboxed, with no DB credentials: the worst it can break is its own branch.
-Second tip, read aloud: "Using skills, treating a long task as a "research article" so it is easy to track and verify, using git as a way of tracking progress for bigger projects"
+~2 min. Git gives you recorded checkpoints and diffs for reviewing code changes. It does not make every agent action reversible.
+Commit a known-good baseline before a substantial agent task, then review and commit small, coherent changes. For a recorded commit, git revert creates a new commit that reverses its changes; it can require conflict resolution. Bare git checkout is not an undo command.
+Worktrees: two agent sessions use separate working directories and branches in one shared repository. This reduces interference between file edits, but shared repository state and external resources still need coordination. A comes back through a PR for human review.
+B runs remotely in the background. Remote hosting alone does not provide isolation: configure a sandbox, restrict filesystem and network access, and supply only the credentials the task needs. No database credentials in this example.
+Git cannot reverse a database write, an external submission, leaked credentials or compute spending, and it does not preserve untracked files. Protect data separately and limit consequential actions before starting a long run.
+Read the colleague's tip as an example of their workflow, not a guarantee that worktrees contain all possible damage.
 Ask: who already commits before letting an agent loose? Who has lost work to one?
 -->
 
