@@ -88,7 +88,7 @@ About 1 minute. Model names on the slide are current as of 20 Oct 2026 (research
 <!-- 04-ladders -->
 <!-- _header: "1 · The model landscape" -->
 
-# Families ship as ladders, up to 100× tall
+# Top models cost up to 100× more per token
 
 ![h:380 center](assets/diagrams/model-ladders.svg)
 
@@ -125,7 +125,7 @@ About 2 minutes.
 <div class="callout"><b>The trade-off:</b> infrastructure and oversight</div>
 </div>
 
-<p style="font-size:21px;margin:0.15em 0"><b>Open weights ≠ self-hosting.</b> Most use runs on hosted APIs; running them yourself takes serious hardware.</p>
+<p style="font-size:21px;margin:0.15em 0"><b>Self-hosting keeps data on hardware you control,</b> but does not by itself meet data-use requirements. An agent with tool or internet access can still send your data out.</p>
 
 <p class="small" style="font-size:17px;margin:0">Artificial Analysis Intelligence Index, 20 Oct 2026; changes monthly, check the live board.</p>
 
@@ -138,6 +138,8 @@ Further left: Meta Muse Spark Open 39 (released 15 Oct 2026), NVIDIA Nemotron 3.
 The two dots at 45 are drawn side by side; the leaderboard is dynamic, so re-check on the day.
 Open weights let you choose a deployment, including inference on your own cluster. That can give you more control over data access and where processing happens. Open-weight models can also run on hosted services; available weights do not mean that inference is local.
 Self-hosting replaces API token charges with compute and operations costs. Model licenses and hardware requirements still apply. Bridge: "What does running one yourself actually take?" (next slide).
+Leakage: the weights themselves do not connect to anything; the risk is the software around them. If the agent can browse, call tools or reach external APIs, it can send data out, including when a fetched web page carries injected instructions. Restrict network access when the data matters, and treat model repos that ship custom code (trust_remote_code) as code you are running.
+Control is not the same as security: a poorly secured self-hosted server can be worse than a University-licensed service with contractual protections.
 Data approval is separate from model availability: follow institutional, IRB, contractual and other applicable guidelines for the specific dataset and deployment. Local hosting does not automatically satisfy them. At Princeton, check OIT's current data classification and approved-tool guidance; do not assume Restricted information is permitted in a local model.
 Source: https://artificialanalysis.ai/models/open-source and https://artificialanalysis.ai/leaderboards/models
 Data guidance: https://oit.princeton.edu/services/ai-guidance-tools ; https://oit.princeton.edu/about/policies/generative-ai-tools-use-policy
@@ -159,21 +161,29 @@ Timing: 2 minutes.
 <p style="font-size:24px;margin:0.7em 0 0.3em"><b>What self-hosting takes</b></p>
 
 <dl class="kv" style="font-size:23px;margin:0;gap:12px 22px">
-<dt>Frontier-class open<br><span class="muted" style="font-weight:400;font-size:19px">DeepSeek, Kimi, GLM, MiMo</span></dt><dd>A full node of top datacenter GPUs, often several. In practice a cluster allocation plus someone to run the serving stack.</dd>
-<dt>Mid-size open<br><span class="muted" style="font-weight:400;font-size:19px">Gemma 4 31B, Qwen3.8 27B</span></dt><dd>One or two datacenter GPUs; quantized, a high-end workstation. Smaller models trade away capability.</dd>
+<dt>Frontier-class open<br><span class="muted" style="font-weight:400;font-size:19px">DeepSeek, Kimi, GLM, MiMo</span></dt><dd>With light compression, about 3–4 Della GPU nodes or 1–2 GB300 nodes; Kimi K3 about 11 Della or 4 GB300. Someone has to run it.</dd>
+<dt>Mid-size open<br><span class="muted" style="font-weight:400;font-size:19px">Gemma 4 31B, Qwen3.8 27B</span></dt><dd>With no compression, one A100 (a quarter node); a ~120B model such as Nemotron 3.5 Super takes a full node.</dd>
 </dl>
 
 <p style="font-size:21px;margin:0.6em 0 0">Agents need long contexts and many calls: size for throughput, not a chat demo. Data guidelines apply either way.</p>
 
+<p class="small" style="font-size:16px;margin-top:4px">Della GPU node = 4 × A100 80GB; GB300 node (NVL72 compute tray) = 4 × 288GB. Weights plus ~25% headroom for context; rough estimates.</p>
+
 <!--
 Notes:
 Point: "open weights" describes the licence and availability of the model file, not where it runs. Many people who say they use DeepSeek or Kimi are calling a hosted API (the lab's own, OpenRouter, a cloud provider); their prompts leave the building exactly as with Claude or GPT, under that provider's terms.
-Frontier-class open models are mixture-of-experts with hundreds of billions of total parameters (Meta's Muse Spark Open: 816B total / 42B active). Only a fraction is active per token, but all the weights must sit in GPU memory, so you need a multi-GPU node of the largest datacenter cards, and more for long contexts or several users. Add serving software (vLLM, SGLang), monitoring and updates: someone has to own it.
-Mid-size models (Gemma 4 31B runs on a single GPU; NVIDIA Nemotron 3.5 Super is 120B total / 12B active) fit on one or two datacenter GPUs, or a well-equipped workstation once quantized. Quantization cuts memory at some cost in quality. These models sit well below the frontier on the previous slide's chart.
+Frontier-class open models are mixture-of-experts with hundreds of billions to trillions of total parameters. Only a fraction is active per token, but all the weights must sit in GPU memory.
+Rule of thumb: memory ≈ parameters × bytes per parameter (2 at BF16, 1 at 8-bit, 0.5 at 4-bit) plus ~25% for context cache and runtime. One Della GPU node (4 × A100 80GB) holds 320 GB.
+At 8-bit: GLM-5.3 (~753B) and DeepSeek V4.1 Flash (552-763B, disputed) about 3 nodes; Muse Spark Open (816B) and MiMo-V2.6-Pro (~1.02T) about 4; Kimi K3 (~2.8T) about 11. Double these at BF16; roughly halve them at 4-bit, with some quality loss. Della has 70 such nodes, so one frontier model is a noticeable share of the shared cluster.
+"Light compression" on the slide means 8-bit weights: half the full-precision size, usually with little quality loss.
+GB300 comparison: one GB300 NVL72 compute tray has 4 Blackwell Ultra GPUs × 288 GB = 1,152 GB, 3.6x a Della node. At 8-bit: DeepSeek V4.1 Flash, GLM-5.3 and Muse Spark Open fit in 1 tray, MiMo-V2.6-Pro needs 2, Kimi K3 about 4. Blackwell runs FP8 and FP4 natively, so at 4-bit Kimi K3 fits in 2 trays. Trays in an NVL72 rack share one NVLink domain across 72 GPUs, so spanning trays is far easier than spanning Della nodes over InfiniBand.
+Caveats: A100s have no native FP8, so 8-bit serving relies on weight-only kernels and is slower than on H100/H200 (Della's PLI and AI Lab nodes). Spanning nodes over InfiniBand works but adds latency and setup. Long agent contexts can need far more than 25% headroom. Parameter counts are mostly vendor-reported via aggregators.
+Mid-size: Qwen3.8 27B (~54 GB at BF16) and Gemma 4 31B (30.7B, ~61 GB) fit on one A100 80GB, tightly for Gemma; NVIDIA Nemotron 3.5 Super (120B total / 12B active, ~240 GB at BF16) takes a full node, or two GPUs at 8-bit. A quantized ~30B model also runs on a high-end workstation. These models sit well below the frontier on the previous slide's chart.
+Add serving software (vLLM, SGLang), monitoring and updates: someone has to own it.
 Agentic workloads are heavier than chat: long contexts grow the memory needed per request, and an agent makes many calls per task, so throughput matters.
 Cost: GPUs cost money whether or not they are busy; self-hosting tends to pay off only at high, steady utilisation. Check what your campus research computing already provides before buying anything.
 Data: self-hosting can give more control over where processing happens, but it does not by itself satisfy institutional, IRB or contractual requirements. See Princeton OIT guidance.
-Numbers: research/numbers.md section 2.
+Numbers: research/numbers.md sections 2 and 8.
 Timing: 1.5 minutes.
 -->
 
@@ -182,11 +192,9 @@ Timing: 1.5 minutes.
 <!-- 06-picking-a-model -->
 <!-- _header: "1 · The model landscape" -->
 
-# Pick the tier by the job, not the benchmark
+# Pick the tier by the job
 
-![h:300 center](assets/diagrams/tier-rule-of-thumb.svg)
-
-<p style="font-size:22px"><b>Capability:</b> task-relevant benchmarks and your own test cases.<br><b>Popularity:</b> OpenRouter usage rankings measure token volume, not quality.</p>
+![h:330 center](assets/diagrams/tier-rule-of-thumb.svg)
 
 <div class="cards two"><div class="tip">use multiple models for same problem</div><div class="tip">Adversarial development/brainstorming using Claude vs. Codex</div></div>
 
@@ -194,9 +202,8 @@ Timing: 1.5 minutes.
 Notes:
 Rule of thumb: frontier plans and reviews, mid does the daily editing, small does the fetching.
 Names: Fable/Astra/Argon (frontier), Opus/Sonnet/Sol (mid), Haiku/Luna/Flash-Lite (small). Names change every few months; the tiers do not.
-Use benchmarks that match your task, then try representative examples from your own research. A score on one evaluation does not establish capability on every task, and benchmarks are not universally saturated.
-Artificial Analysis reports evaluated performance. OpenRouter's main usage rankings measure tokens processed through its platform; its benchmark views report evaluated performance separately. Popularity can help identify tools to try, but does not demonstrate correctness or suitability.
-Sources: https://artificialanalysis.ai/leaderboards/models ; https://openrouter.ai/rankings ; https://openrouter.ai/benchmarks
+In practice most people code with Claude Code or Codex, so the real choice is the tier or effort level inside the tool, not which leaderboard model to adopt. Both tools let you switch the model and effort level.
+If someone asks how to compare models: use benchmarks that match the task (https://artificialanalysis.ai/leaderboards/models) and a few examples from your own research; usage rankings such as https://openrouter.ai/rankings show popularity, not correctness.
 Read the two tips; ask: "Who has had one model review another's code?"
 Prices per tier: see research/numbers.md section 1.
 Timing: 2 minutes.
