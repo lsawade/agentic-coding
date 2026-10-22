@@ -133,7 +133,8 @@ About 2 minutes.
 Notes:
 Engagement: guess before reveal. "How far behind are open-weight models?" Take two or three guesses, then show the 12 points.
 Top proprietary is Claude Opus 5.5 at 58; top open-weight is Xiaomi MiMo-V2.6-Pro at 46. DeepSeek V4.1 Flash and GLM-5.3 are at 45, Kimi K3 at 44 (Step 5 Preview also 44).
-Name the families: DeepSeek, Qwen, Kimi, GLM, Mistral, Meta (Muse Spark Open scores 39, Qwen3.8 27B 34).
+Name the families: DeepSeek, Qwen, Kimi, GLM (Zhipu AI / Z.ai), Mistral, Muse (Meta), Nemotron (NVIDIA), Gemma (Google).
+Further left: Meta Muse Spark Open 39 (released 15 Oct 2026), NVIDIA Nemotron 3.5 Super VL 26 (released 15 Oct 2026), Google Gemma 4 31B 15 (Apr 2026, Apache 2.0, runs on a single GPU). Others: Reflection Beam 1.0 30, Thinking Machines Inkling 25, Nemotron 3 Ultra 23, OpenAI gpt-oss-120b 12.
 The two dots at 45 are drawn side by side; the leaderboard is dynamic, so re-check on the day.
 Open weights let you choose a deployment, including inference on your own cluster. That can give you more control over data access and where processing happens. Open-weight models can also run on hosted services; available weights do not mean that inference is local.
 Self-hosting replaces API token charges with compute and operations costs. Model licenses and hardware requirements still apply.

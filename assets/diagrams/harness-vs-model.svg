@@ -65,7 +65,7 @@
     <text x="980" y="672" fill="#6b6b6b">by lab</text>
     <line x1="980" y1="690" x2="1216" y2="690" stroke="#d9d4cc" stroke-width="2"/>
     <text x="980" y="728">DeepSeek · Qwen</text>
-    <text x="980" y="766">Kimi · GLM</text>
+    <text x="980" y="766">Kimi · Gemma</text>
     <text x="980" y="804">…</text>
   </g>
 
