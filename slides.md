@@ -673,7 +673,6 @@ Codex: AGENTS.md for instructions, .agents/skills/ for skills (scanned from the 
 The starter kit keeps the portable part in AGENTS.md and prompts/; .claude/ is only an adapter.
 Commands are prompts you type as slash commands; settings.json is the allowlist.
 Hooks are the guardrails: lint on save, block secrets.
-A 60-second screen share of a real folder may replace this slide.
 Timing: 2 minutes.
 Prompt to try later: /grill-me on your own half-formed idea.
 -->
@@ -742,7 +741,7 @@ Ask: who already commits before letting an agent loose? Who has lost work to one
 
 ![h:360 center](assets/diagrams/mcp-hub.svg)
 
-<div class="cards one"><div class="tip">Run an MCP server so the agent can use IDE features</div></div>
+<div class="cards one"><div class="tip">Run an MCP (Model Context Protocol) server so the agent can use IDE features</div></div>
 
 <span class="small">Examples only; no setup walkthrough today. Each server is a few lines in settings.</span>
 
