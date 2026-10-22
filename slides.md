@@ -106,7 +106,7 @@ Caveat: per-task cost gaps are smaller than per-token gaps because bigger models
 Say after the callout: some models decide how much to think on their own and you set the effort (Fable, Opus, Sonnet, GPT-6 Astra, Gemini 4 Argon); some let you switch it off (Haiku 5.5 at effort <= high, GPT-6 Luna).
 Thinking is output: every thinking token is billed at the output price (5x the input price for Fable, Opus, Astra and Argon) and takes up context space, even when you only see a summary.
 Explain the terms: "thinking" is reasoning text the model writes before it answers (usually hidden or shown as a summary) or before its next tool call. "Adaptive" means the model decides how much to think per step: little for an easy edit, a lot for a hard bug. The effort level (e.g. low / medium / high / max) is the dial you set; it shifts how much the model is willing to think, so higher effort is usually more thorough but slower and costlier, because thinking tokens are billed as output. Practical rule: leave the default; raise effort for hard design or debugging, lower it for routine edits.
-Thinking: Fable and Opus thinking is adaptive and cannot be disabled; GPT-6 uses effort levels; Argon has thinking levels. Context: all three labs list ~1M tokens, cheaper tiers included (Haiku 5.5 is excluded from flat-rate 1M pricing). What that costs per request comes on slide 10.
+Thinking: Fable and Opus thinking is adaptive and cannot be disabled; GPT-6 uses effort levels; Argon has thinking levels. Context: all three labs list ~1M tokens, cheaper tiers included (Haiku 5.5 is excluded from flat-rate 1M pricing). What that costs per request comes on slide 11.
 Sources: https://platform.claude.com/docs/en/about-claude/pricing ; https://platform.claude.com/docs/en/models/overview ; https://developers.openai.com/api/docs/pricing ; https://developers.openai.com/api/docs/models ; https://ai.google.dev/gemini-api/docs/pricing ; https://artificialanalysis.ai/models/claude-opus-5-5
 About 2 minutes.
 -->
@@ -252,33 +252,6 @@ The point is that most volume is small-tier work. The frontier model is for the 
 
 ---
 
-<!-- 09-what-burns-tokens -->
-<!-- _header: "2 · Tokens, cost and delegation" -->
-
-# Tools compact for you; you clear between tasks
-
-![w:1000 center](assets/diagrams/context-bloat.svg)
-
-Auto-compaction keeps long sessions running. When you switch to unrelated work, start fresh with `/clear`: it costs nothing, and the next task starts without stale assumptions.
-
-<div class="callout" style="font-size:21px">Every request, including each tool call, re-sends the conversation so far. Repeated text is billed at a discount, not for free, so an all-day session keeps getting more expensive.</div>
-
-<!--
-Notes:
-What changed: current harnesses manage the context window themselves. Claude Code auto-compacts (summarizes older history) as it nears the limit and clears old tool results; OpenAI's API and Codex have their own automatic compaction. Most current models list ~1M-token windows (slide 4). You rarely need to compact by hand.
-What you still do: clear between unrelated tasks. Claude Code's cost docs list this first; /clear costs nothing, while /compact reads the whole conversation it summarizes, so compacting a large context is itself a large request. Use /rename before /clear if you may want to /resume later.
-Caveat, from experience: compaction is a lossy summary, and it can carry an old instruction forward without its context. In one session the summary kept an earlier force-push command, and after compaction the agent ran a force push that was not intended. Lessons: after an auto-compact, check what the agent thinks it is doing before letting it continue; put rules like "never force push" in CLAUDE.md or compact instructions so they survive; and block destructive commands (force push, rm -rf, dropping tables) with permission deny rules rather than trusting the summary.
-Cost: every request sends the conversation so far, and one turn can be many requests because each batch of tool results goes back in a new request. After compaction or tool-result clearing, "so far" means the compacted version. With the OpenAI Responses API the server can hold the history (previous_response_id), but the prior tokens are still billed as input. With prompt caching that history is billed at the cheaper cached rate, but a one-line question in an all-day session still pays for the whole history, and the first message after the cache expires reprocesses it at full price.
-Quality: long, cluttered contexts still degrade answers, especially in agentic work, though less than with older models; published long-context benchmarks mostly cover previous-generation models, so treat this as a caveat, not a law.
-Colleague's original tip: "Restarting sessions, it often gets confused with too much context". Present it as lived experience.
-If you do restart mid-task, save a verified handoff first: goal, decisions, commands and remaining work.
-Sources: https://code.claude.com/docs/en/costs ; https://code.claude.com/docs/en/prompt-caching ; https://developers.openai.com/api/docs/guides/compaction
-Ask the room: who has had a session get worse the longer it went?
-About 1.5 minutes. Schematic, not measured data.
--->
-
----
-
 <!-- 10-delegation -->
 <!-- _header: "2 · Tokens, cost and delegation" -->
 
@@ -322,21 +295,49 @@ About 2 minutes.
 
 ---
 
+<!-- 09-what-burns-tokens -->
+<!-- _header: "2 · Tokens, cost and delegation" -->
+
+# Tools compact for you; you clear between tasks
+
+![w:1000 center](assets/diagrams/context-bloat.svg)
+
+Auto-compaction keeps long sessions running. When you switch to unrelated work, start fresh with `/clear`: it costs nothing, and the next task starts without stale assumptions.
+
+<div class="callout" style="font-size:21px">Every request, including each tool call, re-sends the conversation so far. Repeated text is billed at a discount, not for free, so an all-day session keeps getting more expensive.</div>
+
+<!--
+Notes:
+What changed: current harnesses manage the context window themselves. Claude Code auto-compacts (summarizes older history) as it nears the limit and clears old tool results; OpenAI's API and Codex have their own automatic compaction. Most current models list ~1M-token windows (slide 4). You rarely need to compact by hand.
+What you still do: clear between unrelated tasks. Claude Code's cost docs list this first; /clear costs nothing, while /compact reads the whole conversation it summarizes, so compacting a large context is itself a large request. Use /rename before /clear if you may want to /resume later.
+Caveat, from experience: compaction is a lossy summary, and it can carry an old instruction forward without its context. In one session the summary kept an earlier force-push command, and after compaction the agent ran a force push that was not intended. Lessons: after an auto-compact, check what the agent thinks it is doing before letting it continue; put rules like "never force push" in CLAUDE.md or compact instructions so they survive; and block destructive commands (force push, rm -rf, dropping tables) with permission deny rules rather than trusting the summary.
+Cost: every request sends the conversation so far, and one turn can be many requests because each batch of tool results goes back in a new request. After compaction or tool-result clearing, "so far" means the compacted version. With the OpenAI Responses API the server can hold the history (previous_response_id), but the prior tokens are still billed as input. With prompt caching that history is billed at the cheaper cached rate, but a one-line question in an all-day session still pays for the whole history, and the first message after the cache expires reprocesses it at full price.
+Quality: long, cluttered contexts still degrade answers, especially in agentic work, though less than with older models; published long-context benchmarks mostly cover previous-generation models, so treat this as a caveat, not a law.
+Callback: this is also why subagents (previous slide) help: their noisy output never enters the parent's context, so it is not re-sent on every request.
+Colleague's original tip: "Restarting sessions, it often gets confused with too much context". Present it as lived experience.
+If you do restart mid-task, save a verified handoff first: goal, decisions, commands and remaining work.
+Sources: https://code.claude.com/docs/en/costs ; https://code.claude.com/docs/en/prompt-caching ; https://developers.openai.com/api/docs/guides/compaction
+Ask the room: who has had a session get worse the longer it went?
+About 1.5 minutes. Schematic, not measured data.
+-->
+
+---
+
 <!-- 11-other-levers -->
 <!-- _header: "2 · Tokens, cost and delegation" -->
 
 # Recap: habits that cut cost
 
 <div class="cols" style="gap:14px">
+<div class="callout"><b>Pick the tier by the job:</b> frontier to plan, mid to build, small to fetch.</div>
 <div class="callout"><b>Clear between tasks.</b> Auto-compact handles long sessions; <code>/clear</code> starts fresh for new work.</div>
 <div class="callout"><b>Scope AGENTS.md</b> to what every session needs; everything else goes in a file the agent reads on demand.</div>
 <div class="callout"><b>Background long jobs</b> and check in; do not sit in a chat window watching tests.</div>
-<div class="callout"><b>Pick the tier by the job:</b> frontier to plan, mid to build, small to fetch.</div>
 </div>
 
 <!--
 Notes:
-Section recap: clearing and the ladder repeat earlier slides; scoping AGENTS.md and backgrounding long jobs are new. None needs setup. Spend one line on each.
+Section recap: the tier tip and clearing repeat earlier slides; scoping AGENTS.md and backgrounding long jobs are new. None needs setup. Spend one line on each.
 Engagement: "Who clears between tasks, and who keeps one session open all day?"
 Timing: 1 minute.
 -->
