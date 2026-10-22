@@ -125,7 +125,7 @@ About 2 minutes.
 <div class="callout"><b>The trade-off:</b> infrastructure and oversight</div>
 </div>
 
-<p style="font-size:21px;margin:0.15em 0"><b>Open weights enable self-hosting.</b> Data use still depends on the guidelines for each dataset and deployment.</p>
+<p style="font-size:21px;margin:0.15em 0"><b>Open weights ≠ self-hosting.</b> Most use runs on hosted APIs; running them yourself takes serious hardware.</p>
 
 <p class="small" style="font-size:17px;margin:0">Artificial Analysis Intelligence Index, 20 Oct 2026; changes monthly, check the live board.</p>
 
@@ -137,11 +137,44 @@ Name the families: DeepSeek, Qwen, Kimi, GLM (Zhipu AI / Z.ai), Mistral, Muse (M
 Further left: Meta Muse Spark Open 39 (released 15 Oct 2026), NVIDIA Nemotron 3.5 Super VL 26 (released 15 Oct 2026), Google Gemma 4 31B 15 (Apr 2026, Apache 2.0, runs on a single GPU). Others: Reflection Beam 1.0 30, Thinking Machines Inkling 25, Nemotron 3 Ultra 23, OpenAI gpt-oss-120b 12.
 The two dots at 45 are drawn side by side; the leaderboard is dynamic, so re-check on the day.
 Open weights let you choose a deployment, including inference on your own cluster. That can give you more control over data access and where processing happens. Open-weight models can also run on hosted services; available weights do not mean that inference is local.
-Self-hosting replaces API token charges with compute and operations costs. Model licenses and hardware requirements still apply.
+Self-hosting replaces API token charges with compute and operations costs. Model licenses and hardware requirements still apply. Bridge: "What does running one yourself actually take?" (next slide).
 Data approval is separate from model availability: follow institutional, IRB, contractual and other applicable guidelines for the specific dataset and deployment. Local hosting does not automatically satisfy them. At Princeton, check OIT's current data classification and approved-tool guidance; do not assume Restricted information is permitted in a local model.
 Source: https://artificialanalysis.ai/models/open-source and https://artificialanalysis.ai/leaderboards/models
 Data guidance: https://oit.princeton.edu/services/ai-guidance-tools ; https://oit.princeton.edu/about/policies/generative-ai-tools-use-policy
 Timing: 2 minutes.
+-->
+
+---
+
+<!-- 05b-self-hosting -->
+<!-- _header: "1 · The model landscape" -->
+
+# Open weights ≠ self-hosting
+
+<div class="cols" style="gap:24px">
+<div class="callout" style="margin:0"><b>Hosted:</b> the lab's API, OpenRouter or a cloud provider. Prompts go to their servers, as with any API.</div>
+<div class="callout" style="margin:0"><b>Self-hosted:</b> weights run on hardware you control, such as a campus cluster or rented GPUs.</div>
+</div>
+
+<p style="font-size:24px;margin:0.7em 0 0.3em"><b>What self-hosting takes</b></p>
+
+<dl class="kv" style="font-size:23px;margin:0;gap:12px 22px">
+<dt>Frontier-class open<br><span class="muted" style="font-weight:400;font-size:19px">DeepSeek, Kimi, GLM, MiMo</span></dt><dd>A full node of top datacenter GPUs, often several. In practice a cluster allocation plus someone to run the serving stack.</dd>
+<dt>Mid-size open<br><span class="muted" style="font-weight:400;font-size:19px">Gemma 4 31B, Qwen3.8 27B</span></dt><dd>One or two datacenter GPUs; quantized, a high-end workstation. Smaller models trade away capability.</dd>
+</dl>
+
+<p style="font-size:21px;margin:0.6em 0 0">Agents need long contexts and many calls: size for throughput, not a chat demo. Data guidelines apply either way.</p>
+
+<!--
+Notes:
+Point: "open weights" describes the licence and availability of the model file, not where it runs. Many people who say they use DeepSeek or Kimi are calling a hosted API (the lab's own, OpenRouter, a cloud provider); their prompts leave the building exactly as with Claude or GPT, under that provider's terms.
+Frontier-class open models are mixture-of-experts with hundreds of billions of total parameters (Meta's Muse Spark Open: 816B total / 42B active). Only a fraction is active per token, but all the weights must sit in GPU memory, so you need a multi-GPU node of the largest datacenter cards, and more for long contexts or several users. Add serving software (vLLM, SGLang), monitoring and updates: someone has to own it.
+Mid-size models (Gemma 4 31B runs on a single GPU; NVIDIA Nemotron 3.5 Super is 120B total / 12B active) fit on one or two datacenter GPUs, or a well-equipped workstation once quantized. Quantization cuts memory at some cost in quality. These models sit well below the frontier on the previous slide's chart.
+Agentic workloads are heavier than chat: long contexts grow the memory needed per request, and an agent makes many calls per task, so throughput matters.
+Cost: GPUs cost money whether or not they are busy; self-hosting tends to pay off only at high, steady utilisation. Check what your campus research computing already provides before buying anything.
+Data: self-hosting can give more control over where processing happens, but it does not by itself satisfy institutional, IRB or contractual requirements. See Princeton OIT guidance.
+Numbers: research/numbers.md section 2.
+Timing: 1.5 minutes.
 -->
 
 ---
