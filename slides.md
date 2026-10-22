@@ -20,7 +20,7 @@ title: "Agentic AI for Research"
 <!--
 Notes:
 Presenter names are placeholders; replace them before the talk.
-Timing: 42 min, 34 slides. Natural split: sections 0-3 (slides 1-18) and 4-6 (slides 19-34); who takes which half is decided on the day. Handoff on slide 18.
+Timing: 42 min, 35 slides. Natural split: sections 0-3 (slides 1-19) and 4-6 (slides 20-35); who takes which half is decided on the day. Handoff on slide 19.
 -->
 
 ---
@@ -37,7 +37,7 @@ Timing: 42 min, 34 slides. Natural split: sections 0-3 (slides 1-18) and 4-6 (sl
 
 1. The model landscape
 2. Tokens, cost and delegation
-3. Your name is on it
+3. Reviewing agent output
 4. Setting up the workspace
 5. Working patterns from your colleagues
 6. Starter kit and discussion
@@ -88,7 +88,7 @@ About 1 minute. Model names on the slide are current as of 20 Oct 2026 (research
 <!-- 04-ladders -->
 <!-- _header: "1 · The model landscape" -->
 
-# Families ship as ladders, up to 100× tall
+# Top models cost up to 100× more per token
 
 ![h:380 center](assets/diagrams/model-ladders.svg)
 
@@ -125,7 +125,7 @@ About 2 minutes.
 <div class="callout"><b>The trade-off:</b> infrastructure and oversight</div>
 </div>
 
-<p style="font-size:21px;margin:0.15em 0"><b>Open weights enable self-hosting.</b> Data use still depends on the guidelines for each dataset and deployment.</p>
+<p style="font-size:21px;margin:0.15em 0"><b>Self-hosting keeps data on hardware you control,</b> but does not by itself meet data-use requirements. An agent with tool or internet access can still send your data out.</p>
 
 <p class="small" style="font-size:17px;margin:0">Artificial Analysis Intelligence Index, 20 Oct 2026; changes monthly, check the live board.</p>
 
@@ -137,7 +137,9 @@ Name the families: DeepSeek, Qwen, Kimi, GLM (Zhipu AI / Z.ai), Mistral, Muse (M
 Further left: Meta Muse Spark Open 39 (released 15 Oct 2026), NVIDIA Nemotron 3.5 Super VL 26 (released 15 Oct 2026), Google Gemma 4 31B 15 (Apr 2026, Apache 2.0, runs on a single GPU). Others: Reflection Beam 1.0 30, Thinking Machines Inkling 25, Nemotron 3 Ultra 23, OpenAI gpt-oss-120b 12.
 The two dots at 45 are drawn side by side; the leaderboard is dynamic, so re-check on the day.
 Open weights let you choose a deployment, including inference on your own cluster. That can give you more control over data access and where processing happens. Open-weight models can also run on hosted services; available weights do not mean that inference is local.
-Self-hosting replaces API token charges with compute and operations costs. Model licenses and hardware requirements still apply.
+Self-hosting replaces API token charges with compute and operations costs. Model licenses and hardware requirements still apply. Bridge: "What does running one yourself actually take?" (next slide).
+Leakage: the weights themselves do not connect to anything; the risk is the software around them. If the agent can browse, call tools or reach external APIs, it can send data out, including when a fetched web page carries injected instructions. Restrict network access when the data matters, and treat model repos that ship custom code (trust_remote_code) as code you are running.
+Control is not the same as security: a poorly secured self-hosted server can be worse than a University-licensed service with contractual protections.
 Data approval is separate from model availability: follow institutional, IRB, contractual and other applicable guidelines for the specific dataset and deployment. Local hosting does not automatically satisfy them. At Princeton, check OIT's current data classification and approved-tool guidance; do not assume Restricted information is permitted in a local model.
 Source: https://artificialanalysis.ai/models/open-source and https://artificialanalysis.ai/leaderboards/models
 Data guidance: https://oit.princeton.edu/services/ai-guidance-tools ; https://oit.princeton.edu/about/policies/generative-ai-tools-use-policy
@@ -146,14 +148,53 @@ Timing: 2 minutes.
 
 ---
 
+<!-- 05b-self-hosting -->
+<!-- _header: "1 · The model landscape" -->
+
+# Open weights ≠ self-hosting
+
+<div class="cols" style="gap:24px">
+<div class="callout" style="margin:0"><b>Hosted:</b> the lab's API, OpenRouter or a cloud provider. Prompts go to their servers, as with any API.</div>
+<div class="callout" style="margin:0"><b>Self-hosted:</b> weights run on hardware you control, such as a campus cluster or rented GPUs.</div>
+</div>
+
+<p style="font-size:24px;margin:0.7em 0 0.3em"><b>What self-hosting takes</b></p>
+
+<dl class="kv" style="font-size:23px;margin:0;gap:12px 22px">
+<dt>Frontier-class open<br><span class="muted" style="font-weight:400;font-size:19px">DeepSeek, Kimi, GLM, MiMo</span></dt><dd>With light compression, about 3–4 Della GPU nodes or 1–2 GB300 nodes; Kimi K3 about 11 Della or 4 GB300. Someone has to run it.</dd>
+<dt>Mid-size open<br><span class="muted" style="font-weight:400;font-size:19px">Gemma 4 31B, Qwen3.8 27B</span></dt><dd>With no compression, one A100 (a quarter node); a ~120B model such as Nemotron 3.5 Super takes a full node.</dd>
+</dl>
+
+<p style="font-size:21px;margin:0.6em 0 0">Agents need long contexts and many calls: size for throughput, not a chat demo. Data guidelines apply either way.</p>
+
+<p class="small" style="font-size:16px;margin-top:4px">Della GPU node = 4 × A100 80GB; GB300 node (NVL72 compute tray) = 4 × 288GB. Weights plus ~25% headroom for context; rough estimates.</p>
+
+<!--
+Notes:
+Point: "open weights" describes the licence and availability of the model file, not where it runs. Many people who say they use DeepSeek or Kimi are calling a hosted API (the lab's own, OpenRouter, a cloud provider); their prompts leave the building exactly as with Claude or GPT, under that provider's terms.
+Frontier-class open models are mixture-of-experts with hundreds of billions to trillions of total parameters. Only a fraction is active per token, but all the weights must sit in GPU memory.
+Rule of thumb: memory ≈ parameters × bytes per parameter (2 at BF16, 1 at 8-bit, 0.5 at 4-bit) plus ~25% for context cache and runtime. One Della GPU node (4 × A100 80GB) holds 320 GB.
+At 8-bit: GLM-5.3 (~753B) and DeepSeek V4.1 Flash (552-763B, disputed) about 3 nodes; Muse Spark Open (816B) and MiMo-V2.6-Pro (~1.02T) about 4; Kimi K3 (~2.8T) about 11. Double these at BF16; roughly halve them at 4-bit, with some quality loss. Della has 70 such nodes, so one frontier model is a noticeable share of the shared cluster.
+"Light compression" on the slide means 8-bit weights: half the full-precision size, usually with little quality loss.
+GB300 comparison: one GB300 NVL72 compute tray has 4 Blackwell Ultra GPUs × 288 GB = 1,152 GB, 3.6x a Della node. At 8-bit: DeepSeek V4.1 Flash, GLM-5.3 and Muse Spark Open fit in 1 tray, MiMo-V2.6-Pro needs 2, Kimi K3 about 4. Blackwell runs FP8 and FP4 natively, so at 4-bit Kimi K3 fits in 2 trays. Trays in an NVL72 rack share one NVLink domain across 72 GPUs, so spanning trays is far easier than spanning Della nodes over InfiniBand.
+Caveats: A100s have no native FP8, so 8-bit serving relies on weight-only kernels and is slower than on H100/H200 (Della's PLI and AI Lab nodes). Spanning nodes over InfiniBand works but adds latency and setup. Long agent contexts can need far more than 25% headroom. Parameter counts are mostly vendor-reported via aggregators.
+Mid-size: Qwen3.8 27B (~54 GB at BF16) and Gemma 4 31B (30.7B, ~61 GB) fit on one A100 80GB, tightly for Gemma; NVIDIA Nemotron 3.5 Super (120B total / 12B active, ~240 GB at BF16) takes a full node, or two GPUs at 8-bit. A quantized ~30B model also runs on a high-end workstation. These models sit well below the frontier on the previous slide's chart.
+Add serving software (vLLM, SGLang), monitoring and updates: someone has to own it.
+Agentic workloads are heavier than chat: long contexts grow the memory needed per request, and an agent makes many calls per task, so throughput matters.
+Cost: GPUs cost money whether or not they are busy; self-hosting tends to pay off only at high, steady utilisation. Check what your campus research computing already provides before buying anything.
+Data: self-hosting can give more control over where processing happens, but it does not by itself satisfy institutional, IRB or contractual requirements. See Princeton OIT guidance.
+Numbers: research/numbers.md sections 2 and 8.
+Timing: 1.5 minutes.
+-->
+
+---
+
 <!-- 06-picking-a-model -->
 <!-- _header: "1 · The model landscape" -->
 
-# Pick the tier by the job, not the benchmark
+# Pick the tier by the job
 
-![h:300 center](assets/diagrams/tier-rule-of-thumb.svg)
-
-<p style="font-size:22px"><b>Capability:</b> task-relevant benchmarks and your own test cases.<br><b>Popularity:</b> OpenRouter usage rankings measure token volume, not quality.</p>
+![h:330 center](assets/diagrams/tier-rule-of-thumb.svg)
 
 <div class="cards two"><div class="tip">use multiple models for same problem</div><div class="tip">Adversarial development/brainstorming using Claude vs. Codex</div></div>
 
@@ -161,9 +202,8 @@ Timing: 2 minutes.
 Notes:
 Rule of thumb: frontier plans and reviews, mid does the daily editing, small does the fetching.
 Names: Fable/Astra/Argon (frontier), Opus/Sonnet/Sol (mid), Haiku/Luna/Flash-Lite (small). Names change every few months; the tiers do not.
-Use benchmarks that match your task, then try representative examples from your own research. A score on one evaluation does not establish capability on every task, and benchmarks are not universally saturated.
-Artificial Analysis reports evaluated performance. OpenRouter's main usage rankings measure tokens processed through its platform; its benchmark views report evaluated performance separately. Popularity can help identify tools to try, but does not demonstrate correctness or suitability.
-Sources: https://artificialanalysis.ai/leaderboards/models ; https://openrouter.ai/rankings ; https://openrouter.ai/benchmarks
+In practice most people code with Claude Code or Codex, so the real choice is the tier or effort level inside the tool, not which leaderboard model to adopt. Both tools let you switch the model and effort level.
+If someone asks how to compare models: use benchmarks that match the task (https://artificialanalysis.ai/leaderboards/models) and a few examples from your own research; usage rankings such as https://openrouter.ai/rankings show popularity, not correctness.
 Read the two tips; ask: "Who has had one model review another's code?"
 Prices per tier: see research/numbers.md section 1.
 Timing: 2 minutes.
@@ -214,23 +254,25 @@ The point is that most volume is small-tier work. The frontier model is for the 
 <!-- 09-what-burns-tokens -->
 <!-- _header: "2 · Tokens, cost and delegation" -->
 
-# Context use and token cost
+# Tools compact for you; you clear between tasks
 
 ![w:1000 center](assets/diagrams/context-bloat.svg)
 
-Compact or restart when the session loses focus. Save a verified handoff.
+Auto-compaction keeps long sessions running. When you switch to unrelated work, start fresh with `/clear`: it costs nothing, and the next task starts without stale assumptions.
 
-<div class="callout" style="font-size:21px">Cached input can cost less. Restarting may lose useful context and cache reuse.</div>
+<div class="callout" style="font-size:21px">Every request, including each tool call, re-sends the conversation so far. Repeated text is billed at a discount, not for free, so an all-day session keeps getting more expensive.</div>
 
 <!--
 Notes:
-Claude Code reuses prior context across turns and automatically caches matching prompt prefixes. Cache hits receive cached-input pricing rather than the full input rate; cache writes and new content have their own costs. Other harnesses may manage context differently.
-Repeated file reads, verbose tool output and failed attempts can accumulate in context. Prompt caching reduces processing cost for matching prefixes; it does not remove that content from the model's context window.
-A fresh session can help when stale assumptions or irrelevant history dominate, but it may discard useful context and cache reuse. It is not necessarily cheaper or more accurate. Before compacting or restarting, save the verified goal, decisions, commands and remaining work, then check that the next session reads the handoff.
-Planning can avoid unnecessary retries, but this figure is a schematic of context growth, not a measured cost curve or an optimal restart point.
-Colleague's original tip: "Restarting sessions, it often gets confused with too much context". Present it as a useful experience, not a universal cost rule.
-Source: https://code.claude.com/docs/en/prompt-caching
-Ask the room: who has had a session get worse the longer it went? That is this picture.
+What changed: current harnesses manage the context window themselves. Claude Code auto-compacts (summarizes older history) as it nears the limit and clears old tool results; OpenAI's API and Codex have their own automatic compaction. Frontier models list ~1M-token windows (slide 4). You rarely need to compact by hand.
+What you still do: clear between unrelated tasks. Claude Code's cost docs list this first; /clear costs nothing, while /compact reads the whole conversation it summarizes, so compacting a large context is itself a large request. Use /rename before /clear if you may want to /resume later.
+Caveat, from experience: compaction is a lossy summary, and it can carry an old instruction forward without its context. In one session the summary kept an earlier force-push command, and after compaction the agent ran a force push that was not intended. Lessons: after an auto-compact, check what the agent thinks it is doing before letting it continue; put rules like "never force push" in CLAUDE.md or compact instructions so they survive; and block destructive commands (force push, rm -rf, dropping tables) with permission deny rules rather than trusting the summary.
+Cost: every request sends the conversation so far, and one turn can be many requests because each batch of tool results goes back in a new request. After compaction or tool-result clearing, "so far" means the compacted version. With the OpenAI Responses API the server can hold the history (previous_response_id), but the prior tokens are still billed as input. With prompt caching that history is billed at the cheaper cached rate, but a one-line question in an all-day session still pays for the whole history, and the first message after the cache expires reprocesses it at full price.
+Quality: long, cluttered contexts still degrade answers, especially in agentic work, though less than with older models; published long-context benchmarks mostly cover previous-generation models, so treat this as a caveat, not a law.
+Colleague's original tip: "Restarting sessions, it often gets confused with too much context". Present it as lived experience.
+If you do restart mid-task, save a verified handoff first: goal, decisions, commands and remaining work.
+Sources: https://code.claude.com/docs/en/costs ; https://code.claude.com/docs/en/prompt-caching ; https://developers.openai.com/api/docs/guides/compaction
+Ask the room: who has had a session get worse the longer it went?
 About 1.5 minutes. Schematic, not measured data.
 -->
 
@@ -282,11 +324,11 @@ About 2 minutes.
 <!-- 11-other-levers -->
 <!-- _header: "2 · Tokens, cost and delegation" -->
 
-# Four more levers on cost and clarity
+# Recap: habits that cut cost
 
 <style scoped>.callout{margin:0.25em 0;padding:8px 16px} td,th{padding:5px 12px}</style>
 <div class="cols" style="gap:14px;font-size:21px">
-<div class="callout"><b>Compact or clear.</b> <code>/compact</code> summarizes, <code>/clear</code> starts fresh; do it between tasks, not mid-task.</div>
+<div class="callout"><b>Clear between tasks.</b> Auto-compact handles long sessions; <code>/clear</code> starts fresh for new work.</div>
 <div class="callout"><b>Scope AGENTS.md</b> to what every session needs; everything else goes in a file the agent reads on demand.</div>
 <div class="callout"><b>Background long jobs</b> and check in; do not sit in a chat window watching tests.</div>
 <div class="callout"><b>Use the ladder:</b> frontier to plan, mid to build, small to fetch.</div>
@@ -309,10 +351,10 @@ About 2 minutes.
 
 <!--
 Notes:
-Four small habits; none needs setup. Spend one line on each.
-Table point: list prices differ 100x between Fable and Haiku, but per benchmark task the top three are close, because the cheaper models think longer. Haiku really is about 28x cheaper than Sonnet.
+Section recap: clearing and the ladder repeat earlier slides; scoping AGENTS.md and backgrounding long jobs are new. None needs setup. Spend one line on each.
+Table point: list prices differ 100x between Fable and Haiku, but per benchmark task the top three are close, because the cheaper models think longer. Haiku really is about 26x cheaper than Sonnet (28x vs Opus).
 Caveat out loud: benchmark tasks are not agentic coding sessions; no official per-session cost page exists.
-Engagement: "Who has run /compact on purpose?"
+Engagement: "Who clears between tasks, and who keeps one session open all day?"
 Sources: https://platform.claude.com/docs/en/about-claude/pricing ; https://artificialanalysis.ai/models/claude-opus-5-5 (and sonnet-5-5, haiku-5-5, fable-5-1)
 Timing: 2 minutes.
 -->
@@ -320,11 +362,11 @@ Timing: 2 minutes.
 ---
 
 <!-- 12-supervisor -->
-<!-- _header: "3 · Your name is on it" -->
+<!-- _header: "3 · Reviewing agent output" -->
 
 # You are the supervisor, not the user
 
-The relationship is closer to PI-and-student than tool-and-user: you delegate, you review, you sign off. Nothing about this is new; authorship has always worked this way. The tool just makes it easier to forget.
+The relationship is closer to PI-and-student than tool-and-user: you delegate, you review, you sign off. One difference: a student shares responsibility for their work. An agent can't, so all of it is yours.
 
 ![h:370 center](assets/diagrams/supervisor-mirror.svg)
 
@@ -333,94 +375,19 @@ Notes:
 This is the thesis slide. Pause on it.
 Left side is the lab you already know: the PI hands off a question, the student drafts and runs, the PI signs the paper.
 Right side is the same contract: you delegate, the agent drafts, runs and proposes, your name goes on the PR or paper.
-Ask: "If the student's analysis is wrong, whose name is on the retraction?"
+Ask: "If the student's analysis is wrong, whose name is on the retraction?" Answer: both of yours. With an agent, only yours.
 The kernel policy says it flatly: agents may not sign off; only humans certify (docs.kernel.org/process/coding-assistants.html).
 Timing: 2 minutes.
 -->
 
 ---
 
-<!-- 13-failure-modes -->
-<!-- _header: "3 · Your name is on it" -->
-
-# It fails in specific ways, so review for them
-
-<div style="font-size:19px">
-
-| Failure mode | What it looks like |
-|---|---|
-| Plausible-but-wrong code | Runs, returns a number, number is wrong |
-| Hallucinated dependencies and APIs | Imports a package or method that does not exist, or exists with different arguments |
-| Silently changed assumptions | It picked a default (units, date range, NaN handling) you never stated |
-| "Tests pass" that never ran | The report says green; the command was never executed or tested the wrong thing |
-| Confident claims about results | An interpretation stated as fact with no check against data |
-
-</div>
-
-<div class="cards one" style="font-size:19px"><div class="tip" style="font-size:19px">Ask AI to list the problems in the code it generated</div></div>
-
-<p class="small" style="margin:0">A supervisor who knows the typical failure modes reviews better. Slide 29 says what to do about each.</p>
-
-<!--
-Notes:
-Five patterns, one sentence each; do not read the table aloud.
-Engagement: "Which of these have you already been bitten by?" Take two answers.
-Tie to section 3: all five are invisible unless you open the code or the data.
-Read the tip; it is cheap and works.
-Point forward: slide 29 gives the countermeasure for each failure mode.
-Timing: 3 minutes.
--->
-
----
-
 <!-- 14-spot-the-bug -->
-<!-- _header: "3 · Your name is on it" -->
+<!-- _header: "3 · Reviewing agent output" -->
 <!-- _class: code-lg -->
 <style scoped>pre{font-size:20px;line-height:1.2}</style>
 
 # Spot the bug <span class="timer">60 s</span>
-
-Goal: report the mean trial speed in m/s, using only trials marked "ok".
-
-```python
-trials = [
-    # start_ms, end_ms, distance_cm, quality
-    (1000,  4000, 1200, "ok"),
-    (5000, 10000, 3000, "ok"),
-    (11000, 14000, 9000, "bad"),
-]
-
-speeds = []
-for start, end, distance, quality in trials:
-    if quality != "ok":
-        continue
-    elapsed = end - start
-    distance_m = distance / 100
-    speed = distance_m / elapsed
-    speeds.append(speed)
-
-mean_speed = sum(speeds) / len(speeds)
-print(f"Mean trial speed: {mean_speed:.3f} m/s")
-```
-
-<!--
-Notes:
-Start the 60-second timer. Say: "An agent wrote this to summarize instrument trials. It filters bad trials and prints a mean. It runs without errors. Is the result right?"
-The goal is the arithmetic mean of the individual speeds for trials marked ok, with each accepted trial weighted equally. It is not the overall distance divided by overall time. Each supplied trial has positive duration, and there are accepted trials, so division by zero is not an issue in this example.
-Input units are specified in the tuple header: times in milliseconds and distances in centimetres. The code correctly filters quality and converts distance to metres, but never converts elapsed time to seconds. This is the only intended analysis error.
-Let people read; at 60 s take two or three answers from the room, then advance.
-The point: follow units through the whole calculation. Correct filtering and one correct conversion can make an incomplete conversion easy to overlook.
-Timing: about 2 minutes including answers.
--->
-
----
-
-<!-- 15-bug-reveal -->
-<!-- _header: "3 · Your name is on it" -->
-<!-- _class: code-lg -->
-<style scoped>pre{font-size:20px;line-height:1.2}</style>
-
-# The bug: time never converted to seconds
 
 <pre><code class="language-python">trials = [
     # start_ms, end_ms, distance_cm, quality
@@ -430,33 +397,110 @@ Timing: about 2 minutes including answers.
 ]
 
 speeds = []
-for start, end, distance, quality in trials:
+for start_ms, end_ms, distance_cm, quality in trials:
     if quality != "ok":
         continue
-    <mark class="bug">elapsed = end - start</mark>
-    distance_m = distance / 100
-    speed = distance_m / elapsed
+    elapsed_s = end_ms - start_ms / 1000
+    distance_m = distance_cm / 100
+    speed = distance_m / elapsed_s
     speeds.append(speed)
 
 mean_speed = sum(speeds) / len(speeds)
 print(f"Mean trial speed: {mean_speed:.3f} m/s")
 </code></pre>
 
-**Fix:** <code>elapsed = (end - start) / 1000</code>. Correct mean: **5.000 m/s**.
+<p style="font-size:22px;line-height:1.25">Goal: report the mean trial speed in m/s, using only trials marked "ok".</p>
 
 <!--
 Notes:
-The highlighted line leaves elapsed time in milliseconds. The next line correctly converts centimetres to metres, so the later division gives metres per millisecond while the output label says metres per second. The reported mean is 1,000 times too small.
-Fix: convert elapsed time to seconds on the highlighted line. The accepted trials are 12 m / 3 s = 4 m/s and 30 m / 5 s = 6 m/s. Their arithmetic mean is 5 m/s. The third trial is correctly excluded by its quality flag. The buggy code prints 0.005 m/s; the corrected code prints 5.000 m/s.
-How to catch it: work one accepted trial by hand and check the units at each step. For a real instrument pipeline, state input and output units in the task and test against a known measurement.
-Ask: "Would you have caught this in a 400-line PR?" In a longer pipeline, the input units may live in a file header or instrument manual, far from the calculation.
+Start the 60-second timer. Say: "An agent wrote this to summarize instrument trials. Every unit is labeled, every conversion is there, bad trials are filtered. It runs without errors. Is the result right?"
+The goal is the arithmetic mean of the individual speeds for trials marked ok, with each accepted trial weighted equally. It is not the overall distance divided by overall time. Each supplied trial has positive duration, and there are accepted trials, so division by zero is not an issue in this example.
+Units are labeled in the tuple header and variable names, and both conversions appear in the code, so a quick unit scan passes. The bug is operator precedence: division binds tighter than subtraction, so only start_ms is converted. This is the only intended analysis error.
+Let people read; at 60 s take two or three answers from the room, then advance.
+The point: labels and conversions that look right are not the same as a correct number. Work one trial by hand.
+Timing: about 2 minutes including answers.
+-->
+
+---
+
+<!-- 15-bug-reveal -->
+<!-- _header: "3 · Reviewing agent output" -->
+<!-- _class: code-lg -->
+<style scoped>pre{font-size:20px;line-height:1.2}</style>
+
+# The bug: only <code>start_ms</code> is converted
+
+<pre><code class="language-python">trials = [
+    # start_ms, end_ms, distance_cm, quality
+    (1000,  4000, 1200, "ok"),
+    (5000, 10000, 3000, "ok"),
+    (11000, 14000, 9000, "bad"),
+]
+
+speeds = []
+for start_ms, end_ms, distance_cm, quality in trials:
+    if quality != "ok":
+        continue
+    <mark class="bug">elapsed_s = end_ms - start_ms / 1000</mark>
+    distance_m = distance_cm / 100
+    speed = distance_m / elapsed_s
+    speeds.append(speed)
+
+mean_speed = sum(speeds) / len(speeds)
+print(f"Mean trial speed: {mean_speed:.3f} m/s")
+</code></pre>
+
+**Fix:** <code>elapsed_s = (end_ms - start_ms) / 1000</code>. Correct mean: **5.000 m/s**.
+
+<!--
+Notes:
+Division binds tighter than subtraction, so the highlighted line computes end_ms - (start_ms / 1000). For the first trial that is 4000 - 1 = 3999 "seconds" instead of 3 s. The variable name says seconds, so the eye accepts it.
+Fix: parenthesize the subtraction. The accepted trials are 12 m / 3 s = 4 m/s and 30 m / 5 s = 6 m/s. Their arithmetic mean is 5 m/s. The third trial is correctly excluded by its quality flag. The buggy code prints 0.003 m/s; the corrected code prints 5.000 m/s.
+How to catch it: work one accepted trial by hand, or sanity-check magnitude: 0.003 m/s means 12 m would take over an hour, but the timestamps span 3 s. For a real instrument pipeline, test against a known measurement.
+Ask: "Would you have caught this in a 400-line PR?" Good names make wrong code more convincing, not less.
+Transition: the next slide names this failure mode and five others.
 Timing: about 1.5 minutes.
 -->
 
 ---
 
+<!-- 13-failure-modes -->
+<!-- _header: "3 · Reviewing agent output" -->
+
+# It fails in specific ways, so review for them
+
+<div style="font-size:21px">
+
+| Failure mode | What it looks like |
+|---|---|
+| Plausible-but-wrong code | Runs, returns a number; the number is wrong |
+| Silent assumptions | Picks units, date range or NaN handling you never stated |
+| Misused APIs | Real function, wrong arguments or semantics; now and then one that doesn't exist |
+| Tests that pass for the wrong reason | Never ran, skipped, or edited until green |
+| Confident claims | An interpretation stated as fact, never checked against data |
+| Over-engineering | Abstractions pile up over many changes |
+
+</div>
+
+<div class="cards one" style="font-size:19px"><div class="tip" style="font-size:19px">Ask AI to list the problems in the code it generated</div></div>
+
+<p class="small" style="margin:0">A supervisor who knows the typical failure modes reviews better. Slide 30 says what to do about each.</p>
+
+<!--
+Notes:
+Six patterns, one sentence each; do not read the table aloud.
+Engagement: "Which of these have you already been bitten by?" Take two answers.
+Most of these only show up if you open the code or the data; a crash is the easy case.
+Row 1 is the bug they just found (or didn't): it ran, returned a number, and the number was wrong.
+Read the tip; it is cheap and works.
+Point forward: slide 30 gives the countermeasure for each failure mode.
+Timing: 3 minutes.
+-->
+
+---
+
 <!-- 16-oss-policies -->
-<!-- _header: "3 · Your name is on it" -->
+<!-- _header: "3 · Reviewing agent output" -->
 
 <style scoped>td,th{padding:5px 12px} .stat{padding:12px 10px 10px}</style>
 
@@ -495,7 +539,7 @@ Timing: about 3 minutes with the guess and the vote.
 ---
 
 <!-- 17-research-output -->
-<!-- _header: "3 · Your name is on it" -->
+<!-- _header: "3 · Reviewing agent output" -->
 
 # Research output meets the same standard
 
@@ -870,15 +914,21 @@ Timing: 1 minute.
 
 # Each failure mode has a counter-move
 
-| When it… | You… |
-|---|---|
-| Over-engineers after many changes | refactor under regression tests. Consider a rewrite when the design warrants it |
-| Drifts from your assumptions silently | ask it to list its assumptions before it runs; state units, ranges, NaN policy in the prompt |
-| Hallucinates a dependency or API | run it; pin versions; let a subagent check the docs |
-| Says "tests pass" without running them | make it show the command and the output; run the suite yourself before the PR |
-| Answers an unverifiable question confidently | ask for the check it would run, then run it |
+<style scoped>td,th{padding:5px 12px} p.small,.callout{margin:0.3em 0}</style>
+<div style="font-size:21px">
 
-<p class="small">Pairs with slide 13; same failures, now the response.</p>
+| Failure mode | Counter-move |
+|---|---|
+| Plausible-but-wrong code | test it on a case with a known answer; follow units through |
+| Silent assumptions | ask it to list its assumptions before it runs; state units, ranges, NaN policy in the prompt |
+| Misused APIs | run it; pin versions; let a subagent check the docs |
+| Tests that pass for the wrong reason | make it show the command and the output; check the diff for skipped or edited tests; run the suite yourself before the PR |
+| Confident claims | ask for the check it would run, then run it |
+| Over-engineering | refactor under regression tests. Consider a rewrite when the design warrants it |
+
+</div>
+
+<p class="small">Pairs with slide 14; same failures, now the response.</p>
 
 <div class="callout">Use known results to check that structural changes preserve the intended behavior.</div>
 

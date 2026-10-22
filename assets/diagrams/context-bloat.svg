@@ -1,40 +1,35 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 560" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
-  <title>Context bloat: one session's context window fills with re-reads, tool output and fix-it loops until it hits the limit</title>
+  <title>Context over a session: it grows, auto-compaction pulls it back twice, and /clear resets it to zero when a new task starts</title>
   <defs>
     <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
       <path d="M0,0 L10,5 L0,10 z" fill="#6b6b6b"/>
     </marker>
-    <marker id="ao" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#E87722"/>
-    </marker>
   </defs>
 
-  <!-- label over the small useful segment -->
-  <text x="170" y="150" font-size="32" font-weight="700" fill="#E87722" text-anchor="middle">the actual task</text>
-
-  <!-- context window bar, filled left to right in time order -->
-  <rect x="80" y="180" width="180" height="130" rx="14" fill="#FBE7D6" stroke="#E87722" stroke-width="4"/>
-  <rect x="264" y="180" width="356" height="130" fill="#6b6b6b"/>
-  <text x="442" y="256" font-size="32" fill="#fff" text-anchor="middle">file re-reads</text>
-  <rect x="624" y="180" width="356" height="130" fill="#d9d4cc"/>
-  <text x="802" y="256" font-size="32" fill="#1f1f1f" text-anchor="middle">tool output</text>
-  <g fill="#1f1f1f">
-    <rect x="984"  y="180" width="111" height="130"/>
-    <rect x="1099" y="180" width="111" height="130"/>
-    <rect x="1214" y="180" width="111" height="130"/>
-    <rect x="1329" y="180" width="111" height="130"/>
-  </g>
-  <text x="1212" y="150" font-size="32" font-weight="700" fill="#1f1f1f" text-anchor="middle">fix-it loop ×4</text>
-
   <!-- context limit -->
-  <line x1="1450" y1="110" x2="1450" y2="370" stroke="#000" stroke-width="4" stroke-dasharray="14 10"/>
-  <text x="1450" y="100" font-size="32" font-weight="700" fill="#000" text-anchor="middle">context limit</text>
+  <line x1="120" y1="110" x2="1500" y2="110" stroke="#000" stroke-width="4" stroke-dasharray="14 10"/>
+  <text x="1500" y="95" font-size="32" font-weight="700" fill="#000" text-anchor="end">context limit</text>
 
-  <!-- context growth does not imply full-price billing or an optimal restart point -->
-  <text x="80" y="420" font-size="34" font-weight="700" fill="#E87722">Context grows. Billing depends on cache hits</text>
-  <text x="80" y="465" font-size="30" fill="#6b6b6b">Schematic of context use, not a cost curve</text>
+  <!-- y-axis label -->
+  <text x="70" y="290" font-size="30" fill="#6b6b6b" text-anchor="middle" transform="rotate(-90 70 290)">context used</text>
+
+  <!-- area under the sawtooth -->
+  <path d="M120,450 L520,130 L520,330 L860,130 L860,330 L1060,230 L1060,450 Z" fill="#f6f3ee"/>
+  <path d="M1060,450 L1480,300 L1480,450 Z" fill="#f6f3ee"/>
+
+  <!-- sawtooth: growth and auto-compaction -->
+  <polyline points="120,450 520,130 520,330 860,130 860,330 1060,230" fill="none" stroke="#1f1f1f" stroke-width="5" stroke-linejoin="round"/>
+  <!-- /clear at the task boundary -->
+  <line x1="1060" y1="230" x2="1060" y2="450" stroke="#E87722" stroke-width="6"/>
+  <polyline points="1060,450 1480,300" fill="none" stroke="#1f1f1f" stroke-width="5"/>
+
+  <text x="520" y="380" font-size="30" fill="#1f1f1f" text-anchor="middle">auto-compact</text>
+  <text x="860" y="380" font-size="30" fill="#1f1f1f" text-anchor="middle">auto-compact</text>
+  <text x="1080" y="215" font-size="32" font-weight="700" fill="#E87722">/clear: new task</text>
 
   <!-- timeline -->
-  <line x1="80" y1="500" x2="1450" y2="500" stroke="#6b6b6b" stroke-width="3" marker-end="url(#ah)"/>
-  <text x="80" y="545" font-size="30" fill="#6b6b6b">session time</text>
+  <line x1="120" y1="450" x2="1500" y2="450" stroke="#6b6b6b" stroke-width="3" marker-end="url(#ah)"/>
+  <text x="590" y="495" font-size="30" fill="#6b6b6b" text-anchor="middle">task A</text>
+  <text x="1270" y="495" font-size="30" fill="#6b6b6b" text-anchor="middle">task B</text>
+  <text x="120" y="545" font-size="30" fill="#6b6b6b">Schematic, not measured data</text>
 </svg>

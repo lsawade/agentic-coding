@@ -122,3 +122,50 @@ Sources: https://artificialanalysis.ai/models/claude-opus-5-5 ; .../claude-sonne
 
 - Claude Code reads `AGENTS.md` directly from v2.1.277 (Sep 2026), and by default only when there is no `CLAUDE.md`, `.claude/CLAUDE.md` or `CLAUDE.local.md` in the working directory or above; if one exists, only the CLAUDE.md files load. `@AGENTS.md` import or the /config "Project instructions" setting loads both. Not read: `AGENTS.local.md`, `AGENTS.override.md`, `.agents/`. Release month (Sep 2026) from secondary coverage only. Sources: https://code.claude.com/docs/en/memory ; https://devops.com/claude-code-adds-agents-md-fallback-cutting-instruction-file-sprawl
 - Gemini CLI -> Antigravity CLI (`agy`): announced 19 May 2026. On 18 Jun 2026 Gemini CLI stopped serving Google AI Pro/Ultra and free Gemini Code Assist for individuals. Still works with Code Assist Standard/Enterprise licenses and paid Gemini / Gemini Enterprise Agent Platform API keys. Google's post does not use the word "deprecated". Antigravity CLI reads `AGENTS.md` (legacy `GEMINI.md` still supported). Sources: https://developers.googleblog.com/en/an-important-update-transitioning-gemini-cli-to-antigravity-cli/ ; https://docs.flutter.dev/ai/antigravity-cli.md
+
+## 8. Self-hosting estimates in Della nodes (accessed 2026-10-21)
+
+Della GPU node (as used on the slide): 4 × NVIDIA A100 80GB, 1 TB RAM, HDR100 InfiniBand; 70 such nodes. Della also has 2 × A100 40GB nodes, PLI nodes with 8 × H100 80GB and AI Lab nodes with H200 (not used for the estimate). Research Computing notes the table may lag changes; check `shownodes`.
+Source: https://researchcomputing.princeton.edu/research-computing-systems-hardware-overview (via search results; direct fetch of https://researchcomputing.princeton.edu/systems/della returned 403). UNVERIFIED on a page I opened.
+
+Total parameters (mostly vendor-reported via aggregators; UNVERIFIED against lab model cards):
+| Model | Total params | Source |
+|---|---|---|
+| MiMo-V2.6-Pro | ~1.02T (42B active) | https://deepinfra.com/models ; https://www.orcarouter.ai/blog/mimo-v2-6-pro-vs-deepseek-v4-1-flash |
+| DeepSeek V4.1 Flash | 552B vendor-reported; 763B per repo safetensors index (disputed) | https://www.orcarouter.ai/blog/mimo-v2-6-pro-vs-deepseek-v4-1-flash |
+| Kimi K3 | ~2.8T (active count disputed) | https://medium.com/data-science-in-your-pocket/deepseek-v4-1-flash-vs-kimi-k3-vs-glm-5-3-best-open-weight-llm-right-now-f2dc15a0a137 |
+| GLM-5.3 | ~753B (~40B active); one review says ~744B | https://www.yottalabs.ai/post/best-chinese-llm-models-2026-deepseek-qwen-glm-kimi-compared |
+| Muse Spark Open | 816B (42B active) | section 2 |
+| Nemotron 3.5 Super VL | 120B (12B active) | section 2 |
+| Gemma 4 31B | 30.7B, BF16 | https://huggingface.co/google/gemma-4-31B (opened) |
+| Qwen3.8 27B | 27B (from name) | section 2 |
+
+Method: memory = params × bytes/param (BF16 2, 8-bit 1, 4-bit 0.5) × 1.25 headroom; nodes = ceil(memory / 320 GB).
+| Model | 8-bit nodes | BF16 |
+|---|---|---|
+| DeepSeek V4.1 Flash (552B / 763B) | 3 / 3 | 5 / 6 |
+| GLM-5.3 (753B) | 3 | 6 |
+| Muse Spark Open (816B) | 4 | 7 |
+| MiMo-V2.6-Pro (1.02T) | 4 | 8 |
+| Kimi K3 (2.8T) | 11 | 22 |
+| Nemotron 3.5 Super (120B) | 0.5 (2 GPUs) | 1 (4 GPUs) |
+| Gemma 4 31B (30.7B) | 1 GPU | 1 GPU (77 GB, tight) |
+| Qwen3.8 27B | 1 GPU | 1 GPU (68 GB) |
+GB300 node = one GB300 NVL72 compute tray: 2 GB300 Superchips, 4 Blackwell Ultra GPUs × 288 GB HBM3e = 1,152 GB; 18 trays per NVL72 rack.
+Sources: https://www.nvidia.com/en-gb/data-center/gb300-nvl72 (288 GB HBM3e per GPU) ; https://www.gigabyte.com/FileUpload/Global/WebPage/1052/DLB2-CB3_datasheet.pdf (4 × 288GB per compute tray, 18 trays) — via search results, not opened.
+Same method, nodes = ceil(memory / 1,152 GB):
+| Model | GB300 nodes at 8-bit | BF16 | 4-bit |
+|---|---|---|---|
+| DeepSeek V4.1 Flash (552B / 763B) | 1 / 1 | 2 / 2 | 1 |
+| GLM-5.3 (753B) | 1 | 2 | 1 |
+| Muse Spark Open (816B) | 1 | 2 | 1 |
+| MiMo-V2.6-Pro (1.02T) | 2 | 3 | 1 |
+| Kimi K3 (2.8T) | 4 (3.04 before rounding) | 7 | 2 |
+Slide: "3–4 nodes (12–16 A100s) or 1–2 GB300 nodes at 8-bit; Kimi K3 about 11 Della or 4 GB300"; mid-size "one A100 at full precision; ~120B takes a full node". These are back-of-envelope; long agent contexts need more headroom.
+
+## 9. Context management (accessed 2026-10-22)
+
+No numbers on the slide; sources for its claims.
+- Claude Code auto-compacts near the context limit and can clear old tool results; prompt caching bills repeated history at the cached rate; "Clear between tasks" is the first listed habit; `/compact` reads the conversation it summarizes, "`/clear` costs nothing". Source: https://code.claude.com/docs/en/costs (opened) ; https://code.claude.com/docs/en/prompt-caching
+- OpenAI Responses API server-side compaction via `context_management` / `compact_threshold`. Source: https://developers.openai.com/api/docs/guides/compaction (via search results). Codex CLI compaction details only from a third-party blog (https://codex.danielvaughan.com/2026/03/31/codex-cli-context-compaction-architecture/), UNVERIFIED.
+- Long-context degradation: LOCA-bench (https://arxiv.org/pdf/2602.07962) and secondary surveys; models covered are previous generation (Opus 4.x, GPT-5.x). Not used on the slide.
