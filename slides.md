@@ -976,27 +976,6 @@ The kit has two layers: AGENTS.md and prompts/ work in any tool; .claude/ is a t
 
 ---
 
-<!-- 31-commitment -->
-<!-- _header: "6 · Starter kit and discussion" -->
-
-# Your commitment card
-
-<div style="margin:30px auto;max-width:900px;border:3px solid #000;border-radius:16px;padding:30px 40px;background:#f6f3ee">
-<div class="big">One task I will hand to an agent this week:</div>
-<div style="border-bottom:3px solid #000;height:56px;margin:18px 0 40px"></div>
-<div class="big">How I will check the result:</div>
-<div style="border-bottom:3px solid #000;height:56px;margin:18px 0 10px"></div>
-</div>
-
-<p class="small center">Same card tool as the tips. We read three aloud.</p>
-
-<!--
-Notes:
-2 minutes. Collect with the card tool. Read three aloud.
--->
-
----
-
 <!-- 32-discussion -->
 <!-- _header: "6 · Starter kit and discussion" -->
 
@@ -1006,25 +985,9 @@ Notes:
 2. Which of your data may not leave the cluster, and what would you run locally instead?
 3. Refactor the prototype, or rewrite it: what would justify each choice?
 
-<p class="small">Parking-lot questions come back here.</p>
-
 <!--
 Notes:
 Staged disagreement between the presenters is an option on prompt 3: 30 seconds each, then the room settles it.
--->
-
----
-
-<!-- 33-parking-lot -->
-<!-- _header: "" -->
-
-# Parking lot
-
-<p class="muted">Questions that ran over. We come back to these in the discussion.</p>
-
-<!--
-Notes:
-The non-speaking presenter writes questions here during the talk.
 -->
 
 ---
