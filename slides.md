@@ -254,23 +254,25 @@ The point is that most volume is small-tier work. The frontier model is for the 
 <!-- 09-what-burns-tokens -->
 <!-- _header: "2 · Tokens, cost and delegation" -->
 
-# Context use and token cost
+# Tools compact for you; you clear between tasks
 
 ![w:1000 center](assets/diagrams/context-bloat.svg)
 
-Compact or restart when the session loses focus. Save a verified handoff.
+Auto-compaction keeps long sessions running. When you switch to unrelated work, start fresh with `/clear`: it costs nothing, and the next task starts without stale assumptions.
 
-<div class="callout" style="font-size:21px">Cached input can cost less. Restarting may lose useful context and cache reuse.</div>
+<div class="callout" style="font-size:21px">Every request, including each tool call, re-sends the conversation so far. Repeated text is billed at a discount, not for free, so an all-day session keeps getting more expensive.</div>
 
 <!--
 Notes:
-Claude Code reuses prior context across turns and automatically caches matching prompt prefixes. Cache hits receive cached-input pricing rather than the full input rate; cache writes and new content have their own costs. Other harnesses may manage context differently.
-Repeated file reads, verbose tool output and failed attempts can accumulate in context. Prompt caching reduces processing cost for matching prefixes; it does not remove that content from the model's context window.
-A fresh session can help when stale assumptions or irrelevant history dominate, but it may discard useful context and cache reuse. It is not necessarily cheaper or more accurate. Before compacting or restarting, save the verified goal, decisions, commands and remaining work, then check that the next session reads the handoff.
-Planning can avoid unnecessary retries, but this figure is a schematic of context growth, not a measured cost curve or an optimal restart point.
-Colleague's original tip: "Restarting sessions, it often gets confused with too much context". Present it as a useful experience, not a universal cost rule.
-Source: https://code.claude.com/docs/en/prompt-caching
-Ask the room: who has had a session get worse the longer it went? That is this picture.
+What changed: current harnesses manage the context window themselves. Claude Code auto-compacts (summarizes older history) as it nears the limit and clears old tool results; OpenAI's API and Codex have their own automatic compaction. Frontier models list ~1M-token windows (slide 4). You rarely need to compact by hand.
+What you still do: clear between unrelated tasks. Claude Code's cost docs list this first; /clear costs nothing, while /compact reads the whole conversation it summarizes, so compacting a large context is itself a large request. Use /rename before /clear if you may want to /resume later.
+Caveat, from experience: compaction is a lossy summary, and it can carry an old instruction forward without its context. In one session the summary kept an earlier force-push command, and after compaction the agent ran a force push that was not intended. Lessons: after an auto-compact, check what the agent thinks it is doing before letting it continue; put rules like "never force push" in CLAUDE.md or compact instructions so they survive; and block destructive commands (force push, rm -rf, dropping tables) with permission deny rules rather than trusting the summary.
+Cost: every request sends the conversation so far, and one turn can be many requests because each batch of tool results goes back in a new request. After compaction or tool-result clearing, "so far" means the compacted version. With the OpenAI Responses API the server can hold the history (previous_response_id), but the prior tokens are still billed as input. With prompt caching that history is billed at the cheaper cached rate, but a one-line question in an all-day session still pays for the whole history, and the first message after the cache expires reprocesses it at full price.
+Quality: long, cluttered contexts still degrade answers, especially in agentic work, though less than with older models; published long-context benchmarks mostly cover previous-generation models, so treat this as a caveat, not a law.
+Colleague's original tip: "Restarting sessions, it often gets confused with too much context". Present it as lived experience.
+If you do restart mid-task, save a verified handoff first: goal, decisions, commands and remaining work.
+Sources: https://code.claude.com/docs/en/costs ; https://code.claude.com/docs/en/prompt-caching ; https://developers.openai.com/api/docs/guides/compaction
+Ask the room: who has had a session get worse the longer it went?
 About 1.5 minutes. Schematic, not measured data.
 -->
 
@@ -322,11 +324,11 @@ About 2 minutes.
 <!-- 11-other-levers -->
 <!-- _header: "2 · Tokens, cost and delegation" -->
 
-# Four more levers on cost and clarity
+# Recap: habits that cut cost
 
 <style scoped>.callout{margin:0.25em 0;padding:8px 16px} td,th{padding:5px 12px}</style>
 <div class="cols" style="gap:14px;font-size:21px">
-<div class="callout"><b>Compact or clear.</b> <code>/compact</code> summarizes, <code>/clear</code> starts fresh; do it between tasks, not mid-task.</div>
+<div class="callout"><b>Clear between tasks.</b> Auto-compact handles long sessions; <code>/clear</code> starts fresh for new work.</div>
 <div class="callout"><b>Scope AGENTS.md</b> to what every session needs; everything else goes in a file the agent reads on demand.</div>
 <div class="callout"><b>Background long jobs</b> and check in; do not sit in a chat window watching tests.</div>
 <div class="callout"><b>Use the ladder:</b> frontier to plan, mid to build, small to fetch.</div>
@@ -349,10 +351,10 @@ About 2 minutes.
 
 <!--
 Notes:
-Four small habits; none needs setup. Spend one line on each.
-Table point: list prices differ 100x between Fable and Haiku, but per benchmark task the top three are close, because the cheaper models think longer. Haiku really is about 28x cheaper than Sonnet.
+Section recap: clearing and the ladder repeat earlier slides; scoping AGENTS.md and backgrounding long jobs are new. None needs setup. Spend one line on each.
+Table point: list prices differ 100x between Fable and Haiku, but per benchmark task the top three are close, because the cheaper models think longer. Haiku really is about 26x cheaper than Sonnet (28x vs Opus).
 Caveat out loud: benchmark tasks are not agentic coding sessions; no official per-session cost page exists.
-Engagement: "Who has run /compact on purpose?"
+Engagement: "Who clears between tasks, and who keeps one session open all day?"
 Sources: https://platform.claude.com/docs/en/about-claude/pricing ; https://artificialanalysis.ai/models/claude-opus-5-5 (and sonnet-5-5, haiku-5-5, fable-5-1)
 Timing: 2 minutes.
 -->

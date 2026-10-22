@@ -162,3 +162,10 @@ Same method, nodes = ceil(memory / 1,152 GB):
 | MiMo-V2.6-Pro (1.02T) | 2 | 3 | 1 |
 | Kimi K3 (2.8T) | 4 (3.04 before rounding) | 7 | 2 |
 Slide: "3–4 nodes (12–16 A100s) or 1–2 GB300 nodes at 8-bit; Kimi K3 about 11 Della or 4 GB300"; mid-size "one A100 at full precision; ~120B takes a full node". These are back-of-envelope; long agent contexts need more headroom.
+
+## 9. Context management (accessed 2026-10-22)
+
+No numbers on the slide; sources for its claims.
+- Claude Code auto-compacts near the context limit and can clear old tool results; prompt caching bills repeated history at the cached rate; "Clear between tasks" is the first listed habit; `/compact` reads the conversation it summarizes, "`/clear` costs nothing". Source: https://code.claude.com/docs/en/costs (opened) ; https://code.claude.com/docs/en/prompt-caching
+- OpenAI Responses API server-side compaction via `context_management` / `compact_threshold`. Source: https://developers.openai.com/api/docs/guides/compaction (via search results). Codex CLI compaction details only from a third-party blog (https://codex.danielvaughan.com/2026/03/31/codex-cli-context-compaction-architecture/), UNVERIFIED.
+- Long-context degradation: LOCA-bench (https://arxiv.org/pdf/2602.07962) and secondary surveys; models covered are previous generation (Opus 4.x, GPT-5.x). Not used on the slide.
