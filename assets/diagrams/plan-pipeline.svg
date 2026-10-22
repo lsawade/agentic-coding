@@ -19,6 +19,6 @@
 <rect x="846" y="240" width="733" height="130" rx="14"/></g>
 <g fill="#1f1f1f" font-size="34" text-anchor="middle">
 <text x="386" y="297">/grill-me finds the foggy parts</text>
-<text x="1212" y="295">/goal: one clearly defined outcome,</text>
-<text x="1212" y="340">then check in when it is done</text></g>
+<text x="1212" y="295">/goal: checkable outcome,</text>
+<text x="1212" y="340">budget and stop conditions</text></g>
 </svg>

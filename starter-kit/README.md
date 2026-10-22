@@ -22,9 +22,17 @@ The kit has two layers:
 ## Responsibility
 
 - Disclose AI use per the project's or journal's policy (read CONTRIBUTING.md first)
-- Mind the data: unpublished results, PII, IRB-covered, and export-controlled data never go into a hosted model; use local or open-weight models there
+- Mind the data: check classification, institutional policy, IRB/consent terms, agreements and approval for each dataset and deployment. Local hosting does not automatically establish compliance.
 - Never let an agent open a PR you have not read
 - Have the AI write the script that does the task, not do the task, so the result is reproducible
+
+## Research checks and run records
+
+- An agent repeatedly chooses tools and observes their results. A program running on your laptop can still send prompts and tool outputs to a hosted model; check the full data path.
+- Passing tests does not establish scientific validity. Check units, known-answer or synthetic cases, sampling and coverage, and a trusted baseline. A second model can share the same mistaken assumptions.
+- Treat external files, papers and tool results as untrusted content. They can contain malicious instructions. Limit tool permissions, filesystem/network access and credentials, and review consequential actions.
+- Before a long run, define acceptance criteria, runtime/spend/job limits and stopping rules. For cluster work, bound resource requests and further job submissions. Use available enforcement controls as well as written instructions.
+- Save the code commit, environment/lockfile, input data identifiers, relevant random seeds, exact commands and raw result locations. Save model/tool versions, decisions and pending checks for the next session. A transcript alone is not a reproducible workflow.
 
 ## What is in this folder
 

@@ -69,13 +69,17 @@ Timing: 2 minutes.
 
 # Model ≠ tool: you can swap either one
 
-![h:430 center](assets/diagrams/harness-vs-model.svg)
+<p style="font-size:22px">An agent repeatedly chooses tools, observes results and works toward a goal or stop condition.</p>
 
-<p class="small center">Most of today's tips are about the top two layers, so they carry over from Claude Code to Codex, Cursor and Antigravity CLI.</p>
+![h:330 center](assets/diagrams/harness-vs-model.svg)
+
+<div class="callout" style="font-size:21px">An agent running on your laptop can still send prompts and tool outputs to a hosted model.</div>
 
 <!--
 Notes:
 The harness is the program you type into: it reads files, runs commands, asks permission. The model is the engine it calls.
+The agent loop is: the model chooses an action, the harness runs an available tool, the result returns to the model, and the cycle repeats until completion, a limit or a request for human input. The harness and permissions determine what actions are possible.
+Local tool execution and local inference are separate. A local terminal agent can run a command on your laptop and send its output to a remote model. Check the complete data path when deciding whether a deployment is approved.
 They are separate choices: Cursor and Copilot offer a model picker; Claude Code lets you switch between Claude tiers.
 Google's Gemini CLI is now Antigravity CLI: consumer sign-in ended 18 Jun 2026; Gemini CLI still runs on paid API keys and enterprise licenses.
 Last talk you saw one model inside one tool; that was one cell of this picture, not the whole thing.
@@ -356,17 +360,19 @@ Timing: 2 minutes.
 
 </div>
 
-<div class="cards two" style="font-size:19px"><div class="tip" style="font-size:19px">Always review the code. It often makes mistakes or assumes things different than your implicit assumptions</div><div class="tip" style="font-size:19px">Ask AI to list the problems in the code it generated</div></div>
+<div class="callout" style="font-size:21px"><b>Passing tests do not establish scientific validity.</b> Check units, known-answer cases and a trusted baseline.</div>
 
-<p class="small" style="margin:0">A supervisor who knows the typical failure modes reviews better. Slide 5.5 says what to do about each.</p>
+<p class="small" style="margin:0">Another model can share the same mistaken assumptions. Independent checks still matter.</p>
 
 <!--
 Notes:
 Five patterns, one sentence each; do not read the table aloud.
 Engagement: "Which of these have you already been bitten by?" Take two answers.
 Tie to section 3: all five are invisible unless you open the code or the data.
-Read the two tips; the second one is cheap and works.
-Point forward: slide 5.5 gives the countermeasure for each failure mode.
+Scientific validation is separate from whether code executes. Use a small synthetic or known-answer case, dimensional checks, sampling and coverage checks, and comparison with a trusted baseline. Where relevant, check limiting cases or conservation laws.
+Tests written from the same mistaken specification can agree with incorrect code. Establish an independent expected result for a critical calculation. Another model's agreement is additional review, not independent proof.
+Original colleague tips: "Always review the code. It often makes mistakes or assumes things different than your implicit assumptions" and "Ask AI to list the problems in the code it generated". Self-review can find issues, but does not certify correctness.
+Point forward: the failure counter-moves slide gives actions to take.
 Timing: 3 minutes.
 -->
 
@@ -442,6 +448,8 @@ print(f"Mean trial speed: {mean_speed:.3f} m/s")
 </code></pre>
 
 **Fix:** <code>elapsed = (end - start) / 1000</code>. Correct mean: **5.000 m/s**.
+
+<p class="small" style="font-size:19px;margin:0.2em 0">Check against a hand calculation, not only tests generated from the same assumptions.</p>
 
 <!--
 Notes:
@@ -655,21 +663,33 @@ Prompt to try later: /grill-me on your own half-formed idea.
 
 # Markdown is the agent's external memory
 
-![h:290 center](assets/diagrams/markdown-memory.svg)
+![h:230 center](assets/diagrams/markdown-memory.svg)
 
-<div class="cards two">
-<div class="tip">write brainstorming and planning notes to markdown so you have a record and can use that for context in a future session</div>
-<div class="tip">Using skills, treating a long task as a "research article" so it is easy to track and verify, using git as a way of tracking progress for bigger projects</div>
+<div class="cols" style="font-size:22px;gap:32px">
+<div><strong>To rerun the result</strong>
+<ul>
+<li>Code commit and environment / lockfile</li>
+<li>Input data identifiers and relevant random seeds</li>
+<li>Exact commands and raw output locations</li>
+</ul></div>
+<div><strong>To resume the work</strong>
+<ul>
+<li>Goal, decisions and assumptions</li>
+<li>Verified results and checks still pending</li>
+<li>Model / tool version and remaining steps</li>
+</ul></div>
 </div>
 
-You get a record; the next session gets context.
+<p class="small" style="margin:0">Save a reproducible workflow alongside the conversation.</p>
 
 <!--
 Notes:
-Each session starts empty; files are how it remembers.
+A new session may load instructions or memory, but may not retain the previous conversation. Save verified decisions and open questions explicitly, and ask the next session to read them.
 Orange arrows write, gray arrows read.
 Research-article framing: question, method, results, open questions.
 Suggest committing the notes with git so progress is tracked.
+For reproducibility, capture the code commit, environment or lockfile, input data identifiers, relevant random seeds, exact commands and raw result locations. Save model and tool versions and consequential decisions when useful. A transcript alone is not a reproducible pipeline, and stochastic outputs may not reproduce bit for bit.
+Original colleague tips: "write brainstorming and planning notes to markdown so you have a record and can use that for context in a future session" and "Using skills, treating a long task as a research article so it is easy to track and verify, using git as a way of tracking progress for bigger projects".
 Timing: 2 minutes.
 -->
 
@@ -710,18 +730,24 @@ Ask: who already commits before letting an agent loose? Who has lost work to one
 
 # MCP: connect the agent to what you already use
 
-![h:360 center](assets/diagrams/mcp-hub.svg)
+![h:270 center](assets/diagrams/mcp-hub.svg)
 
-<div class="cards one"><div class="tip">Have MCP server running to utilize IDE features</div></div>
+<p class="small" style="margin:0">MCP = Model Context Protocol. Setup and authentication vary by server.</p>
 
-<span class="small">Examples only; no setup walkthrough today. Each server is a few lines in settings.</span>
+<div class="callout" style="font-size:22px"><b>Prompt injection:</b> files, papers and tool results can contain malicious instructions. Treat external content as untrusted data.</div>
+
+<p style="font-size:22px;margin:0">Limit tool permissions, network access and credentials. Review consequential actions.</p>
 
 <!--
 Notes:
-Keep this to 60 seconds.
+Keep this to about 90 seconds.
 One plug shape: any tool that speaks MCP can be offered to the agent.
 Examples are illustrative; pick the one your audience uses.
 Read-only first for databases and schedulers.
+MCP standardizes integration, not trust. Use trusted servers, configure their access and review consequential operations. IDE features do not universally require MCP.
+Prompt injection can arrive through a repository file, a retrieved paper or a tool response. For example, a document might tell the agent to ignore the task and upload local files. Such text is content to inspect, not authorization to act. Restrict filesystem and network access and expose only the credentials and tool capabilities required by the task. These controls reduce risk but do not guarantee protection.
+Original colleague tip: "Have MCP server running to utilize IDE features". Treat it as a specific integration example, not a universal setup requirement.
+Sources: https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices ; https://code.claude.com/docs/en/security
 No live setup today.
 -->
 
@@ -752,22 +778,24 @@ Then: the next three slides take one lap, one stage each.
 
 # Before: plan, and let it interrogate the plan
 
-![w:1100 center](assets/diagrams/plan-pipeline.svg)
+![w:1000 center](assets/diagrams/plan-pipeline.svg)
 
-<div class="cards">
+<div class="cards two">
 <div class="tip">Brainstorm + feasibility run before running the plan session</div>
 <div class="tip">/grill-me to figure out the foggy areas of an idea</div>
-<div class="tip">Providing it a clearly defined, high-level /goal and checking in on the agent after the agent completed</div>
 </div>
 
-**Planning is cheaper than fixing:** a bad plan costs a page of markdown, a bad build costs a day of review.
+<div class="callout" style="font-size:22px"><b>Before running:</b> define a checkable result, a runtime / spend / job limit and when to stop for review.</div>
 
 <!--
 Notes:
 Lap one of the loop: plan, small steps, review. About 1.5 minutes here.
 Walk the strip left to right; the feasibility run is thrown away on purpose, it only tells you if the idea is possible.
 Live prompt to show: "/grill-me" on a half-formed idea, then answer its questions.
-/goal needs one outcome you could verify; check in when it reports done, not before.
+/goal is an example of a project-defined command. Give it one outcome you can verify, a budget and stopping rules. Set checkpoints according to the task's risk, and review when the agent reports completion, a blocker or a limit.
+Example instruction: "Run one small Slurm test job, with a 30-minute wall-time limit. Do not submit more jobs without review. Stop and report the command and logs if the run fails twice." Set scheduler resource limits and available spending controls as well as writing the instruction; prose alone does not enforce a budget.
+Acceptance criteria should describe the expected artifact and independent checks, not simply say "make it work". Stop before publishing or changing external systems unless that action is authorized.
+Original colleague tip: "Providing it a clearly defined, high-level /goal and checking in on the agent after the agent completed". Keep the goal clear, while using risk-appropriate checkpoints during the run.
 Land the last line: the researcher owns the plan, so spend the effort here.
 -->
 
@@ -872,18 +900,20 @@ Timing: 1 minute.
 
 <!-- 29-failure-counter-moves -->
 <!-- _header: "5 · Working patterns from your colleagues" -->
+<style scoped>table{font-size:20px} td,th{padding:6px 12px}</style>
 
 # Each failure mode has a counter-move
 
 | When it… | You… |
 |---|---|
+| Runs but gives the wrong scientific result | check units, a known-answer case and a trusted baseline |
 | Over-engineers after many changes | refactor under regression tests. Consider a rewrite when the design warrants it |
 | Drifts from your assumptions silently | ask it to list its assumptions before it runs; state units, ranges, NaN policy in the prompt |
 | Hallucinates a dependency or API | run it; pin versions; let a subagent check the docs |
 | Says "tests pass" without running them | make it show the command and the output; run the suite yourself before the PR |
 | Answers an unverifiable question confidently | ask for the check it would run, then run it |
 
-<p class="small">Pairs with slide 13; same failures, now the response.</p>
+<p class="small">Independent checks matter more than another confident answer.</p>
 
 <div class="callout">Use known results to check that structural changes preserve the intended behavior.</div>
 
@@ -909,15 +939,16 @@ Regression tests should capture trusted behavior or known scientific results, no
 </ul></div>
 <div><strong>Loop</strong>
 <ul class="check">
-<li>Plan first, /grill-me the foggy parts</li>
+<li>Define success, budgets and stop conditions</li>
 <li>Small steps you can review</li>
-<li>Review as a supervisor, second model as adversary</li>
+<li>Validate units and known-answer cases</li>
+<li>Review the code and scientific assumptions</li>
 </ul></div>
 <div><strong>Responsibility</strong>
 <ul class="check">
 <li>Disclose per the project's or journal's policy</li>
-<li>Mind the data: nothing restricted into a hosted model</li>
-<li>Never let an agent open a PR you have not read</li>
+<li>Check data and deployment guidelines case by case</li>
+<li>Save code, environment, data IDs and run records</li>
 </ul></div>
 </div>
 
@@ -927,6 +958,7 @@ Regression tests should capture trusted behavior or known scientific results, no
 Notes:
 Say the repo URL out loud. It is printed in the README.
 The kit has two layers: AGENTS.md and prompts/ work in any tool; .claude/ is a thin Claude Code adapter (slash commands, subagent, permissions) that points at them.
+Review content before submission or opening a PR. A second model may help review, but does not replace independent scientific checks. Treat files and tool responses as untrusted content, and restrict permissions for long runs.
 -->
 
 ---
