@@ -71,7 +71,7 @@ Timing: 2 minutes.
 
 ![h:430 center](assets/diagrams/harness-vs-model.svg)
 
-<p class="small center">Most of today's tips are about the top two layers, so they carry over from Claude Code to Codex, Cursor and Antigravity CLI.</p>
+<p class="small center">Today's tips are about how you work, so they carry over to most tools and models.</p>
 
 <!--
 Notes:
@@ -181,7 +181,7 @@ Timing: 2 minutes.
 <div class="task">Summarize 20 log files from last night's runs into one paragraph each.</div>
 </div>
 
-<p class="small">Frontier: plans, reviews, hard reasoning · Mid: daily work · Small: search, test runs, summaries</p>
+<p class="small">Options: Frontier · Mid · Small</p>
 
 <!--
 Notes:
@@ -356,17 +356,17 @@ Timing: 2 minutes.
 
 </div>
 
-<div class="cards two" style="font-size:19px"><div class="tip" style="font-size:19px">Always review the code. It often makes mistakes or assumes things different than your implicit assumptions</div><div class="tip" style="font-size:19px">Ask AI to list the problems in the code it generated</div></div>
+<div class="cards one" style="font-size:19px"><div class="tip" style="font-size:19px">Ask AI to list the problems in the code it generated</div></div>
 
-<p class="small" style="margin:0">A supervisor who knows the typical failure modes reviews better. Slide 5.5 says what to do about each.</p>
+<p class="small" style="margin:0">A supervisor who knows the typical failure modes reviews better. Slide 29 says what to do about each.</p>
 
 <!--
 Notes:
 Five patterns, one sentence each; do not read the table aloud.
 Engagement: "Which of these have you already been bitten by?" Take two answers.
 Tie to section 3: all five are invisible unless you open the code or the data.
-Read the two tips; the second one is cheap and works.
-Point forward: slide 5.5 gives the countermeasure for each failure mode.
+Read the tip; it is cheap and works.
+Point forward: slide 29 gives the countermeasure for each failure mode.
 Timing: 3 minutes.
 -->
 
@@ -629,11 +629,7 @@ Timing: 2 minutes.
 
 <p class="small muted center" style="font-size:17px;margin:2px 0 6px">Claude Code is the example; other agents have their own folders for the same jobs. Codex: <code>AGENTS.md</code>, skills in <code>.agents/skills/</code>, settings in <code>~/.codex/config.toml</code>.</p>
 
-<div class="cards">
-<div class="tip">/grill-me to figure out the foggy areas of an idea</div>
-<div class="tip">Providing it a clearly defined, high-level /goal and checking in on the agent after the agent completed</div>
-<div class="tip">Write a pr.md that explains how to make PR for your project</div>
-</div>
+<div class="cards one"><div class="tip">Write a pr.md that explains how to make PR for your project</div></div>
 
 <!--
 Notes:
@@ -780,11 +776,10 @@ Land the last line: the researcher owns the plan, so spend the effort here.
 
 ![h:255 center](assets/diagrams/small-steps.svg)
 
-<div class="cards two">
+<div class="cards">
 <div class="tip">work in small chunks so you can understand and review</div>
 <div class="tip">Having it do minimal work at a time</div>
 <div class="tip">Don't get stuck with too much AI written code that then needs to be reviewed</div>
-<div class="tip">Have the AI write code to do the task, not directly do the task</div>
 </div>
 
 <!--
@@ -792,7 +787,6 @@ Notes:
 Lap two. About 2 minutes.
 Top lane: 400 lines arrive at once and review becomes rubber-stamping. Bottom lane: each 50-line step gets checked before the next.
 Moved to notes (it is on the figure): "Restarting sessions, it often gets confused with too much context".
-Last card: ask for a script that does the task, so you can read and rerun it, instead of the agent doing it invisibly.
 Prompt: "Do only step 1 of the plan, then stop and show me the diff."
 -->
 
@@ -1002,7 +996,7 @@ The non-speaking presenter writes questions here during the talk.
 
 </div>
 
-<div class="callout">The tips in section 5 are quoted as written from 23 colleagues on campus who answered "What tricks have you found helpful when it comes to agentic AI?" Thanks to the Research Computing group for input on these slides and for many discussions on AI coding.</div>
+<div class="callout">The tips throughout this talk are quoted as written from 23 colleagues on campus who answered "What tricks have you found helpful when it comes to agentic AI?" Thanks to the Research Computing group for input on these slides and for many discussions on AI coding.</div>
 
 <!--
 Notes:
