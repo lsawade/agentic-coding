@@ -47,8 +47,6 @@ Timing: 42 min, 35 slides. Natural split: sections 0-3 (slides 1-19) and 4-6 (sl
 
 <div class="callout"><b>Interrupt me.</b> Two of us are up here; the one not speaking is watching for your hand.</div>
 
-<div class="callout"><b>Keep the build in mind.</b> We will point back at it: the retries, the unread diff, the missing AGENTS.md.</div>
-
 </div>
 </div>
 
