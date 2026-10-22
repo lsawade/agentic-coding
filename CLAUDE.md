@@ -20,7 +20,6 @@ schematics (`assets/diagrams/`). Built with `@marp-team/marp-cli`; config in `.m
 - Theme classes: `cards` (+`one`/`two`) with `tip` cards; `cols`, `cols-3`; `stats`/`stat` (`.n`, `.c`);
   `quiz`/`task` (+`badge frontier|mid|small`, `why`); `callout`; `punch`; `big`; `small`; `muted`; `pill`;
   `kv`; `check`; `placeholder`; `timer`; `mark.bug`. HTML is enabled.
-- Tips from colleagues on campus (`.tip` cards) are quoted exactly as submitted, typos included. Do not edit them.
 - SVG schematics: viewBox 1600×900 (full) or 1600×560 (half); palette orange `#E87722`, black, ink `#1f1f1f`,
   gray `#6b6b6b`, line `#d9d4cc`, card `#f6f3ee`; labels ≥ 30px; no gradients, filters or external fonts.
 - Any number on a slide must appear in `research/numbers.md` with a source URL and access date.
