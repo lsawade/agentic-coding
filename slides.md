@@ -966,11 +966,11 @@ Regression tests should capture trusted behavior or known scientific results, no
 </ul></div>
 </div>
 
-<div class="callout">Clone the starter kit: <code>starter-kit/</code> in this talk's repo (an AGENTS.md skeleton and three prompts any agent can use, plus a Claude Code adapter).</div>
+<div class="callout">Clone the starter kit: <code>starter-kit/</code> in <strong>github.com/lsawade/agentic-coding</strong> (an AGENTS.md skeleton and three prompts any agent can use, plus a Claude Code adapter).</div>
 
 <!--
 Notes:
-Say the repo URL out loud. It is printed in the README.
+Say the repo URL out loud: github.com/lsawade/agentic-coding. The last slide has a QR code for it.
 The kit has two layers: AGENTS.md and prompts/ work in any tool; .claude/ is a thin Claude Code adapter (slash commands, subagent, permissions) that points at them.
 -->
 
@@ -1010,7 +1010,10 @@ Staged disagreement between the presenters is an option on prompt 3: 30 seconds 
 
 </div>
 
-<div class="callout">The tips throughout this talk, lightly edited, come from 23 colleagues on campus who answered "What tricks have you found helpful when it comes to agentic AI?" Thanks to the Research Computing group for input on these slides and for many discussions on AI coding.</div>
+<div style="display:flex;gap:32px;align-items:center">
+<div class="callout" style="flex:1;margin:0">The tips throughout this talk, lightly edited, come from 23 colleagues on campus who answered "What tricks have you found helpful when it comes to agentic AI?" Thanks to the Research Computing group for input on these slides and for many discussions on AI coding.</div>
+<div style="text-align:center;flex:none"><img src="assets/qr-repo.svg" alt="QR code for github.com/lsawade/agentic-coding" style="height:170px;display:block;margin:0 auto"><div class="small" style="margin-top:4px"><strong>github.com/lsawade/agentic-coding</strong></div></div>
+</div>
 
 <!--
 Notes:
